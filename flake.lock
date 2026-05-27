@@ -65,6 +65,7 @@
         "src_mrs_cmake": "src_mrs_cmake",
         "src_mrs_lib": "src_mrs_lib",
         "src_mrs_msgs": "src_mrs_msgs",
+        "src_mrs_multirotor_simulator": "src_mrs_multirotor_simulator",
         "src_mrs_uav_hw_api": "src_mrs_uav_hw_api",
         "src_mrs_uav_testing": "src_mrs_uav_testing"
       }
@@ -133,6 +134,23 @@
         "owner": "ctu-mrs",
         "ref": "nix",
         "repo": "mrs_msgs",
+        "type": "github"
+      }
+    },
+    "src_mrs_multirotor_simulator": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1779459986,
+        "narHash": "sha256-2S26MIusE/Hywd2QyGeLEe11AQVsx8vHTA5Is1w3bhA=",
+        "owner": "ctu-mrs",
+        "repo": "mrs_multirotor_simulator",
+        "rev": "37242fd29da394ff653dba1459b846c7142abe60",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ctu-mrs",
+        "ref": "nix",
+        "repo": "mrs_multirotor_simulator",
         "type": "github"
       }
     },

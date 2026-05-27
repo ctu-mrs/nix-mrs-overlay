@@ -97,6 +97,7 @@ in
     propagatedBuildInputs = [ 
       # our
       final.mrs_uav_testing
+      final.mrs_uav_hw_api
     ];
   };
 }
