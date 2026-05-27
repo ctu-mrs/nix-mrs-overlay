@@ -87,4 +87,16 @@ in
       final.mrs_uav_testing
     ];
   };
+
+  mrs_multirotor_simulator = ros.buildRosPackage {
+    pname = "mrs_multirotor_simulator";
+    version = "nix";
+    src = inputs.src_mrs_multirotor_simulator;
+    buildType = "ament_cmake";
+    nativeBuildInputs = [ ros.ament-cmake ];
+    propagatedBuildInputs = [ 
+      # our
+      final.mrs_uav_testing
+    ];
+  };
 }

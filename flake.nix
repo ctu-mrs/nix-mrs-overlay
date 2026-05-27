@@ -8,6 +8,7 @@
     src_mrs_lib = { url = "github:ctu-mrs/mrs_lib/nix"; flake = false; };
     src_mrs_uav_testing = { url = "github:ctu-mrs/mrs_uav_testing/nix"; flake = false; };
     src_mrs_uav_hw_api = { url = "github:ctu-mrs/mrs_uav_hw_api/nix"; flake = false; };
+    src_mrs_multirotor_simulator = { url = "github:ctu-mrs/mrs_multirotor_simulator/nix"; flake = false; };
   };
 
   outputs = inputs: 
@@ -37,6 +38,7 @@
         mrs_lib = pkgs.mrs_lib;
         mrs_uav_testing = pkgs.mrs_uav_testing;
         mrs_uav_hw_api = pkgs.mrs_uav_hw_api;
+        mrs_multirotor_simulator = pkgs.mrs_multirotor_simulator;
         
         # ... list your other packages here ...
 
@@ -49,6 +51,7 @@
             pkgs.mrs_lib
             pkgs.mrs_uav_testing
             pkgs.mrs_uav_hw_api
+            pkgs.mrs_multirotor_simulator
           ];
         };
       };
