@@ -74,4 +74,17 @@ in
       ros.backward-ros
     ];
   };
+
+  mrs_uav_hw_api = ros.buildRosPackage {
+    pname = "mrs_uav_hw_api";
+    version = "nix";
+    src = inputs.src_mrs_uav_hw_api;
+    buildType = "ament_cmake";
+    nativeBuildInputs = [ ros.ament-cmake ];
+    propagatedBuildInputs = [ 
+      # our
+      final.mrs_lib
+      final.mrs_uav_testing
+    ];
+  };
 }

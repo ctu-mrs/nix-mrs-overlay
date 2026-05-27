@@ -7,6 +7,7 @@
     src_mrs_cmake = { url = "github:ctu-mrs/mrs_cmake/nix"; flake = false; };
     src_mrs_lib = { url = "github:ctu-mrs/mrs_lib/nix"; flake = false; };
     src_mrs_uav_testing = { url = "github:ctu-mrs/mrs_uav_testing/nix"; flake = false; };
+    src_mrs_uav_hw_api = { url = "github:ctu-mrs/mrs_uav_hw_api/nix"; flake = false; };
   };
 
   outputs = inputs: 
@@ -35,6 +36,7 @@
         mrs_cmake = pkgs.mrs_cmake;
         mrs_lib = pkgs.mrs_lib;
         mrs_uav_testing = pkgs.mrs_uav_testing;
+        mrs_uav_hw_api = pkgs.mrs_uav_hw_api;
         
         # ... list your other packages here ...
 
@@ -46,6 +48,7 @@
             pkgs.mrs_cmake
             pkgs.mrs_lib
             pkgs.mrs_uav_testing
+            pkgs.mrs_uav_hw_api
           ];
         };
       };
