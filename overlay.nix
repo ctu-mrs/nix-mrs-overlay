@@ -59,4 +59,19 @@ in
       ros.tf2-eigen
     ];
   };
+
+  mrs_uav_testing = ros.buildRosPackage {
+    pname = "mrs_uav_testing";
+    version = "nix";
+    src = inputs.src_mrs_uav_testing;
+    buildType = "ament_cmake";
+    nativeBuildInputs = [ ros.ament-cmake ];
+    propagatedBuildInputs = [ 
+      # our
+      final.mrs_lib
+
+      # official ros
+      ros.backward-ros
+    ];
+  };
 }
