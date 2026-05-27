@@ -1,22 +1,50 @@
 {
-  description = "The unified CTU MRS package overlay";
-
   inputs = {
-
     nix-ros-overlay.url = "github:lopsided98/nix-ros-overlay/master";
     nixpkgs.follows = "nix-ros-overlay/nixpkgs";
-
-    # We import the 50 repos strictly for their source code. 
-    # We turn off "flake = true" because we DO NOT WANT their flake.nix files.
-    # We only want their raw C++ source trees!
+    
     src_mrs_msgs = { url = "github:ctu-mrs/mrs_msgs/nix"; flake = false; };
     src_mrs_cmake = { url = "github:ctu-mrs/mrs_cmake/nix"; flake = false; };
     src_mrs_lib = { url = "github:ctu-mrs/mrs_lib/nix"; flake = false; };
-    # src_mrs_uav_testing = { url = "github:ctu-mrs/mrs_uav_testing/nix"; flake = false; };
   };
 
-  outputs = inputs: {
-    # We export the overlay so other flakes can use it
-    overlays.default = import ./overlay.nix { inherit inputs; };
-  };
+  outputs = inputs: 
+    let
+      system = "x86_64-linux";
+      
+      # 1. Define your custom overlay
+      mrsOverlay = import ./overlay.nix { inherit inputs; };
+
+      # 2. Instantiate nixpkgs with BOTH the ROS overlay and your custom overlay
+      pkgs = import inputs.nixpkgs {
+        inherit system;
+        overlays = [ 
+          inputs.nix-ros-overlay.overlays.default 
+          mrsOverlay 
+        ];
+      };
+    in {
+      # Export the overlay for other flakes to use
+      overlays.default = mrsOverlay;
+
+      # 3. Expose the built packages to the Nix CLI
+      packages.${system} = {
+
+        mrs_msgs = pkgs.mrs_msgs;
+        mrs_cmake = pkgs.mrs_cmake;
+        mrs_lib = pkgs.mrs_lib;
+        
+        # ... list your other packages here ...
+
+        # THE MAGIC TARGET: Bundle them all together for CI!
+        all = pkgs.symlinkJoin {
+          name = "mrs-entire-ecosystem";
+          paths = [
+            pkgs.mrs_msgs
+            pkgs.mrs_cmake
+            pkgs.mrs_lib
+          ];
+        };
+      };
+    };
 }

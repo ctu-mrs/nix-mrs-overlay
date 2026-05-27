@@ -8,7 +8,7 @@ in
   mrs_msgs = ros.buildRosPackage {
     pname = "mrs_msgs";
     version = "nix";
-    src = inputs.mrs_msgs;
+    src = inputs.src_mrs_msgs;
     buildType = "ament_cmake";
     nativeBuildInputs = [
       ros.ament-cmake
@@ -25,7 +25,7 @@ in
   mrs_uav_testing = ros.buildRosPackage {
     pname = "mrs_cmake";
     version = "nix";
-    src = inputs.mrs_cmake;
+    src = inputs.src_mrs_cmake;
     buildType = "ament_cmake";
     nativeBuildInputs = [
       ros.ament-cmake
@@ -37,7 +37,7 @@ in
   mrs_lib = ros.buildRosPackage {
     pname = "mrs_lib";
     version = "nix";
-    src = inputs.mrs_lib;
+    src = inputs.src_mrs_lib;
     buildType = "ament_cmake";
     nativeBuildInputs = [ ros.ament-cmake ];
     propagatedBuildInputs = [ 
