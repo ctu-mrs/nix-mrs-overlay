@@ -4,11 +4,13 @@ let
   rosPkgs = prev.rosPackages.jazzy;
   depsMap = builtins.fromJSON (builtins.readFile ./deps.json);
 
-  # Map custom external C++ libraries here
+# In overlay.nix
   systemDeps = {
-    "Eigen3" = prev.eigen;
-    "yaml-cpp" = prev.yaml-cpp;
-    "boost" = prev.boost;
+    "eigen" = prev.eigen;
+    "libboost-dev" = prev.boost;
+    "libopencv-dev" = prev.opencv;
+    "yaml-cpp" = prev.libyaml-cpp-dev;
+    # (If you still have "yaml-cpp", you can leave it here too!)
   };
 
   resolveDep = name:

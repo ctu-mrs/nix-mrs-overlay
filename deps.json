@@ -1,78 +1,4 @@
 {
-    "mrs_uav_status": {
-        "path": "mrs_uav_core/ros_packages/.gitman/mrs_uav_status",
-        "git_remote": "https://github.com/ctu-mrs/mrs_uav_status.git",
-        "git_branch": "ros2",
-        "dependencies": [
-            "ament_cmake_clang_format",
-            "ament_cmake_xmllint",
-            "backward_ros",
-            "builtin_interfaces",
-            "geometry_msgs",
-            "libboost-dev",
-            "libncurses",
-            "libncurses-dev",
-            "mrs_lib",
-            "mrs_msgs",
-            "nav_msgs",
-            "rclcpp",
-            "rclcpp_components",
-            "std_msgs",
-            "tf2_geometry_msgs"
-        ]
-    },
-    "mrs_uav_state_estimators": {
-        "path": "mrs_uav_core/ros_packages/.gitman/mrs_uav_state_estimators",
-        "git_remote": "https://github.com/ctu-mrs/mrs_uav_state_estimators.git",
-        "git_branch": "ros2",
-        "dependencies": [
-            "ament_cmake_clang_format",
-            "ament_cmake_ros",
-            "ament_cmake_xmllint",
-            "builtin_interfaces",
-            "eigen",
-            "geometry_msgs",
-            "launch",
-            "launch_ros",
-            "launch_testing",
-            "launch_testing_ament_cmake",
-            "mrs_lib",
-            "mrs_msgs",
-            "mrs_uav_managers",
-            "mrs_uav_testing",
-            "nav_msgs",
-            "pluginlib",
-            "rclcpp",
-            "rclcpp_components",
-            "rclcpp_lifecycle",
-            "rclpy",
-            "std_msgs",
-            "std_srvs",
-            "tf2_geometry_msgs",
-            "tf2_ros"
-        ]
-    },
-    "mrs_uav_autostart": {
-        "path": "mrs_uav_core/ros_packages/.gitman/mrs_uav_autostart",
-        "git_remote": "https://github.com/ctu-mrs/mrs_uav_autostart.git",
-        "git_branch": "ros2",
-        "dependencies": [
-            "ament_cmake_clang_format",
-            "ament_cmake_xmllint",
-            "backward_ros",
-            "builtin_interfaces",
-            "launch",
-            "launch_ros",
-            "mrs_lib",
-            "mrs_msgs",
-            "mrs_uav_testing",
-            "rclcpp",
-            "rclcpp_components",
-            "rclcpp_lifecycle",
-            "std_msgs",
-            "std_srvs"
-        ]
-    },
     "mrs_uav_testing": {
         "path": "mrs_uav_core/ros_packages/.gitman/mrs_uav_testing",
         "git_remote": "https://github.com/ctu-mrs/mrs_uav_testing.git",
@@ -91,49 +17,6 @@
             "rclcpp",
             "rclpy",
             "yaml-cpp"
-        ]
-    },
-    "mrs_uav_controllers": {
-        "path": "mrs_uav_core/ros_packages/.gitman/mrs_uav_controllers",
-        "git_remote": "https://github.com/ctu-mrs/mrs_uav_controllers.git",
-        "git_branch": "ros2",
-        "dependencies": [
-            "builtin_interfaces",
-            "eigen",
-            "geometry_msgs",
-            "launch",
-            "launch_ros",
-            "mrs_lib",
-            "mrs_mpc_solvers",
-            "mrs_msgs",
-            "mrs_uav_managers",
-            "mrs_uav_testing",
-            "pluginlib",
-            "rclcpp",
-            "rclcpp_components",
-            "rclcpp_lifecycle",
-            "sensor_msgs"
-        ]
-    },
-    "mrs_uav_trackers": {
-        "path": "mrs_uav_core/ros_packages/.gitman/mrs_uav_trackers",
-        "git_remote": "https://github.com/ctu-mrs/mrs_uav_trackers.git",
-        "git_branch": "ros2",
-        "dependencies": [
-            "builtin_interfaces",
-            "eigen",
-            "geometry_msgs",
-            "launch",
-            "launch_ros",
-            "mrs_lib",
-            "mrs_mpc_solvers",
-            "mrs_msgs",
-            "mrs_uav_managers",
-            "pluginlib",
-            "rclcpp",
-            "rclcpp_components",
-            "rclcpp_lifecycle",
-            "sensor_msgs"
         ]
     },
     "mrs_msgs": {
@@ -170,59 +53,6 @@
             "rclcpp_lifecycle",
             "sensor_msgs",
             "std_msgs"
-        ]
-    },
-    "mrs_uav_managers": {
-        "path": "mrs_uav_core/ros_packages/.gitman/mrs_uav_managers",
-        "git_remote": "https://github.com/ctu-mrs/mrs_uav_managers.git",
-        "git_branch": "ros2",
-        "dependencies": [
-            "ament_cmake_clang_format",
-            "ament_cmake_ros",
-            "ament_cmake_xmllint",
-            "backward_ros",
-            "builtin_interfaces",
-            "eigen",
-            "geometry_msgs",
-            "launch",
-            "launch_ros",
-            "launch_testing",
-            "launch_testing_ament_cmake",
-            "mrs_lib",
-            "mrs_msgs",
-            "mrs_uav_hw_api",
-            "mrs_uav_testing",
-            "nav_msgs",
-            "pluginlib",
-            "rclcpp",
-            "rclcpp_components",
-            "rclcpp_lifecycle",
-            "rclpy",
-            "std_msgs",
-            "std_srvs",
-            "tf2_geometry_msgs",
-            "tf2_ros",
-            "visualization_msgs"
-        ]
-    },
-    "mrs_uav_trajectory_generation": {
-        "path": "mrs_uav_core/ros_packages/.gitman/mrs_uav_trajectory_generation",
-        "git_remote": "https://github.com/ctu-mrs/mrs_uav_trajectory_generation.git",
-        "git_branch": "ros2",
-        "dependencies": [
-            "backward_ros",
-            "builtin_interfaces",
-            "launch",
-            "launch_ros",
-            "mrs_lib",
-            "mrs_msgs",
-            "mrs_uav_testing",
-            "nlopt",
-            "rclcpp",
-            "rclcpp_components",
-            "rclcpp_lifecycle",
-            "std_msgs",
-            "std_srvs"
         ]
     },
     "mrs_multirotor_simulator": {
@@ -273,35 +103,6 @@
             "tf2_geometry_msgs",
             "visualization_msgs",
             "yaml-cpp"
-        ]
-    },
-    "mrs_uav_core": {
-        "path": "mrs_uav_core/ros_packages/mrs_uav_core",
-        "git_remote": "https://github.com/ctu-mrs/mrs_uav_core",
-        "git_branch": "ros2",
-        "dependencies": [
-            "builtin_interfaces",
-            "launch",
-            "launch_ros",
-            "moreutils",
-            "mrs-uav-shell-additions",
-            "mrs_lib",
-            "mrs_msgs",
-            "mrs_multirotor_simulator",
-            "mrs_uav_autostart",
-            "mrs_uav_controllers",
-            "mrs_uav_hw_api",
-            "mrs_uav_managers",
-            "mrs_uav_state_estimators",
-            "mrs_uav_status",
-            "mrs_uav_testing",
-            "mrs_uav_trackers",
-            "mrs_uav_trajectory_generation",
-            "rclcpp",
-            "rmw_cyclonedds_cpp",
-            "rmw_zenoh_cpp",
-            "tmux",
-            "tmuxinator"
         ]
     }
 }

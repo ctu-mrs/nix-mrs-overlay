@@ -31,13 +31,21 @@
       overlays.default = mrsOverlay;
 
       # Expose the built packages safely
-      packages.${system} = {
+      packages.${system} = let
         
-        # The CI Target: Bundle all dynamically generated packages together
-        all = pkgs.symlinkJoin {
+        # Create the bundle derivation once
+        mrsBundle = pkgs.symlinkJoin {
           name = "mrs-entire-ecosystem";
           paths = builtins.attrValues mrsPackages;
         };
+        
+      in {
+        
+        # THE FIX: Tell Nix what to do when someone just types `nix build`
+        default = mrsBundle;
+        
+        # Keep `all` as an explicit target for CI or scripts
+        all = mrsBundle;
         
       } // mrsPackages; # Inject all the individual mrs_* packages into the output dictionary
     };
