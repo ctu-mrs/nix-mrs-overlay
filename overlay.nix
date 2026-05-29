@@ -22,24 +22,29 @@ let
     else if builtins.hasAttr name rosPkgs then rosPkgs.${name}
     else builtins.trace "⚠️ WARNING: Dependency '${name}' not found!" null;
 
-  mrsPackages = prev.lib.mapAttrs (pkgName: pkgData:
+mrsPackages = prev.lib.mapAttrs (pkgName: pkgData:
     rosPkgs.buildRosPackage {
       pname = pkgName;
       version = "dynamic";
       
-      # STRICT GIT FETCHING
-      # We trust the JSON to always provide the remote and branch.
+      # (Keep your existing src fetching logic here)
       src = let
         fetchedRepo = builtins.fetchGit {
           url = pkgData.git_remote;
           ref = pkgData.git_branch;
         };
       in
-      if pkgData.path == "" then fetchedRepo else "${fetchedRepo}";
+      if pkgData.path == "" then fetchedRepo else "${fetchedRepo}/${pkgData.path}";
       
       buildType = "ament_cmake";
-      nativeBuildInputs = [ rosPkgs.ament-cmake rosPkgs.rosidl-default-generators ]; 
-      propagatedBuildInputs = builtins.filter (x: x != null) (builtins.map resolveDep pkgData.dependencies);
+      
+      # THE FIX: Safely route dependencies to their strict environments
+      buildInputs = builtins.filter (x: x != null) (builtins.map resolveDep pkgData.build_depends);
+      propagatedBuildInputs = builtins.filter (x: x != null) (builtins.map resolveDep pkgData.exec_depends);
+      checkInputs = builtins.filter (x: x != null) (builtins.map resolveDep pkgData.test_depends);
+
+      # Disable tests by default to prevent testing frameworks from bloating the build graph
+      doCheck = false;
     }
   ) depsMap;
 

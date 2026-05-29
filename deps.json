@@ -1,48 +1,191 @@
 {
+    "mrs_uav_testing": {
+        "path": "mrs_uav_testing",
+        "git_remote": "https://github.com/ctu-mrs/mrs_uav_testing",
+        "git_branch": "nix",
+        "build_depends": [
+            "backward_ros",
+            "launch_ros",
+            "mrs_lib",
+            "mrs_msgs",
+            "rclcpp",
+            "yaml-cpp"
+        ],
+        "exec_depends": [
+            "backward_ros",
+            "launch_ros",
+            "mrs_lib",
+            "mrs_msgs",
+            "rclcpp",
+            "yaml-cpp"
+        ],
+        "test_depends": [
+            "ament_cmake_clang_format",
+            "ament_cmake_ros",
+            "ament_cmake_xmllint",
+            "launch",
+            "launch_ros",
+            "launch_testing",
+            "launch_testing_ament_cmake",
+            "rclpy"
+        ]
+    },
+    "mrs_multirotor_simulator": {
+        "path": "mrs_multirotor_simulator",
+        "git_remote": "https://github.com/ctu-mrs/mrs_multirotor_simulator",
+        "git_branch": "nix",
+        "build_depends": [
+            "backward_ros",
+            "builtin_interfaces",
+            "eigen",
+            "geometry_msgs",
+            "launch",
+            "launch_ros",
+            "mrs_lib",
+            "mrs_msgs",
+            "mrs_uav_hw_api",
+            "nav_msgs",
+            "rclcpp",
+            "rclcpp_components",
+            "rclcpp_lifecycle",
+            "std_msgs",
+            "std_srvs",
+            "tf2_ros"
+        ],
+        "exec_depends": [
+            "backward_ros",
+            "builtin_interfaces",
+            "eigen",
+            "geometry_msgs",
+            "launch",
+            "launch_ros",
+            "mrs_lib",
+            "mrs_msgs",
+            "mrs_uav_hw_api",
+            "nav_msgs",
+            "rclcpp",
+            "rclcpp_components",
+            "rclcpp_lifecycle",
+            "std_msgs",
+            "std_srvs",
+            "tf2_ros"
+        ],
+        "test_depends": []
+    },
     "mrs_msgs": {
         "path": "mrs_msgs",
         "git_remote": "https://github.com/ctu-mrs/mrs_msgs.git",
         "git_branch": "nix",
-        "dependencies": [
+        "build_depends": [
+            "builtin_interfaces",
+            "geometry_msgs",
+            "sensor_msgs",
+            "std_msgs",
+            "std_srvs"
+        ],
+        "exec_depends": [
             "builtin_interfaces",
             "geometry_msgs",
             "rosidl_default_runtime",
             "sensor_msgs",
             "std_msgs",
             "std_srvs"
-        ]
+        ],
+        "test_depends": []
     },
     "mrs_cmake": {
         "path": "mrs_cmake",
         "git_remote": "https://github.com/ctu-mrs/mrs_cmake",
         "git_branch": "nix",
-        "dependencies": []
+        "build_depends": [],
+        "exec_depends": [],
+        "test_depends": []
+    },
+    "mrs_uav_hw_api": {
+        "path": "mrs_uav_hw_api",
+        "git_remote": "https://github.com/ctu-mrs/mrs_uav_hw_api",
+        "git_branch": "nix",
+        "build_depends": [
+            "backward_ros",
+            "builtin_interfaces",
+            "eigen",
+            "geometry_msgs",
+            "launch",
+            "launch_ros",
+            "mrs_lib",
+            "mrs_msgs",
+            "mrs_uav_testing",
+            "nav_msgs",
+            "pluginlib",
+            "rclcpp",
+            "rclcpp_components",
+            "rclcpp_lifecycle",
+            "sensor_msgs",
+            "std_msgs"
+        ],
+        "exec_depends": [
+            "backward_ros",
+            "builtin_interfaces",
+            "eigen",
+            "geometry_msgs",
+            "launch",
+            "launch_ros",
+            "mrs_lib",
+            "mrs_msgs",
+            "mrs_uav_testing",
+            "nav_msgs",
+            "pluginlib",
+            "rclcpp",
+            "rclcpp_components",
+            "rclcpp_lifecycle",
+            "sensor_msgs",
+            "std_msgs"
+        ],
+        "test_depends": []
     },
     "mrs_lib": {
         "path": "mrs_lib",
         "git_remote": "https://github.com/ctu-mrs/mrs_lib",
         "git_branch": "nix",
-        "dependencies": [
-            "ament_cmake_clang_format",
-            "ament_cmake_ros",
-            "ament_cmake_xmllint",
+        "build_depends": [
             "eigen",
             "geometry_msgs",
-            "launch",
             "launch_ros",
-            "launch_testing",
-            "launch_testing_ament_cmake",
             "libboost-dev",
+            "mrs_cmake",
             "mrs_msgs",
             "nav_msgs",
             "pcl_ros",
             "rclcpp",
-            "rclpy",
             "std_msgs",
             "tf2_geometry_msgs",
             "visualization_msgs",
-            "yaml-cpp",
-            "mrs_cmake"
+            "yaml-cpp"
+        ],
+        "exec_depends": [
+            "eigen",
+            "geometry_msgs",
+            "launch_ros",
+            "libboost-dev",
+            "mrs_cmake",
+            "mrs_msgs",
+            "nav_msgs",
+            "pcl_ros",
+            "rclcpp",
+            "std_msgs",
+            "tf2_geometry_msgs",
+            "visualization_msgs",
+            "yaml-cpp"
+        ],
+        "test_depends": [
+            "ament_cmake_clang_format",
+            "ament_cmake_ros",
+            "ament_cmake_xmllint",
+            "launch",
+            "launch_ros",
+            "launch_testing",
+            "launch_testing_ament_cmake",
+            "rclpy"
         ]
     }
 }
