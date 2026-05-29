@@ -1,8 +1,13 @@
 {
     "mrs_uav_testing": {
-        "path": "mrs_uav_testing",
+        "path": "",
+        "version": "2.0.0",
         "git_remote": "https://github.com/ctu-mrs/mrs_uav_testing",
         "git_branch": "nix",
+        "git_rev": "98383eccb2db0d7378dc80d55396b578227a9a5b",
+        "buildtool_depends": [
+            "ament_cmake"
+        ],
         "build_depends": [
             "backward_ros",
             "launch_ros",
@@ -31,9 +36,15 @@
         ]
     },
     "mrs_multirotor_simulator": {
-        "path": "mrs_multirotor_simulator",
+        "path": "",
+        "version": "2.0.0",
         "git_remote": "https://github.com/ctu-mrs/mrs_multirotor_simulator",
         "git_branch": "nix",
+        "git_rev": "37242fd29da394ff653dba1459b846c7142abe60",
+        "buildtool_depends": [
+            "ament_cmake",
+            "ament_cmake_ros"
+        ],
         "build_depends": [
             "backward_ros",
             "builtin_interfaces",
@@ -73,15 +84,21 @@
         "test_depends": []
     },
     "mrs_msgs": {
-        "path": "mrs_msgs",
+        "path": "",
+        "version": "2.0.0",
         "git_remote": "https://github.com/ctu-mrs/mrs_msgs.git",
         "git_branch": "nix",
+        "git_rev": "0f51b3ff31ea2c7686a70b049a8aca6bcfa70e11",
+        "buildtool_depends": [
+            "ament_cmake",
+            "rosidl_default_generators",
+            "rosidl_default_runtime"
+        ],
         "build_depends": [
             "builtin_interfaces",
             "geometry_msgs",
             "sensor_msgs",
             "std_msgs",
-            "rosidl_default_generators",
             "std_srvs"
         ],
         "exec_depends": [
@@ -95,17 +112,28 @@
         "test_depends": []
     },
     "mrs_cmake": {
-        "path": "mrs_cmake",
+        "path": "",
+        "version": "1.0.0",
         "git_remote": "https://github.com/ctu-mrs/mrs_cmake",
         "git_branch": "nix",
+        "git_rev": "afb5e82f5bce3c54772e03fdf72f0a62bad31618",
+        "buildtool_depends": [
+            "ament_cmake"
+        ],
         "build_depends": [],
         "exec_depends": [],
         "test_depends": []
     },
     "mrs_uav_hw_api": {
-        "path": "mrs_uav_hw_api",
+        "path": "",
+        "version": "2.0.0",
         "git_remote": "https://github.com/ctu-mrs/mrs_uav_hw_api",
         "git_branch": "nix",
+        "git_rev": "df9de85aa4eb93c47254da1360c263851d1af8b4",
+        "buildtool_depends": [
+            "ament_cmake",
+            "ament_cmake_ros"
+        ],
         "build_depends": [
             "backward_ros",
             "builtin_interfaces",
@@ -145,9 +173,14 @@
         "test_depends": []
     },
     "mrs_lib": {
-        "path": "mrs_lib",
+        "path": "",
+        "version": "2.0.0",
         "git_remote": "https://github.com/ctu-mrs/mrs_lib",
         "git_branch": "nix",
+        "git_rev": "2c103371437d018b094b972fe99991c5e4450d0c",
+        "buildtool_depends": [
+            "ament_cmake_python"
+        ],
         "build_depends": [
             "eigen",
             "geometry_msgs",

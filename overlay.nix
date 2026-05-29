@@ -25,17 +25,10 @@ let
 mrsPackages = prev.lib.mapAttrs (pkgName: pkgData:
     rosPkgs.buildRosPackage {
       pname = pkgName;
-      version = "dynamic";
       
-      # (Keep your existing src fetching logic here)
-      # src = let
-      #   fetchedRepo = builtins.fetchGit {
-      #     url = pkgData.git_remote;
-      #     ref = pkgData.git_branch;
-      #   };
-      # in
-      # if pkgData.path == "" then fetchedRepo else "${fetchedRepo}/${pkgData.path}";
-
+      # THE NEW FIX: Use the extracted version instead of "dynamic"
+      version = pkgData.version;
+      
       src = builtins.fetchGit {
           url = pkgData.git_remote;
           ref = pkgData.git_branch;
