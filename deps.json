@@ -81,6 +81,7 @@
             "geometry_msgs",
             "sensor_msgs",
             "std_msgs",
+            "rosidl_default_generators",
             "std_srvs"
         ],
         "exec_depends": [

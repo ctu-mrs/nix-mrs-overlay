@@ -43,14 +43,28 @@ mrsPackages = prev.lib.mapAttrs (pkgName: pkgData:
       
       buildType = "ament_cmake";
       
-      # THE FIX: Safely route dependencies to their strict environments
+# Build tools (CMake, generators, pkg-config)
+      nativeBuildInputs = builtins.filter (x: x != null) (builtins.map resolveDep pkgData.buildtool_depends);
+      
+      # C++ libraries to link against
       buildInputs = builtins.filter (x: x != null) (builtins.map resolveDep pkgData.build_depends);
+      
+      # Runtime dependencies and shared libraries
       propagatedBuildInputs = builtins.filter (x: x != null) (builtins.map resolveDep pkgData.exec_depends);
+      
+      # Testing frameworks (gtest, ament_lint)
       checkInputs = builtins.filter (x: x != null) (builtins.map resolveDep pkgData.test_depends);
 
       doCheck = false;
       separateDebugInfo = false;
       dontStrip = true;
+
+      # THE FIX: Force the creation of the $out folder!
+      # This guarantees Nix won't crash on metapackages or macro-only repos 
+      # that fail to create an install directory natively.
+      postInstall = ''
+        mkdir -p $out
+      '';
     }
   ) depsMap;
 
