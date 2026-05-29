@@ -28,13 +28,18 @@ mrsPackages = prev.lib.mapAttrs (pkgName: pkgData:
       version = "dynamic";
       
       # (Keep your existing src fetching logic here)
-      src = let
-        fetchedRepo = builtins.fetchGit {
+      # src = let
+      #   fetchedRepo = builtins.fetchGit {
+      #     url = pkgData.git_remote;
+      #     ref = pkgData.git_branch;
+      #   };
+      # in
+      # if pkgData.path == "" then fetchedRepo else "${fetchedRepo}/${pkgData.path}";
+
+      src = builtins.fetchGit {
           url = pkgData.git_remote;
           ref = pkgData.git_branch;
-        };
-      in
-      if pkgData.path == "" then fetchedRepo else "${fetchedRepo}/${pkgData.path}";
+      };
       
       buildType = "ament_cmake";
       
@@ -43,7 +48,6 @@ mrsPackages = prev.lib.mapAttrs (pkgName: pkgData:
       propagatedBuildInputs = builtins.filter (x: x != null) (builtins.map resolveDep pkgData.exec_depends);
       checkInputs = builtins.filter (x: x != null) (builtins.map resolveDep pkgData.test_depends);
 
-      # Disable tests by default to prevent testing frameworks from bloating the build graph
       doCheck = false;
     }
   ) depsMap;
