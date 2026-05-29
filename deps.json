@@ -2,7 +2,7 @@
     "mrs_uav_testing": {
         "path": "mrs_uav_core/ros_packages/.gitman/mrs_uav_testing",
         "git_remote": "https://github.com/ctu-mrs/mrs_uav_testing.git",
-        "git_branch": "ros2",
+        "git_branch": "nix",
         "dependencies": [
             "ament_cmake_clang_format",
             "ament_cmake_ros",
@@ -22,7 +22,7 @@
     "mrs_msgs": {
         "path": "mrs_uav_core/ros_packages/.gitman/mrs_msgs",
         "git_remote": "https://github.com/ctu-mrs/mrs_msgs.git",
-        "git_branch": "ros2",
+        "git_branch": "nix",
         "dependencies": [
             "builtin_interfaces",
             "geometry_msgs",
@@ -35,7 +35,7 @@
     "mrs_uav_hw_api": {
         "path": "mrs_uav_core/ros_packages/.gitman/mrs_uav_hw_api",
         "git_remote": "https://github.com/ctu-mrs/mrs_uav_hw_api.git",
-        "git_branch": "ros2",
+        "git_branch": "nix",
         "dependencies": [
             "backward_ros",
             "builtin_interfaces",
@@ -58,7 +58,7 @@
     "mrs_multirotor_simulator": {
         "path": "mrs_uav_core/ros_packages/.gitman/mrs_multirotor_simulator",
         "git_remote": "https://github.com/ctu-mrs/mrs_multirotor_simulator",
-        "git_branch": "ros2",
+        "git_branch": "nix",
         "dependencies": [
             "backward_ros",
             "builtin_interfaces",
@@ -81,7 +81,7 @@
     "mrs_lib": {
         "path": "mrs_uav_core/ros_packages/.gitman/mrs_lib",
         "git_remote": "https://github.com/ctu-mrs/mrs_lib.git",
-        "git_branch": "ros2",
+        "git_branch": "nix",
         "dependencies": [
             "ament_cmake_clang_format",
             "ament_cmake_ros",

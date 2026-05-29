@@ -9,7 +9,7 @@ let
     "eigen" = prev.eigen;
     "libboost-dev" = prev.boost;
     "libopencv-dev" = prev.opencv;
-    "yaml-cpp" = prev.libyaml-cpp-dev;
+    "yaml-cpp" = prev.yaml-cpp;
     # (If you still have "yaml-cpp", you can leave it here too!)
   };
 
@@ -36,9 +36,10 @@ let
           ref = pkgData.git_branch;
         };
       in
-      if pkgData.path == "" then fetchedRepo else "${fetchedRepo}/${pkgData.path}";
+      if pkgData.path == "" then fetchedRepo else "${fetchedRepo}";
       
       buildType = "ament_cmake";
+      nativeBuildInputs = [ rosPkgs.ament-cmake rosPkgs.rosidl-default-generators ]; 
       propagatedBuildInputs = builtins.filter (x: x != null) (builtins.map resolveDep pkgData.dependencies);
     }
   ) depsMap;
