@@ -1,103 +1,44 @@
-{ inputs }:
+final: prev:
 
-final: prev: 
 let
-  ros = final.rosPackages.jazzy;
+  rosPkgs = final.rosPackages.jazzy;
+  depsMap = builtins.fromJSON (builtins.readFile ./deps.json);
+  workspacePath = ./src;
+
+  # Map custom external C++ libraries here
+  systemDeps = {
+    "Eigen3" = final.eigen;
+    "yaml-cpp" = final.yaml-cpp;
+    "boost" = final.boost;
+  };
+
+  resolveDep = name:
+    let
+      nixName = builtins.replaceStrings ["_"] ["-"] name;
+    in
+    if systemDeps ? ${name} then systemDeps.${name}
+    else if final ? ${name} then final.${name}
+    else if rosPkgs ? ${nixName} then rosPkgs.${nixName}
+    else if rosPkgs ? ${name} then rosPkgs.${name}
+    else builtins.trace "⚠️ WARNING: Dependency '${name}' not found!" null;
+
+  mrsPackages = final.lib.mapAttrs (pkgName: pkgData:
+    rosPkgs.buildRosPackage {
+      pname = pkgName;
+      version = "dynamic";
+      
+      src = if pkgData.git_remote != null && pkgData.git_branch != null then
+        "${builtins.fetchGit {
+          url = pkgData.git_remote;
+          ref = pkgData.git_branch;
+        }}/${pkgData.path}"
+      else
+        "${workspacePath}/${pkgData.path}";
+      
+      buildType = "ament_cmake";
+      propagatedBuildInputs = builtins.filter (x: x != null) (builtins.map resolveDep pkgData.dependencies);
+    }
+  ) depsMap;
+
 in
-{
-  mrs_msgs = ros.buildRosPackage {
-    pname = "mrs_msgs";
-    version = "nix";
-    src = inputs.src_mrs_msgs;
-    buildType = "ament_cmake";
-    nativeBuildInputs = [
-      ros.ament-cmake
-      ros.rosidl-default-generators
-    ];
-
-    propagatedBuildInputs = [
-      ros.std-msgs
-      ros.geometry-msgs
-      ros.std-srvs
-      ros.sensor-msgs
-    ];
-  };
-
-  mrs_cmake = ros.buildRosPackage {
-    pname = "mrs_cmake";
-    version = "nix";
-    src = inputs.src_mrs_cmake;
-    buildType = "ament_cmake";
-    nativeBuildInputs = [
-      ros.ament-cmake
-    ];
-    propagatedBuildInputs = [ 
-    ];
-  };
-
-  mrs_lib = ros.buildRosPackage {
-    pname = "mrs_lib";
-    version = "nix";
-    src = inputs.src_mrs_lib;
-    buildType = "ament_cmake";
-    nativeBuildInputs = [ ros.ament-cmake ];
-    propagatedBuildInputs = [ 
-      # non-ros
-      final.eigen
-      final.yaml-cpp
-      final.boost
-
-      # our
-      final.mrs_msgs
-      final.mrs_cmake
-
-      # official ros
-      ros.sensor-msgs
-      ros.nav-msgs
-      ros.ros-core
-      ros.tf2-geometry-msgs
-      ros.tf2-eigen
-    ];
-  };
-
-  mrs_uav_testing = ros.buildRosPackage {
-    pname = "mrs_uav_testing";
-    version = "nix";
-    src = inputs.src_mrs_uav_testing;
-    buildType = "ament_cmake";
-    nativeBuildInputs = [ ros.ament-cmake ];
-    propagatedBuildInputs = [ 
-      # our
-      final.mrs_lib
-
-      # official ros
-      ros.backward-ros
-    ];
-  };
-
-  mrs_uav_hw_api = ros.buildRosPackage {
-    pname = "mrs_uav_hw_api";
-    version = "nix";
-    src = inputs.src_mrs_uav_hw_api;
-    buildType = "ament_cmake";
-    nativeBuildInputs = [ ros.ament-cmake ];
-    propagatedBuildInputs = [ 
-      # our
-      final.mrs_lib
-      final.mrs_uav_testing
-    ];
-  };
-
-  mrs_multirotor_simulator = ros.buildRosPackage {
-    pname = "mrs_multirotor_simulator";
-    version = "nix";
-    src = inputs.src_mrs_multirotor_simulator;
-    buildType = "ament_cmake";
-    nativeBuildInputs = [ ros.ament-cmake ];
-    propagatedBuildInputs = [ 
-      # our
-      final.mrs_uav_testing
-      final.mrs_uav_hw_api
-    ];
-  };
-}
+mrsPackages

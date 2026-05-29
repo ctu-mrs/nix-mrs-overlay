@@ -61,13 +61,7 @@
         "nixpkgs": [
           "nix-ros-overlay",
           "nixpkgs"
-        ],
-        "src_mrs_cmake": "src_mrs_cmake",
-        "src_mrs_lib": "src_mrs_lib",
-        "src_mrs_msgs": "src_mrs_msgs",
-        "src_mrs_multirotor_simulator": "src_mrs_multirotor_simulator",
-        "src_mrs_uav_hw_api": "src_mrs_uav_hw_api",
-        "src_mrs_uav_testing": "src_mrs_uav_testing"
+        ]
       }
     },
     "rosdistro": {
@@ -83,108 +77,6 @@
       "original": {
         "owner": "ros",
         "repo": "rosdistro",
-        "type": "github"
-      }
-    },
-    "src_mrs_cmake": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1779856662,
-        "narHash": "sha256-cQrsywxGqMF9BMh8TdbvO3UpJiPHFjhaAN5V3f2ZgzU=",
-        "owner": "ctu-mrs",
-        "repo": "mrs_cmake",
-        "rev": "afb5e82f5bce3c54772e03fdf72f0a62bad31618",
-        "type": "github"
-      },
-      "original": {
-        "owner": "ctu-mrs",
-        "ref": "nix",
-        "repo": "mrs_cmake",
-        "type": "github"
-      }
-    },
-    "src_mrs_lib": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1779869465,
-        "narHash": "sha256-gaqSx+Vzjd50E2BtrKGDml5jJk0c/PqXCPI4vIL04dc=",
-        "owner": "ctu-mrs",
-        "repo": "mrs_lib",
-        "rev": "2c103371437d018b094b972fe99991c5e4450d0c",
-        "type": "github"
-      },
-      "original": {
-        "owner": "ctu-mrs",
-        "ref": "nix",
-        "repo": "mrs_lib",
-        "type": "github"
-      }
-    },
-    "src_mrs_msgs": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1779805466,
-        "narHash": "sha256-qq+b13LfZcDD9jdIukkL95hWsWKn52uguR/v9G9emVo=",
-        "owner": "ctu-mrs",
-        "repo": "mrs_msgs",
-        "rev": "0f51b3ff31ea2c7686a70b049a8aca6bcfa70e11",
-        "type": "github"
-      },
-      "original": {
-        "owner": "ctu-mrs",
-        "ref": "nix",
-        "repo": "mrs_msgs",
-        "type": "github"
-      }
-    },
-    "src_mrs_multirotor_simulator": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1779459986,
-        "narHash": "sha256-2S26MIusE/Hywd2QyGeLEe11AQVsx8vHTA5Is1w3bhA=",
-        "owner": "ctu-mrs",
-        "repo": "mrs_multirotor_simulator",
-        "rev": "37242fd29da394ff653dba1459b846c7142abe60",
-        "type": "github"
-      },
-      "original": {
-        "owner": "ctu-mrs",
-        "ref": "nix",
-        "repo": "mrs_multirotor_simulator",
-        "type": "github"
-      }
-    },
-    "src_mrs_uav_hw_api": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1779458822,
-        "narHash": "sha256-LsEz6eRVKgUZxog8chZnOjyKjRSo+ukTrQ5D7ZVGhWI=",
-        "owner": "ctu-mrs",
-        "repo": "mrs_uav_hw_api",
-        "rev": "df9de85aa4eb93c47254da1360c263851d1af8b4",
-        "type": "github"
-      },
-      "original": {
-        "owner": "ctu-mrs",
-        "ref": "nix",
-        "repo": "mrs_uav_hw_api",
-        "type": "github"
-      }
-    },
-    "src_mrs_uav_testing": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1779866717,
-        "narHash": "sha256-8ugBAaJUzlY4ZxeTbSJFEs00sp895R02LhOu5gkY/TU=",
-        "owner": "ctu-mrs",
-        "repo": "mrs_uav_testing",
-        "rev": "98383eccb2db0d7378dc80d55396b578227a9a5b",
-        "type": "github"
-      },
-      "original": {
-        "owner": "ctu-mrs",
-        "ref": "nix",
-        "repo": "mrs_uav_testing",
         "type": "github"
       }
     },
