@@ -9,7 +9,7 @@
       system = "x86_64-linux";
       
       # Load the dynamic overlay
-      mrsOverlay = import ./mrs-overlay.nix;
+      mrsOverlay = import ./overlay.nix;
 
       # Instantiate nixpkgs with BOTH the ROS overlay and the dynamic MRS overlay
       pkgs = import inputs.nixpkgs {
@@ -20,21 +20,25 @@
         ];
       };
 
+      # 1. Lazily extract just the package names from your JSON
+      depsKeys = builtins.attrNames (builtins.fromJSON (builtins.readFile ./deps.json));
+
+      # 2. Safely pluck ONLY those specific packages from the pkgs tree
+      mrsPackages = pkgs.lib.genAttrs depsKeys (name: pkgs.${name});
+
     in {
       # Expose the overlay for others to consume
       overlays.default = mrsOverlay;
 
-      # Expose the built packages
+      # Expose the built packages safely
       packages.${system} = {
         
         # The CI Target: Bundle all dynamically generated packages together
         all = pkgs.symlinkJoin {
           name = "mrs-entire-ecosystem";
-          paths = builtins.attrValues (
-            builtins.intersectAttrs (builtins.fromJSON (builtins.readFile ./deps.json)) pkgs
-          );
+          paths = builtins.attrValues mrsPackages;
         };
         
-      } // (builtins.intersectAttrs (builtins.fromJSON (builtins.readFile ./deps.json)) pkgs);
+      } // mrsPackages; # Inject all the individual mrs_* packages into the output dictionary
     };
 }

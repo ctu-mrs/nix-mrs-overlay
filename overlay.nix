@@ -17,7 +17,11 @@ let
       nixName = builtins.replaceStrings ["_"] ["-"] name;
     in
     if systemDeps ? ${name} then systemDeps.${name}
-    else if final ? ${name} then final.${name}
+    
+    # THE FIX: Check our JSON map instead of `final`! 
+    # If the dependency is one of our repos, grab it from the final Nixpkgs scope.
+    else if depsMap ? ${name} then final.${name}   
+    
     else if rosPkgs ? ${nixName} then rosPkgs.${nixName}
     else if rosPkgs ? ${name} then rosPkgs.${name}
     else builtins.trace "⚠️ WARNING: Dependency '${name}' not found!" null;
