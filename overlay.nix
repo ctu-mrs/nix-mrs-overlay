@@ -49,6 +49,8 @@ mrsPackages = prev.lib.mapAttrs (pkgName: pkgData:
       checkInputs = builtins.filter (x: x != null) (builtins.map resolveDep pkgData.test_depends);
 
       doCheck = false;
+      separateDebugInfo = false;
+      dontStrip = true;
     }
   ) depsMap;
 
