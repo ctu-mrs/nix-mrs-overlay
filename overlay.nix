@@ -10,7 +10,6 @@ let
     "libboost-dev" = prev.boost;
     "libopencv-dev" = prev.opencv;
     "yaml-cpp" = prev.yaml-cpp;
-    # (If you still have "yaml-cpp", you can leave it here too!)
   };
 
   resolveDep = name:

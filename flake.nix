@@ -35,7 +35,7 @@
         
         # Create the bundle derivation once
         mrsBundle = pkgs.symlinkJoin {
-          name = "mrs-entire-ecosystem";
+          name = "mrs-nix-overlay";
           paths = builtins.attrValues mrsPackages;
         };
         
