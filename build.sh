@@ -1,1 +1,1 @@
-nix build .#all --accept-flake-config
+nix build .#all --accept-flake-config --impure
