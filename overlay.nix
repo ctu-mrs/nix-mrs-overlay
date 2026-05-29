@@ -4,7 +4,7 @@ let
   rosPkgs = prev.rosPackages.jazzy;
   depsMap = builtins.fromJSON (builtins.readFile ./deps.json);
 
-# In overlay.nix
+  # Mapped system dependencies to match package.xml
   systemDeps = {
     "eigen" = prev.eigen;
     "libboost-dev" = prev.boost;
@@ -22,39 +22,37 @@ let
     else if builtins.hasAttr name rosPkgs then rosPkgs.${name}
     else builtins.trace "⚠️ WARNING: Dependency '${name}' not found!" null;
 
-mrsPackages = prev.lib.mapAttrs (pkgName: pkgData:
+  mrsPackages = prev.lib.mapAttrs (pkgName: pkgData:
     rosPkgs.buildRosPackage {
       pname = pkgName;
-      
-      # THE NEW FIX: Use the extracted version instead of "dynamic"
       version = pkgData.version;
       
-      src = builtins.fetchGit {
+      # THE RESTORED FIX: Monorepo-safe path extraction
+      # Using the '+' operator guarantees this remains a Path object for the unpackPhase.
+      src = let
+        fetchedRepo = builtins.fetchGit {
           url = pkgData.git_remote;
           ref = pkgData.git_branch;
-      };
+          # rev = pkgData.git_rev; # Uncomment if locking commits for pure evaluation
+        };
+      in
+      if pkgData.path == "" then fetchedRepo else fetchedRepo + "/${pkgData.path}";
       
       buildType = "ament_cmake";
       
-# Build tools (CMake, generators, pkg-config)
+      # Prevents Nix from crashing on packages that don't compile binaries
+      separateDebugInfo = false;
+      dontStrip = true;
+      
+      # Strictly routed ROS dependencies to prevent ARG_MAX compiler crashes
       nativeBuildInputs = builtins.filter (x: x != null) (builtins.map resolveDep pkgData.buildtool_depends);
-      
-      # C++ libraries to link against
       buildInputs = builtins.filter (x: x != null) (builtins.map resolveDep pkgData.build_depends);
-      
-      # Runtime dependencies and shared libraries
       propagatedBuildInputs = builtins.filter (x: x != null) (builtins.map resolveDep pkgData.exec_depends);
-      
-      # Testing frameworks (gtest, ament_lint)
       checkInputs = builtins.filter (x: x != null) (builtins.map resolveDep pkgData.test_depends);
 
       doCheck = false;
-      separateDebugInfo = false;
-      dontStrip = true;
 
-      # THE FIX: Force the creation of the $out folder!
-      # This guarantees Nix won't crash on metapackages or macro-only repos 
-      # that fail to create an install directory natively.
+      # Guarantees the $out directory exists for metapackages
       postInstall = ''
         mkdir -p $out
       '';
