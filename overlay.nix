@@ -16,14 +16,14 @@ let
     let
       nixName = builtins.replaceStrings ["_"] ["-"] name;
     in
-    if systemDeps ? ${name} then systemDeps.${name}
+    if builtins.hasAttr name systemDeps then systemDeps.${name}
     
-    # THE FIX: Check our JSON map instead of `final`! 
+    # THE FIX: Safely check our JSON map using builtins.hasAttr!
     # If the dependency is one of our repos, grab it from the final Nixpkgs scope.
-    else if depsMap ? ${name} then final.${name}   
+    else if builtins.hasAttr name depsMap then final.${name}   
     
-    else if rosPkgs ? ${nixName} then rosPkgs.${nixName}
-    else if rosPkgs ? ${name} then rosPkgs.${name}
+    else if builtins.hasAttr nixName rosPkgs then rosPkgs.${nixName}
+    else if builtins.hasAttr name rosPkgs then rosPkgs.${name}
     else builtins.trace "⚠️ WARNING: Dependency '${name}' not found!" null;
 
   mrsPackages = final.lib.mapAttrs (pkgName: pkgData:
@@ -31,11 +31,17 @@ let
       pname = pkgName;
       version = "dynamic";
       
+      # Dynamically fetch from Git if available, otherwise fallback to local folder
       src = if pkgData.git_remote != null && pkgData.git_branch != null then
-        "${builtins.fetchGit {
-          url = pkgData.git_remote;
-          ref = pkgData.git_branch;
-        }}/${pkgData.path}"
+        let
+          fetchedRepo = builtins.fetchGit {
+            url = pkgData.git_remote;
+            ref = pkgData.git_branch;
+          };
+        in
+        # If the package is in the root of the repo, use the repo directly.
+        # If it's nested (like a monorepo), append the sub-path.
+        if pkgData.path == "" then fetchedRepo else "${fetchedRepo}/${pkgData.path}"
       else
         "${workspacePath}/${pkgData.path}";
       
