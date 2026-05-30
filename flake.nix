@@ -23,8 +23,8 @@
       # 1. Lazily extract just the package names from your JSON
       depsKeys = builtins.attrNames (builtins.fromJSON (builtins.readFile ./deps.json));
 
-      # 2. Safely pluck ONLY those specific packages from the pkgs tree
-      mrsPackages = pkgs.lib.genAttrs depsKeys (name: pkgs.${name});
+      # 2. THE FIX: Safely pluck ONLY those specific packages from your protected namespace
+      mrsPackages = pkgs.lib.genAttrs depsKeys (name: pkgs.mrsCustomPkgs.${name});
 
     in {
       # Expose the overlay for others to consume

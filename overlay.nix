@@ -10,6 +10,11 @@ let
     "libboost-dev" = prev.boost;
     "libopencv-dev" = prev.opencv;
     "yaml-cpp" = prev.yaml-cpp;
+    "moreutils" = prev.moreutils;
+    "tmux" = prev.tmux;
+    "tmuxinator" = prev.tmuxinator;
+    "libncurses" = prev.ncurses;
+    "libncurses-dev" = prev.ncurses;
   };
 
   resolveDep = name:
@@ -17,7 +22,10 @@ let
       nixName = builtins.replaceStrings ["_"] ["-"] name;
     in
     if builtins.hasAttr name systemDeps then systemDeps.${name}
-    else if builtins.hasAttr name depsMap then final.${name}   
+    
+    # THE FIX: Route internal ROS dependencies to your protected namespace!
+    else if builtins.hasAttr name depsMap then final.mrsCustomPkgs.${name}   
+    
     else if builtins.hasAttr nixName rosPkgs then rosPkgs.${nixName}
     else if builtins.hasAttr name rosPkgs then rosPkgs.${name}
     else builtins.trace "⚠️ WARNING: Dependency '${name}' not found!" null;
@@ -39,6 +47,9 @@ let
       if pkgData.path == "" then fetchedRepo else fetchedRepo + "/${pkgData.path}";
       
       buildType = "ament_cmake";
+
+      # This will automatically propagate to ExternalProject_Add builds like NLopt!
+      env.NIX_CFLAGS_COMPILE = "-Wno-error=nonnull -Wno-nonnull -Wno-register -DPyEval_CallObject=PyObject_CallObject";
       
       # Prevents Nix from crashing on packages that don't compile binaries
       separateDebugInfo = false;
@@ -59,5 +70,7 @@ let
     }
   ) depsMap;
 
-in
-mrsPackages
+in {
+  # THE FIX: Wrap the packages in a namespace so they don't overwrite NixOS system libraries!
+  mrsCustomPkgs = mrsPackages;
+}
