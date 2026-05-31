@@ -43,8 +43,8 @@ jobs:
           extraPullNames: ros
 
       - run: git clone https://github.com/ctu-mrs/buildfarm2 /tmp/buildfarm2
-      - run: cd /tmp/buildfarm2/scripts && ./clone_nixed_packages.py mrs unstable
-      - run: cd /tmp/buildfarm2/scripts && ./clone_nixed_packages.py thirdparty unstable
+      - run: cd /tmp/buildfarm2/scripts && ./clone_nixed_packages.sh mrs unstable
+      - run: cd /tmp/buildfarm2/scripts && ./clone_nixed_packages.sh thirdparty unstable
       - run: ./deps.py /tmp/workspace
       - run: nix build .#all --refresh --accept-flake-config --impure
       - run: nix run nixpkgs#cachix -- push ctu-mrs ./result
