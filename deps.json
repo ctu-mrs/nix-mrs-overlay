@@ -1,10 +1,10 @@
 {
-    "mrs_uav_status": {
+    "mrs_multirotor_simulator": {
         "path": "",
         "version": "2.0.0",
-        "git_remote": "https://github.com/ctu-mrs/mrs_uav_status",
+        "git_remote": "https://github.com/ctu-mrs/mrs_multirotor_simulator",
         "git_branch": "ros2",
-        "git_rev": "703f90d8d59def68d6b1fae71614104de7db6bf5",
+        "git_rev": "6a2916388bc9b0bb3e323da10452b3a818cd6482",
         "buildtool_depends": [
             "ament_cmake",
             "ament_cmake_ros"
@@ -12,36 +12,193 @@
         "build_depends": [
             "backward_ros",
             "builtin_interfaces",
+            "eigen",
             "geometry_msgs",
-            "libboost-dev",
-            "libncurses",
-            "libncurses-dev",
+            "launch",
+            "launch_ros",
             "mrs_lib",
             "mrs_msgs",
+            "mrs_uav_hw_api",
             "nav_msgs",
             "rclcpp",
             "rclcpp_components",
+            "rclcpp_lifecycle",
             "std_msgs",
-            "tf2_geometry_msgs"
+            "std_srvs",
+            "tf2_ros"
         ],
         "exec_depends": [
             "backward_ros",
             "builtin_interfaces",
+            "eigen",
             "geometry_msgs",
-            "libboost-dev",
-            "libncurses",
-            "libncurses-dev",
+            "launch",
+            "launch_ros",
             "mrs_lib",
             "mrs_msgs",
+            "mrs_uav_hw_api",
             "nav_msgs",
             "rclcpp",
             "rclcpp_components",
+            "rclcpp_lifecycle",
             "std_msgs",
-            "tf2_geometry_msgs"
+            "std_srvs",
+            "tf2_ros"
+        ],
+        "test_depends": []
+    },
+    "mrs_uav_controllers": {
+        "path": "",
+        "version": "2.0.0",
+        "git_remote": "https://github.com/ctu-mrs/mrs_uav_controllers",
+        "git_branch": "ros2",
+        "git_rev": "d7df4e8dc348c828c04207597b031cf2883d1ec2",
+        "buildtool_depends": [
+            "ament_cmake",
+            "ament_cmake_ros"
+        ],
+        "build_depends": [
+            "builtin_interfaces",
+            "eigen",
+            "geometry_msgs",
+            "launch",
+            "launch_ros",
+            "mrs_lib",
+            "mrs_mpc_solvers",
+            "mrs_msgs",
+            "mrs_uav_managers",
+            "mrs_uav_testing",
+            "pluginlib",
+            "rclcpp",
+            "rclcpp_components",
+            "rclcpp_lifecycle",
+            "sensor_msgs"
+        ],
+        "exec_depends": [
+            "builtin_interfaces",
+            "eigen",
+            "geometry_msgs",
+            "launch",
+            "launch_ros",
+            "mrs_lib",
+            "mrs_mpc_solvers",
+            "mrs_msgs",
+            "mrs_uav_managers",
+            "mrs_uav_testing",
+            "pluginlib",
+            "rclcpp",
+            "rclcpp_components",
+            "rclcpp_lifecycle",
+            "sensor_msgs"
+        ],
+        "test_depends": []
+    },
+    "mrs_mpc_solvers": {
+        "path": "",
+        "version": "1.0.0",
+        "git_remote": "https://github.com/ctu-mrs/mrs_mpc_solvers",
+        "git_branch": "ros2",
+        "git_rev": "4d53a70c3e9c14dbf0e3cee005ee315cdf6e2174",
+        "buildtool_depends": [
+            "ament_cmake"
+        ],
+        "build_depends": [
+            "eigen",
+            "rclcpp",
+            "rclcpp_components"
+        ],
+        "exec_depends": [
+            "eigen",
+            "rclcpp",
+            "rclcpp_components"
+        ],
+        "test_depends": []
+    },
+    "mrs_uav_testing": {
+        "path": "",
+        "version": "2.0.0",
+        "git_remote": "https://github.com/ctu-mrs/mrs_uav_testing",
+        "git_branch": "ros2",
+        "git_rev": "e7df08324061d7f336589c3da1c805215b7ee16e",
+        "buildtool_depends": [
+            "ament_cmake"
+        ],
+        "build_depends": [
+            "backward_ros",
+            "launch_ros",
+            "mrs_lib",
+            "mrs_msgs",
+            "rclcpp",
+            "yaml-cpp"
+        ],
+        "exec_depends": [
+            "backward_ros",
+            "launch_ros",
+            "mrs_lib",
+            "mrs_msgs",
+            "rclcpp",
+            "yaml-cpp"
         ],
         "test_depends": [
             "ament_cmake_clang_format",
-            "ament_cmake_xmllint"
+            "ament_cmake_ros",
+            "ament_cmake_xmllint",
+            "launch",
+            "launch_ros",
+            "launch_testing",
+            "launch_testing_ament_cmake",
+            "rclpy"
+        ]
+    },
+    "mrs_lib": {
+        "path": "",
+        "version": "2.0.0",
+        "git_remote": "https://github.com/ctu-mrs/mrs_lib",
+        "git_branch": "ros2",
+        "git_rev": "58787fd5f1a1acb5d4f1dbb127b56ed992b44ff2",
+        "buildtool_depends": [
+            "ament_cmake_python",
+            "mrs_cmake"
+        ],
+        "build_depends": [
+            "eigen",
+            "geometry_msgs",
+            "launch_ros",
+            "libboost-dev",
+            "libopencv-dev",
+            "mrs_msgs",
+            "nav_msgs",
+            "pcl_ros",
+            "rclcpp",
+            "std_msgs",
+            "tf2_geometry_msgs",
+            "visualization_msgs",
+            "yaml-cpp"
+        ],
+        "exec_depends": [
+            "eigen",
+            "geometry_msgs",
+            "launch_ros",
+            "libboost-dev",
+            "libopencv-dev",
+            "mrs_msgs",
+            "nav_msgs",
+            "pcl_ros",
+            "rclcpp",
+            "std_msgs",
+            "tf2_geometry_msgs",
+            "visualization_msgs",
+            "yaml-cpp"
+        ],
+        "test_depends": [
+            "ament_cmake_clang_format",
+            "ament_cmake_ros",
+            "ament_cmake_xmllint",
+            "launch",
+            "launch_ros",
+            "launch_testing",
+            "launch_testing_ament_cmake",
+            "rclpy"
         ]
     },
     "mrs_uav_state_estimators": {
@@ -105,6 +262,51 @@
             "rclpy"
         ]
     },
+    "mrs_uav_status": {
+        "path": "",
+        "version": "2.0.0",
+        "git_remote": "https://github.com/ctu-mrs/mrs_uav_status",
+        "git_branch": "ros2",
+        "git_rev": "703f90d8d59def68d6b1fae71614104de7db6bf5",
+        "buildtool_depends": [
+            "ament_cmake",
+            "ament_cmake_ros"
+        ],
+        "build_depends": [
+            "backward_ros",
+            "builtin_interfaces",
+            "geometry_msgs",
+            "libboost-dev",
+            "libncurses",
+            "libncurses-dev",
+            "mrs_lib",
+            "mrs_msgs",
+            "nav_msgs",
+            "rclcpp",
+            "rclcpp_components",
+            "std_msgs",
+            "tf2_geometry_msgs"
+        ],
+        "exec_depends": [
+            "backward_ros",
+            "builtin_interfaces",
+            "geometry_msgs",
+            "libboost-dev",
+            "libncurses",
+            "libncurses-dev",
+            "mrs_lib",
+            "mrs_msgs",
+            "nav_msgs",
+            "rclcpp",
+            "rclcpp_components",
+            "std_msgs",
+            "tf2_geometry_msgs"
+        ],
+        "test_depends": [
+            "ament_cmake_clang_format",
+            "ament_cmake_xmllint"
+        ]
+    },
     "mrs_uav_autostart": {
         "path": "",
         "version": "2.0.0",
@@ -147,88 +349,6 @@
             "ament_cmake_clang_format",
             "ament_cmake_xmllint"
         ]
-    },
-    "mrs_uav_testing": {
-        "path": "",
-        "version": "2.0.0",
-        "git_remote": "https://github.com/ctu-mrs/mrs_uav_testing",
-        "git_branch": "ros2",
-        "git_rev": "e7df08324061d7f336589c3da1c805215b7ee16e",
-        "buildtool_depends": [
-            "ament_cmake"
-        ],
-        "build_depends": [
-            "backward_ros",
-            "launch_ros",
-            "mrs_lib",
-            "mrs_msgs",
-            "rclcpp",
-            "yaml-cpp"
-        ],
-        "exec_depends": [
-            "backward_ros",
-            "launch_ros",
-            "mrs_lib",
-            "mrs_msgs",
-            "rclcpp",
-            "yaml-cpp"
-        ],
-        "test_depends": [
-            "ament_cmake_clang_format",
-            "ament_cmake_ros",
-            "ament_cmake_xmllint",
-            "launch",
-            "launch_ros",
-            "launch_testing",
-            "launch_testing_ament_cmake",
-            "rclpy"
-        ]
-    },
-    "mrs_uav_controllers": {
-        "path": "",
-        "version": "2.0.0",
-        "git_remote": "https://github.com/ctu-mrs/mrs_uav_controllers",
-        "git_branch": "ros2",
-        "git_rev": "d7df4e8dc348c828c04207597b031cf2883d1ec2",
-        "buildtool_depends": [
-            "ament_cmake",
-            "ament_cmake_ros"
-        ],
-        "build_depends": [
-            "builtin_interfaces",
-            "eigen",
-            "geometry_msgs",
-            "launch",
-            "launch_ros",
-            "mrs_lib",
-            "mrs_mpc_solvers",
-            "mrs_msgs",
-            "mrs_uav_managers",
-            "mrs_uav_testing",
-            "pluginlib",
-            "rclcpp",
-            "rclcpp_components",
-            "rclcpp_lifecycle",
-            "sensor_msgs"
-        ],
-        "exec_depends": [
-            "builtin_interfaces",
-            "eigen",
-            "geometry_msgs",
-            "launch",
-            "launch_ros",
-            "mrs_lib",
-            "mrs_mpc_solvers",
-            "mrs_msgs",
-            "mrs_uav_managers",
-            "mrs_uav_testing",
-            "pluginlib",
-            "rclcpp",
-            "rclcpp_components",
-            "rclcpp_lifecycle",
-            "sensor_msgs"
-        ],
-        "test_depends": []
     },
     "mrs_uav_trackers": {
         "path": "",
@@ -274,6 +394,68 @@
         ],
         "test_depends": []
     },
+    "mrs_uav_trajectory_generation": {
+        "path": "",
+        "version": "2.0.0",
+        "git_remote": "https://github.com/ctu-mrs/mrs_uav_trajectory_generation",
+        "git_branch": "ros2",
+        "git_rev": "831dadfc97c0f59b8cf68a71a69a0a9f27e4b5a9",
+        "buildtool_depends": [
+            "ament_cmake",
+            "ament_cmake_ros"
+        ],
+        "build_depends": [
+            "backward_ros",
+            "builtin_interfaces",
+            "launch",
+            "launch_ros",
+            "mrs_lib",
+            "mrs_msgs",
+            "mrs_uav_testing",
+            "nlopt",
+            "rclcpp",
+            "rclcpp_components",
+            "rclcpp_lifecycle",
+            "std_msgs",
+            "std_srvs"
+        ],
+        "exec_depends": [
+            "backward_ros",
+            "builtin_interfaces",
+            "launch",
+            "launch_ros",
+            "mrs_lib",
+            "mrs_msgs",
+            "mrs_uav_testing",
+            "nlopt",
+            "rclcpp",
+            "rclcpp_components",
+            "rclcpp_lifecycle",
+            "std_msgs",
+            "std_srvs"
+        ],
+        "test_depends": [
+            "ament_cmake_clang_format",
+            "ament_cmake_xmllint"
+        ]
+    },
+    "nlopt": {
+        "path": "",
+        "version": "2.4.2",
+        "git_remote": "https://github.com/ctu-mrs/nlopt_ros",
+        "git_branch": "ros2",
+        "git_rev": "74aa252ae3824869402be14bec1ad4b967d1ad62",
+        "buildtool_depends": [
+            "ament_cmake"
+        ],
+        "build_depends": [
+            "rclcpp"
+        ],
+        "exec_depends": [
+            "rclcpp"
+        ],
+        "test_depends": []
+    },
     "mrs_msgs": {
         "path": "",
         "version": "2.0.0",
@@ -299,23 +481,6 @@
             "sensor_msgs",
             "std_msgs",
             "std_srvs"
-        ],
-        "test_depends": []
-    },
-    "nlopt": {
-        "path": "",
-        "version": "2.4.2",
-        "git_remote": "https://github.com/ctu-mrs/nlopt_ros",
-        "git_branch": "ros2",
-        "git_rev": "74aa252ae3824869402be14bec1ad4b967d1ad62",
-        "buildtool_depends": [
-            "ament_cmake"
-        ],
-        "build_depends": [
-            "rclcpp"
-        ],
-        "exec_depends": [
-            "rclcpp"
         ],
         "test_depends": []
     },
@@ -444,170 +609,5 @@
             "launch_testing_ament_cmake",
             "rclpy"
         ]
-    },
-    "mrs_uav_trajectory_generation": {
-        "path": "",
-        "version": "2.0.0",
-        "git_remote": "https://github.com/ctu-mrs/mrs_uav_trajectory_generation",
-        "git_branch": "ros2",
-        "git_rev": "831dadfc97c0f59b8cf68a71a69a0a9f27e4b5a9",
-        "buildtool_depends": [
-            "ament_cmake",
-            "ament_cmake_ros"
-        ],
-        "build_depends": [
-            "backward_ros",
-            "builtin_interfaces",
-            "launch",
-            "launch_ros",
-            "mrs_lib",
-            "mrs_msgs",
-            "mrs_uav_testing",
-            "nlopt",
-            "rclcpp",
-            "rclcpp_components",
-            "rclcpp_lifecycle",
-            "std_msgs",
-            "std_srvs"
-        ],
-        "exec_depends": [
-            "backward_ros",
-            "builtin_interfaces",
-            "launch",
-            "launch_ros",
-            "mrs_lib",
-            "mrs_msgs",
-            "mrs_uav_testing",
-            "nlopt",
-            "rclcpp",
-            "rclcpp_components",
-            "rclcpp_lifecycle",
-            "std_msgs",
-            "std_srvs"
-        ],
-        "test_depends": [
-            "ament_cmake_clang_format",
-            "ament_cmake_xmllint"
-        ]
-    },
-    "mrs_multirotor_simulator": {
-        "path": "",
-        "version": "2.0.0",
-        "git_remote": "https://github.com/ctu-mrs/mrs_multirotor_simulator",
-        "git_branch": "ros2",
-        "git_rev": "6a2916388bc9b0bb3e323da10452b3a818cd6482",
-        "buildtool_depends": [
-            "ament_cmake",
-            "ament_cmake_ros"
-        ],
-        "build_depends": [
-            "backward_ros",
-            "builtin_interfaces",
-            "eigen",
-            "geometry_msgs",
-            "launch",
-            "launch_ros",
-            "mrs_lib",
-            "mrs_msgs",
-            "mrs_uav_hw_api",
-            "nav_msgs",
-            "rclcpp",
-            "rclcpp_components",
-            "rclcpp_lifecycle",
-            "std_msgs",
-            "std_srvs",
-            "tf2_ros"
-        ],
-        "exec_depends": [
-            "backward_ros",
-            "builtin_interfaces",
-            "eigen",
-            "geometry_msgs",
-            "launch",
-            "launch_ros",
-            "mrs_lib",
-            "mrs_msgs",
-            "mrs_uav_hw_api",
-            "nav_msgs",
-            "rclcpp",
-            "rclcpp_components",
-            "rclcpp_lifecycle",
-            "std_msgs",
-            "std_srvs",
-            "tf2_ros"
-        ],
-        "test_depends": []
-    },
-    "mrs_lib": {
-        "path": "",
-        "version": "2.0.0",
-        "git_remote": "https://github.com/ctu-mrs/mrs_lib",
-        "git_branch": "ros2",
-        "git_rev": "58787fd5f1a1acb5d4f1dbb127b56ed992b44ff2",
-        "buildtool_depends": [
-            "ament_cmake_python",
-            "mrs_cmake"
-        ],
-        "build_depends": [
-            "eigen",
-            "geometry_msgs",
-            "launch_ros",
-            "libboost-dev",
-            "libopencv-dev",
-            "mrs_msgs",
-            "nav_msgs",
-            "pcl_ros",
-            "rclcpp",
-            "std_msgs",
-            "tf2_geometry_msgs",
-            "visualization_msgs",
-            "yaml-cpp"
-        ],
-        "exec_depends": [
-            "eigen",
-            "geometry_msgs",
-            "launch_ros",
-            "libboost-dev",
-            "libopencv-dev",
-            "mrs_msgs",
-            "nav_msgs",
-            "pcl_ros",
-            "rclcpp",
-            "std_msgs",
-            "tf2_geometry_msgs",
-            "visualization_msgs",
-            "yaml-cpp"
-        ],
-        "test_depends": [
-            "ament_cmake_clang_format",
-            "ament_cmake_ros",
-            "ament_cmake_xmllint",
-            "launch",
-            "launch_ros",
-            "launch_testing",
-            "launch_testing_ament_cmake",
-            "rclpy"
-        ]
-    },
-    "mrs_mpc_solvers": {
-        "path": "",
-        "version": "1.0.0",
-        "git_remote": "https://github.com/ctu-mrs/mrs_mpc_solvers",
-        "git_branch": "ros2",
-        "git_rev": "4d53a70c3e9c14dbf0e3cee005ee315cdf6e2174",
-        "buildtool_depends": [
-            "ament_cmake"
-        ],
-        "build_depends": [
-            "eigen",
-            "rclcpp",
-            "rclcpp_components"
-        ],
-        "exec_depends": [
-            "eigen",
-            "rclcpp",
-            "rclcpp_components"
-        ],
-        "test_depends": []
     }
 }
