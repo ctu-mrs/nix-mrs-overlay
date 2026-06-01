@@ -40,8 +40,8 @@ let
       src = let
         fetchedRepo = builtins.fetchGit {
           url = pkgData.git_remote;
-          # rev = pkgData.git_rev;
-          ref = pkgData.git_branch;
+          rev = pkgData.git_rev;
+          # ref = pkgData.git_branch;
         };
       in
       if pkgData.path == "" then fetchedRepo else fetchedRepo + "/${pkgData.path}";
