@@ -5,9 +5,12 @@
         "version": "2.0.0",
         "git_remote": "https://github.com/ctu-mrs/mrs_uav_shell_additions",
         "git_branch": "ros2",
-        "git_rev": "bbbbee77a6f97fee432da52e11190c7dec0c67ea",
+        "git_rev": "ea8bffd709c2b25dbefb588f5741c7a2d8102c44",
         "build_type": "raw_copy",
-        "source_dir": "package",
+        "install_mapping": {
+            "package/usr/bin": "bin",
+            "package/etc/ctu-mrs": "package/etc/ctu-mrs"
+        },
         "buildtool_depends": [],
         "build_depends": [],
         "build_export_depends": [],
