@@ -2,7 +2,10 @@ final: prev:
 
 let
   rosPkgs = prev.rosPackages.jazzy;
-  depsMap = builtins.fromJSON (builtins.readFile ./deps.json);
+
+  # Load the JSON, but explicitly filter out the _comment key so Nix doesn't try to compile it
+  rawDepsMap = builtins.fromJSON (builtins.readFile ./deps.json);
+  depsMap = prev.lib.filterAttrs (pkgName: _: pkgName != "_comment") rawDepsMap;
 
   # Mapped system dependencies to match package.xml
   systemDeps = {
