@@ -15,6 +15,7 @@ let
     "tmuxinator" = prev.tmuxinator;
     "libncurses" = prev.ncurses;
     "libncurses-dev" = prev.ncurses;
+    "vcstool" = prev.vcs2l;
   };
 
   resolveDep = name:
