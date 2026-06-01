@@ -1,21 +1,21 @@
 {
   inputs = {
-    nix-ros-overlay.url = "github:lopsided98/nix-ros-overlay/master";
+    nix-ros-overlay.url = "github:lopsided98/nix-ros-overlay/develop";
     nixpkgs.follows = "nix-ros-overlay/nixpkgs";
   };
 
-  outputs = inputs: 
+  outputs = inputs:
     let
       system = "x86_64-linux";
-      
+
       # Load the dynamic overlay
       mrsOverlay = import ./overlay.nix;
 
       # Instantiate nixpkgs with BOTH the ROS overlay and the dynamic MRS overlay
       pkgs = import inputs.nixpkgs {
         inherit system;
-        overlays = [ 
-          inputs.nix-ros-overlay.overlays.default 
+        overlays = [
+          inputs.nix-ros-overlay.overlays.default
           mrsOverlay
         ];
       };
@@ -32,21 +32,21 @@
 
       # Expose the built packages safely
       packages.${system} = let
-        
+
         # Create the bundle derivation once
         mrsBundle = pkgs.symlinkJoin {
           name = "mrs-nix-overlay";
           paths = builtins.attrValues mrsPackages;
         };
-        
+
       in {
-        
+
         # THE FIX: Tell Nix what to do when someone just types `nix build`
         default = mrsBundle;
-        
+
         # Keep `all` as an explicit target for CI or scripts
         all = mrsBundle;
-        
+
       } // mrsPackages; # Inject all the individual mrs_* packages into the output dictionary
     };
 }
