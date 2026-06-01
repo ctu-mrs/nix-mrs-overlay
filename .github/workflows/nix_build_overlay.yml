@@ -4,8 +4,6 @@ on:
 
   push:
     branches: [ master ]
-    commit-ignore:
-    - [automatic update]
 
   workflow_dispatch:
 
@@ -56,7 +54,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "ctu-mrs@github.com"
           git add .
-          git commit -m "automatic update" || echo "nothing to commit"
+          git commit -m "automatic update [skip actions]" || echo "nothing to commit"
 
       - run: nix build .#all --refresh --accept-flake-config --impure
       - run: nix run nixpkgs#cachix -- push ctu-mrs ./result
