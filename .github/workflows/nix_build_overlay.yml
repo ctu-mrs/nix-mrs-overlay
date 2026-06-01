@@ -49,6 +49,7 @@ jobs:
           git clone https://github.com/ctu-mrs/buildfarm2 /tmp/buildfarm2
           /tmp/buildfarm2/scripts/clone_nixed_packages.sh mrs unstable
           /tmp/buildfarm2/scripts/clone_nixed_packages.sh thirdparty unstable
+          /tmp/buildfarm2/scripts/clone_nixed_packages.sh nonbloom unstable
           /tmp/buildfarm2/scripts/extract_deps_json.py /tmp/workspace ./deps.json
 
       - run: |

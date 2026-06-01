@@ -28,49 +28,85 @@ let
 
     else if builtins.hasAttr nixName rosPkgs then rosPkgs.${nixName}
     else if builtins.hasAttr name rosPkgs then rosPkgs.${name}
-    else builtins.trace "⚠️ WARNING: Dependency '${name}' not found!" null;
+    else builtins.trace "⚠️ WARNING: Dependency '${name}' not found!"
+    null;
 
   mrsPackages = prev.lib.mapAttrs (pkgName: pkgData:
-    rosPkgs.buildRosPackage {
-      pname = pkgName;
-      version = pkgData.version;
+    let
+      # Shared source extraction for both ROS and Non-ROS packages
+      fetchedRepo = builtins.fetchGit {
+        url = pkgData.git_remote;
+        rev = pkgData.git_rev;
+        # ref = pkgData.git_branch;
+      };
 
-      # THE RESTORED FIX: Monorepo-safe path extraction
-      # Using the '+' operator guarantees this remains a Path object for the unpackPhase.
-      src = let
-        fetchedRepo = builtins.fetchGit {
-          url = pkgData.git_remote;
-          rev = pkgData.git_rev;
-          # ref = pkgData.git_branch;
-        };
-      in
-      if pkgData.path == "" then fetchedRepo else fetchedRepo + "/${pkgData.path}";
+      srcPath = if (pkgData.path or "") == "" then fetchedRepo else fetchedRepo + "/${pkgData.path}";
 
-      buildType = "ament_cmake";
+      # Pre-resolve exec_depends for the raw_copy derivation
+      resolvedExecDepends = builtins.filter (x: x != null) (builtins.map resolveDep (pkgData.exec_depends or []));
+    in
 
-      # This will automatically propagate to ExternalProject_Add builds like NLopt!
-      env.NIX_CFLAGS_COMPILE = "-Wno-error=nonnull -Wno-nonnull -Wno-register -DPyEval_CallObject=PyObject_CallObject";
+    # --- 1. NON-ROS PACKAGE (Raw Copy) ---
+    if (pkgData.build_type or "") == "raw_copy" then
 
-      # Prevents Nix from crashing on packages that don't compile binaries
-      separateDebugInfo = false;
-      dontStrip = true;
+      prev.stdenv.mkDerivation {
 
-      # Strictly routed ROS dependencies to prevent ARG_MAX compiler crashes
-      nativeBuildInputs = builtins.filter (x: x != null) (builtins.map resolveDep pkgData.buildtool_depends);
-      buildInputs = builtins.filter (x: x != null) (builtins.map resolveDep pkgData.build_depends);
-      propagatedBuildInputs = builtins.filter (x: x != null) (builtins.map resolveDep (pkgData.exec_depends ++ (pkgData.build_export_depends or [])));
-      checkInputs = builtins.filter (x: x != null) (builtins.map resolveDep pkgData.test_depends);
+        pname = pkgName;
+        version = pkgData.version;
+        src = srcPath;
 
-      doCheck = false;
+        # Disable standard C/C++ build phases
+        dontConfigure = true;
+        dontBuild = true;
 
-      # Guarantees the $out directory exists for metapackages
-      postInstall = ''
-        mkdir -p $out
-      '';
-    }
+        # Keep debug symbols intact for pre-compiled binaries
+        dontStrip = true;
+
+        # Target the specific sub-folder defined in the JSON (defaults to root)
+        installPhase = ''
+          mkdir -p $out
+          cd ${pkgData.source_dir or "."}
+          cp -a * $out/
+        '';
+
+        propagatedBuildInputs = resolvedExecDepends;
+      }
+
+    # --- 2. STANDARD ROS PACKAGE ---
+    else
+
+      rosPkgs.buildRosPackage {
+
+        pname = pkgName;
+        version = pkgData.version;
+        src = srcPath;
+
+        buildType = "ament_cmake";
+
+        # This will automatically propagate to ExternalProject_Add builds like NLopt!
+        env.NIX_CFLAGS_COMPILE = "-Wno-error=nonnull -Wno-nonnull -Wno-register -DPyEval_CallObject=PyObject_CallObject";
+
+        # Prevents Nix from crashing on packages that don't compile binaries
+        separateDebugInfo = false;
+        dontStrip = true;
+
+        # Strictly routed ROS dependencies to prevent ARG_MAX compiler crashes
+        nativeBuildInputs = builtins.filter (x: x != null) (builtins.map resolveDep pkgData.buildtool_depends);
+        buildInputs = builtins.filter (x: x != null) (builtins.map resolveDep pkgData.build_depends);
+        propagatedBuildInputs = builtins.filter (x: x != null) (builtins.map resolveDep (pkgData.exec_depends ++ (pkgData.build_export_depends or [])));
+        checkInputs = builtins.filter (x: x != null) (builtins.map resolveDep pkgData.test_depends);
+
+        doCheck = false;
+
+        # Guarantees the $out directory exists for metapackages
+        postInstall = ''
+          mkdir -p $out
+        '';
+      }
+
   ) depsMap;
 
 in {
-  # THE FIX: Wrap the packages in a namespace so they don't overwrite NixOS system libraries!
+  # Wrap the packages in a namespace so they don't overwrite NixOS system libraries!
   mrsCustomPkgs = mrsPackages;
 }
