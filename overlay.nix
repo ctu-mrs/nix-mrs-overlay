@@ -22,10 +22,10 @@ let
       nixName = builtins.replaceStrings ["_"] ["-"] name;
     in
     if builtins.hasAttr name systemDeps then systemDeps.${name}
-    
+
     # THE FIX: Route internal ROS dependencies to your protected namespace!
-    else if builtins.hasAttr name depsMap then final.mrsCustomPkgs.${name}   
-    
+    else if builtins.hasAttr name depsMap then final.mrsCustomPkgs.${name}
+
     else if builtins.hasAttr nixName rosPkgs then rosPkgs.${nixName}
     else if builtins.hasAttr name rosPkgs then rosPkgs.${name}
     else builtins.trace "⚠️ WARNING: Dependency '${name}' not found!" null;
@@ -34,31 +34,31 @@ let
     rosPkgs.buildRosPackage {
       pname = pkgName;
       version = pkgData.version;
-      
+
       # THE RESTORED FIX: Monorepo-safe path extraction
       # Using the '+' operator guarantees this remains a Path object for the unpackPhase.
       src = let
         fetchedRepo = builtins.fetchGit {
           url = pkgData.git_remote;
-          rev = pkgData.git_rev;
-          # ref = pkgData.git_branch;
+          # rev = pkgData.git_rev;
+          ref = pkgData.git_branch;
         };
       in
       if pkgData.path == "" then fetchedRepo else fetchedRepo + "/${pkgData.path}";
-      
+
       buildType = "ament_cmake";
 
       # This will automatically propagate to ExternalProject_Add builds like NLopt!
       env.NIX_CFLAGS_COMPILE = "-Wno-error=nonnull -Wno-nonnull -Wno-register -DPyEval_CallObject=PyObject_CallObject";
-      
+
       # Prevents Nix from crashing on packages that don't compile binaries
       separateDebugInfo = false;
       dontStrip = true;
-      
+
       # Strictly routed ROS dependencies to prevent ARG_MAX compiler crashes
       nativeBuildInputs = builtins.filter (x: x != null) (builtins.map resolveDep pkgData.buildtool_depends);
       buildInputs = builtins.filter (x: x != null) (builtins.map resolveDep pkgData.build_depends);
-      propagatedBuildInputs = builtins.filter (x: x != null) (builtins.map resolveDep pkgData.exec_depends);
+      propagatedBuildInputs = builtins.filter (x: x != null) (builtins.map resolveDep (pkgData.exec_depends ++ (pkgData.build_export_depends or [])));
       checkInputs = builtins.filter (x: x != null) (builtins.map resolveDep pkgData.test_depends);
 
       doCheck = false;

@@ -95,20 +95,27 @@ def generate_nix_json(root_dir):
             # Extract dependencies strictly by their ROS types
             buildtool_depends = set()
             build_depends = set()
+            build_export_depends = set()
             exec_depends = set()
             test_depends = set()
 
             for dep in root.findall("buildtool_depend"):
                 if dep.text: buildtool_depends.add(dep.text.strip())
 
-            # <depend> applies to both build and execution
+            # <depend> applies to build, export, and execution
             for dep in root.findall("depend"):
                 if dep.text:
                     build_depends.add(dep.text.strip())
+                    build_export_depends.add(dep.text.strip())
                     exec_depends.add(dep.text.strip())
 
             for dep in root.findall("build_depend"):
                 if dep.text: build_depends.add(dep.text.strip())
+
+            # Extract build_export_depend (and the inverted name to be safe)
+            for dep_type in ["build_export_depend", "build_depend_export"]:
+                for dep in root.findall(dep_type):
+                    if dep.text: build_export_depends.add(dep.text.strip())
 
             for dep_type in ["exec_depend", "run_depend"]:
                 for dep in root.findall(dep_type):
@@ -126,6 +133,7 @@ def generate_nix_json(root_dir):
                 "git_rev": git_rev,
                 "buildtool_depends": sorted(list(buildtool_depends)),
                 "build_depends": sorted(list(build_depends)),
+                "build_export_depends": sorted(list(build_export_depends)),
                 "exec_depends": sorted(list(exec_depends)),
                 "test_depends": sorted(list(test_depends))
             }
