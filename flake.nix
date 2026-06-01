@@ -21,9 +21,15 @@
       };
 
       # 1. Lazily extract just the package names from your JSON
-      depsKeys = builtins.attrNames (builtins.fromJSON (builtins.readFile ./deps.json));
-
-      # 2. THE FIX: Safely pluck ONLY those specific packages from your protected namespace
+      rawDepsMap = builtins.fromJSON (builtins.readFile ./deps.json);
+      
+      # 2. Strip the comment out so it doesn't get treated as a package name
+      cleanDepsMap = builtins.removeAttrs rawDepsMap [ "_comment" ];
+      
+      # 3. Get the keys (now guaranteed to only be actual packages)
+      depsKeys = builtins.attrNames cleanDepsMap;
+      
+      # 4. Safely pluck ONLY those specific packages from your protected namespace
       mrsPackages = pkgs.lib.genAttrs depsKeys (name: pkgs.mrsCustomPkgs.${name});
 
     in {

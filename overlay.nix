@@ -3,7 +3,7 @@ final: prev:
 let
   rosPkgs = prev.rosPackages.jazzy;
   
-  # Load the raw JSON, then safely strip the comment using native builtins
+  # 1. Load the raw JSON and safely strip the comment using native builtins
   rawDepsMap = builtins.fromJSON (builtins.readFile ./deps.json);
   depsMap = builtins.removeAttrs rawDepsMap [ "_comment" ];
 
