@@ -61,15 +61,30 @@ let
         # Disable standard C/C++ build phases
         dontConfigure = true;
         dontBuild = true;
-
+        
         # Keep debug symbols intact for pre-compiled binaries
         dontStrip = true;
 
-        # Target the specific sub-folder defined in the JSON (defaults to root)
-        installPhase = ''
+        # Dynamically generate bash copy commands based on the JSON mapping dictionary
+        installPhase = let
+          mapping = pkgData.install_mapping or { "*" = "."; };
+          
+          copyCommands = prev.lib.mapAttrsToList (src: dest: 
+            # Fallback for the default whole-repo copy
+            if src == "*" && dest == "." then ''
+              cp -a * $out/
+            '' 
+            # Specific directory/file mapping
+            else ''
+              # Ensure the parent directory of the destination exists
+              mkdir -p "$out/$(dirname "${dest}")"
+              # Copy the specific source to the specific destination
+              cp -a "${src}" "$out/${dest}"
+            ''
+          ) mapping;
+        in ''
           mkdir -p $out
-          cd ${pkgData.source_dir or "."}
-          cp -a * $out/
+          ${builtins.concatStringsSep "\n" copyCommands}
         '';
 
         propagatedBuildInputs = resolvedExecDepends;
