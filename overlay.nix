@@ -16,6 +16,7 @@ let
     "libncurses" = prev.ncurses;
     "libncurses-dev" = prev.ncurses;
     "vcstool" = prev.vcs2l;
+    "python3-vcstool" = prev.vcs2l;
   };
 
   resolveDep = name:
