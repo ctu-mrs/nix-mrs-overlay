@@ -1,6 +1,6 @@
 {
   inputs = {
-    nix-ros-overlay.url = "github:wentasah/nix-ros-overlay/build-env-prefix";
+    nix-ros-overlay.url = "github:lopsided98/nix-ros-overlay";
     nixpkgs.follows = "nix-ros-overlay/nixpkgs";
   };
 
