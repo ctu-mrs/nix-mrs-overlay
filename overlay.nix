@@ -18,6 +18,9 @@ let
     "tmuxinator" = prev.tmuxinator;
     "libncurses" = prev.ncurses;
     "libncurses-dev" = prev.ncurses;
+    "libpcl-all-dev" = prev.pcl;
+    "apr" = prev.apr;
+    "git" = prev.git;
   };
 
   resolveDep = name:
