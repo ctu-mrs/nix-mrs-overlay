@@ -58,10 +58,12 @@
 
     nixConfig = {
       extra-substituters = [
+        "https://ros.cachix.org"
         "https://ctu-mrs.cachix.org"
       ];
 
       extra-trusted-public-keys = [
+        "ros.cachix.org-1:dSyZxI8geDCJrwgvjRqjWSbgEX/PuEf747CSPe9HnHM="
         "ctu-mrs.cachix.org-1:dnw2ixFgGHfTb4bE1MWQTetAUJe9zqKUOBlrTjDuDMI="
       ];
     };
