@@ -90,6 +90,21 @@ let
         propagatedBuildInputs = resolvedExecDepends;
       }
 
+    else if pkgData.build_type == "cmake" then
+
+        # --- ROUTE TO PURE C++ CMAKE BUILDER ---
+        prev.stdenv.mkDerivation {
+          pname = pkgName;
+          version = pkgData.version;
+          src = ./. + "/${pkgData.path}";
+          
+          # Trigger Nix's automatic CMake hooks
+          nativeBuildInputs = [ prev.cmake prev.pkg-config ];
+          
+          # Pull in the system dependencies defined in your JSON
+          buildInputs = map resolveDep pkgData.build_depends;
+        }
+
     # --- 2. STANDARD ROS PACKAGE ---
     else
 
