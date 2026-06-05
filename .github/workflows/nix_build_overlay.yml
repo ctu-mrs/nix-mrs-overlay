@@ -56,6 +56,7 @@ jobs:
           git add .
           git commit -m "automatic update [skip actions]" || echo "nothing to commit"
 
+      - run: nix flake update
       - run: nix build .#all --refresh --accept-flake-config --impure
       - run: nix run nixpkgs#cachix -- push ctu-mrs ./result
 
