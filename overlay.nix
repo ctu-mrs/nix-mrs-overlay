@@ -123,6 +123,13 @@ let
 
         buildType = "ament_cmake";
 
+        __structuredAttrs = true;
+
+        # Protect Ninja from ARG_MAX limmit
+        cmakeFlags = [
+          "-DCMAKE_NINJA_FORCE_RESPONSE_FILE=1"
+        ];
+
         # This will automatically propagate to ExternalProject_Add builds like NLopt!
         env.NIX_CFLAGS_COMPILE = "-Wno-error=nonnull -Wno-nonnull -Wno-register -DPyEval_CallObject=PyObject_CallObject";
 
