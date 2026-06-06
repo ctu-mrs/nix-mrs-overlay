@@ -2,7 +2,7 @@ final: prev:
 
 let
   rosPkgs = prev.rosPackages.jazzy;
-  
+
   # 1. Load the raw JSON and safely strip the comment using native builtins
   rawDepsMap = builtins.fromJSON (builtins.readFile ./deps.json);
   depsMap = builtins.removeAttrs rawDepsMap [ "_comment" ];
@@ -141,7 +141,7 @@ let
         nativeBuildInputs = builtins.filter (x: x != null) (builtins.map resolveDep pkgData.buildtool_depends);
         buildInputs = builtins.filter (x: x != null) (builtins.map resolveDep (pkgData.build_depends ++ (pkgData.test_depends or [])));
         propagatedBuildInputs = builtins.filter (x: x != null) (builtins.map resolveDep (pkgData.exec_depends ++ (pkgData.build_export_depends or [])));
-        checkInputs = builtins.filter (x: x != null) (builtins.map resolveDep pkgData.test_depends);
+        passthru.test_depends = builtins.filter (x: x != null) (builtins.map resolveDep pkgData.test_depends);
 
         doCheck = false;
 
