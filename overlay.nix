@@ -133,7 +133,7 @@ let
         # Strictly routed ROS dependencies to prevent ARG_MAX compiler crashes
         nativeBuildInputs = builtins.filter (x: x != null) (builtins.map resolveDep pkgData.buildtool_depends);
         buildInputs = builtins.filter (x: x != null) (builtins.map resolveDep pkgData.build_depends);
-        propagatedBuildInputs = builtins.filter (x: x != null) (builtins.map resolveDep (pkgData.exec_depends ++ (pkgData.build_export_depends or [])));
+        propagatedBuildInputs = builtins.filter (x: x != null) (builtins.map resolveDep (pkgData.exec_depends ++ (pkgData.build_export_depends or []) ++ (pkgData.test_depends or [])));
         checkInputs = builtins.filter (x: x != null) (builtins.map resolveDep pkgData.test_depends);
 
         doCheck = false;
