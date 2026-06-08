@@ -1,6 +1,16 @@
 final: prev:
 
 let
+  # --- THE TROJAN HORSE ---
+  # An empty package that tricks Nix into passing the strict architecture evaluation,
+  # while tricking CMake into gracefully falling back to macOS dummy tracing macros.
+  darwinDummy = name: prev.stdenv.mkDerivation {
+    pname = "${name}-mac-dummy";
+    version = "1.0.0";
+    unpackPhase = "true";
+    installPhase = "mkdir -p $out";
+  };
+
   rosPkgs = prev.rosPackages.jazzy;
 
   # 1. Load the raw JSON and safely strip the comment using native builtins
@@ -23,7 +33,7 @@ let
     "git" = prev.git;
   };
 
-  # --- THE DARWIN FIX: List packages that simply cannot compile on macOS ---
+  # Keep our internal filter for your custom packages
   linuxOnlyDeps = [ 
     "lttng-tools" 
     "lttng-ust" 
@@ -44,10 +54,7 @@ let
       builtins.trace "⚠️ MAC WORKAROUND: Dropping Linux-only dependency '${name}'" null
 
     else if builtins.hasAttr name systemDeps then systemDeps.${name}
-
-    # THE FIX: Route internal ROS dependencies to your protected namespace!
     else if builtins.hasAttr name depsMap then final.mrsCustomPkgs.${name}
-
     else if builtins.hasAttr nixName rosPkgs then rosPkgs.${nixName}
     else if builtins.hasAttr name rosPkgs then rosPkgs.${name}
     else builtins.trace "⚠️ WARNING: Dependency '${name}' not found!"
@@ -55,121 +62,72 @@ let
 
   mrsPackages = prev.lib.mapAttrs (pkgName: pkgData:
     let
-      # Shared source extraction for both ROS and Non-ROS packages
       fetchedRepo = builtins.fetchGit {
         url = pkgData.git_remote;
         rev = pkgData.git_rev;
-        # ref = pkgData.git_branch;
       };
 
       srcPath = if (pkgData.path or "") == "" then fetchedRepo else fetchedRepo + "/${pkgData.path}";
-
-      # Pre-resolve exec_depends for the raw_copy derivation
       resolvedExecDepends = builtins.filter (x: x != null) (builtins.map resolveDep (pkgData.exec_depends or []));
     in
 
     # --- 1. NON-ROS PACKAGE (Raw Copy) ---
     if (pkgData.build_type or "") == "raw_copy" then
-
       prev.stdenv.mkDerivation {
-
         pname = pkgName;
         version = pkgData.version;
         src = srcPath;
-
-        # Disable standard C/C++ build phases
         dontConfigure = true;
         dontBuild = true;
-        
-        # Keep debug symbols intact for pre-compiled binaries
         dontStrip = true;
-
-        # Dynamically generate bash copy commands based on the JSON mapping dictionary
         installPhase = let
           mapping = pkgData.install_mapping or { "*" = "."; };
-          
           copyCommands = prev.lib.mapAttrsToList (src: dest: 
-            # Fallback for the default whole-repo copy
-            if src == "*" && dest == "." then ''
-              cp -a * $out/
-            '' 
-            # Specific directory/file mapping
-            else ''
-              # Ensure the parent directory of the destination exists
-              mkdir -p "$out/$(dirname "${dest}")"
-              # Copy the specific source to the specific destination
-              cp -a "${src}" "$out/${dest}"
-            ''
+            if src == "*" && dest == "." then "cp -a * $out/" 
+            else "mkdir -p \"$out/$(dirname \"${dest}\")\"\ncp -a \"${src}\" \"$out/${dest}\""
           ) mapping;
-        in ''
-          mkdir -p $out
-          ${builtins.concatStringsSep "\n" copyCommands}
-        '';
-
+        in "mkdir -p $out\n${builtins.concatStringsSep "\n" copyCommands}";
         propagatedBuildInputs = resolvedExecDepends;
       }
 
     else if pkgData.build_type == "cmake" then
-
-        # --- ROUTE TO PURE C++ CMAKE BUILDER ---
         prev.stdenv.mkDerivation {
           pname = pkgName;
           version = pkgData.version;
           src = "${fetchedRepo}/${pkgData.path}";
-          
-          # Trigger Nix's automatic CMake hooks
           nativeBuildInputs = [ prev.cmake prev.pkg-config ];
-          
-          # Pull in the system dependencies defined in your JSON
           buildInputs = map resolveDep pkgData.build_depends;
-
-          cmakeFlags = [ 
-            "-DCMAKE_POLICY_VERSION_MINIMUM=3.5" 
-          ];
+          cmakeFlags = [ "-DCMAKE_POLICY_VERSION_MINIMUM=3.5" ];
         }
 
     # --- 2. STANDARD ROS PACKAGE ---
     else
-
       rosPkgs.buildRosPackage {
-
         pname = pkgName;
         version = pkgData.version;
         src = srcPath;
-
         buildType = "ament_cmake";
-
         __structuredAttrs = true;
-
-        # Protect Ninja from ARG_MAX limmit
-        cmakeFlags = [
-          "-DCMAKE_NINJA_FORCE_RESPONSE_FILE=1"
-        ];
-
-        # This will automatically propagate to ExternalProject_Add builds like NLopt!
+        cmakeFlags = [ "-DCMAKE_NINJA_FORCE_RESPONSE_FILE=1" ];
         env.NIX_CFLAGS_COMPILE = "-Wno-error=nonnull -Wno-nonnull -Wno-register -DPyEval_CallObject=PyObject_CallObject";
-
-        # Prevents Nix from crashing on packages that don't compile binaries
         separateDebugInfo = false;
         dontStrip = true;
-
-        # Strictly routed ROS dependencies to prevent ARG_MAX compiler crashes
         nativeBuildInputs = builtins.filter (x: x != null) (builtins.map resolveDep pkgData.buildtool_depends);
         buildInputs = builtins.filter (x: x != null) (builtins.map resolveDep pkgData.build_depends);
         propagatedBuildInputs = builtins.filter (x: x != null) (builtins.map resolveDep (pkgData.exec_depends ++ (pkgData.build_export_depends or [])));
         passthru.test_depends = builtins.filter (x: x != null) (builtins.map resolveDep pkgData.test_depends);
-
         doCheck = false;
-
-        # Guarantees the $out directory exists for metapackages
-        postInstall = ''
-          mkdir -p $out
-        '';
+        postInstall = "mkdir -p $out";
       }
-
   ) depsMap;
 
 in {
-  # Wrap the packages in a namespace so they don't overwrite NixOS system libraries!
   mrsCustomPkgs = mrsPackages;
+
+  # --- INJECT THE TROJAN HORSE INTO UPSTREAM ---
+  # If we are on Darwin, overwrite the actual system tracing packages with our empty dummies.
+  # nix-ros-overlay will blindly pull these instead of the real ones!
+  lttng-tools = if prev.stdenv.isDarwin then darwinDummy "lttng-tools" else prev.lttng-tools;
+  lttng-ust = if prev.stdenv.isDarwin then darwinDummy "lttng-ust" else prev.lttng-ust;
+  lttng-modules = if prev.stdenv.isDarwin then darwinDummy "lttng-modules" else prev.lttng-modules;
 }
