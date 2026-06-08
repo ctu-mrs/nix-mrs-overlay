@@ -3,7 +3,7 @@ final: prev:
 let
   # --- THE TROJAN HORSE ---
   # An empty package that tricks Nix into passing the strict architecture evaluation,
-  # while tricking CMake into gracefully falling back to macOS dummy tracing macros.
+  # while tricking CMake into gracefully falling back to macOS dummy macros.
   darwinDummy = name: prev.stdenv.mkDerivation {
     pname = "${name}-mac-dummy";
     version = "1.0.0";
@@ -43,6 +43,8 @@ let
     "tracetools-launch"
     "tracetools-read"
     "tracetools-trace"
+    "elfutils"
+    "libcap"
   ];
 
   resolveDep = name:
@@ -130,4 +132,6 @@ in {
   lttng-tools = if prev.stdenv.isDarwin then darwinDummy "lttng-tools" else prev.lttng-tools;
   lttng-ust = if prev.stdenv.isDarwin then darwinDummy "lttng-ust" else prev.lttng-ust;
   lttng-modules = if prev.stdenv.isDarwin then darwinDummy "lttng-modules" else prev.lttng-modules;
+  elfutils = if prev.stdenv.isDarwin then darwinDummy "elfutils" else prev.elfutils;
+  libcap = if prev.stdenv.isDarwin then darwinDummy "libcap" else prev.libcap;
 }
