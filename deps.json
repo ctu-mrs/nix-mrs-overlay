@@ -871,7 +871,7 @@
         "version": "2.0.0",
         "git_remote": "https://github.com/ctu-mrs/mrs_uav_managers",
         "git_branch": "ros2",
-        "git_rev": "7e9d62afc1e1589be224ef6e036a9c5ec96b966f",
+        "git_rev": "8c7c00c565fce2f5f65ebb46a8d8ff350cb4230e",
         "build_type": "ament_cmake",
         "buildtool_depends": [
             "ament_cmake",
