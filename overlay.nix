@@ -9,6 +9,12 @@ let
     version = "1.0.0";
     unpackPhase = "true";
     installPhase = "mkdir -p $out";
+    
+    # --- THE FIX: Give it fake metadata so libarchive stops crashing ---
+    meta = {
+      platforms = prev.lib.platforms.all;
+      badPlatforms = [];
+    };
   };
 
   rosPkgs = prev.rosPackages.jazzy;
