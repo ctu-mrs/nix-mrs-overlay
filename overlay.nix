@@ -23,11 +23,27 @@ let
     "git" = prev.git;
   };
 
+  # --- THE DARWIN FIX: List packages that simply cannot compile on macOS ---
+  linuxOnlyDeps = [ 
+    "lttng-tools" 
+    "lttng-ust" 
+    "lttng-modules" 
+    "tracetools" 
+    "ros2trace"
+    "tracetools-launch"
+    "tracetools-read"
+    "tracetools-trace"
+  ];
+
   resolveDep = name:
     let
       nixName = builtins.replaceStrings ["_"] ["-"] name;
     in
-    if builtins.hasAttr name systemDeps then systemDeps.${name}
+    # Intercept and drop Linux-only packages if we are on a Mac
+    if prev.stdenv.isDarwin && (builtins.elem name linuxOnlyDeps || builtins.elem nixName linuxOnlyDeps) then 
+      builtins.trace "⚠️ MAC WORKAROUND: Dropping Linux-only dependency '${name}'" null
+
+    else if builtins.hasAttr name systemDeps then systemDeps.${name}
 
     # THE FIX: Route internal ROS dependencies to your protected namespace!
     else if builtins.hasAttr name depsMap then final.mrsCustomPkgs.${name}

@@ -6,7 +6,7 @@
 
   outputs = inputs:
     let
-      supportedSystems = [ 
+      supportedSystems = [
         "x86_64-linux"    # Standard PCs / Servers
         "aarch64-linux"   # Nvidia Jetsons / Raspberry Pi
         "aarch64-darwin"  # Apple Silicon Macs
@@ -19,12 +19,15 @@
       # Expose the overlay for others to consume
       overlays.default = mrsOverlay;
 
-      # 2. Iterate over every system to generate specific packages
+      # 1. Iterate over every system to generate specific PACKAGES
       packages = inputs.nixpkgs.lib.genAttrs supportedSystems (system:
         let
           # Instantiate nixpkgs for THIS specific system
           pkgs = import inputs.nixpkgs {
             inherit system;
+            
+            # config.allowUnsupportedSystem = true; 
+
             overlays = [
               inputs.nix-ros-overlay.overlays.default
               mrsOverlay
@@ -53,6 +56,22 @@
           all = mrsBundle;
 
         } // mrsPackages # Inject all individual mrs_* packages into the output
+      );
+
+      # 2. Iterate over every system to generate specific DEV SHELLS
+      devShells = inputs.nixpkgs.lib.genAttrs supportedSystems (system:
+        let
+          pkgs = import inputs.nixpkgs {
+            inherit system;
+            overlays = [
+              inputs.nix-ros-overlay.overlays.default
+              mrsOverlay
+            ];
+          };
+        in {
+          # This links your cross-platform flake back to your devenv.nix!
+          default = import ./devenv.nix { inherit pkgs system inputs; };
+        }
       );
     };
 
