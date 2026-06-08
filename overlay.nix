@@ -45,6 +45,8 @@ let
     "tracetools-trace"
     "elfutils"
     "libcap"
+    "acl"
+    "attr"
   ];
 
   resolveDep = name:
@@ -134,4 +136,6 @@ in {
   lttng-modules = if prev.stdenv.isDarwin then darwinDummy "lttng-modules" else prev.lttng-modules;
   elfutils = if prev.stdenv.isDarwin then darwinDummy "elfutils" else prev.elfutils;
   libcap = if prev.stdenv.isDarwin then darwinDummy "libcap" else prev.libcap;
+  acl = if prev.stdenv.isDarwin then darwinDummy "acl" else prev.acl;
+  attr = if prev.stdenv.isDarwin then darwinDummy "attr" else prev.attr;
 }
