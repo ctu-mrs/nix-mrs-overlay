@@ -66,7 +66,7 @@ jobs:
             system: x86_64-linux
           - os: ubuntu-24.04-arm # GitHub's native ARM64 Linux runner
             system: aarch64-linux
-          - os: macos-14 # GitHub's native Apple Silicon (M1) runner
+          - os: macos-latest # GitHub's native Apple Silicon (M1) runner
             system: aarch64-darwin
 
     runs-on: ${{ matrix.os }}
