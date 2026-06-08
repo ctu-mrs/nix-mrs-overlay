@@ -663,7 +663,7 @@
         "version": "2.0.0",
         "git_remote": "https://github.com/ctu-mrs/mrs_msgs",
         "git_branch": "ros2",
-        "git_rev": "6a322ae4937be5a36a03bb2eead483bebc1a002f",
+        "git_rev": "6e9c30a3be6fa9b34e5c86de37cc2332238a4bba",
         "build_type": "ament_cmake",
         "buildtool_depends": [
             "ament_cmake",
@@ -672,6 +672,7 @@
         ],
         "build_depends": [
             "builtin_interfaces",
+            "diagnostic_msgs",
             "geometry_msgs",
             "sensor_msgs",
             "std_msgs",
@@ -679,6 +680,7 @@
         ],
         "build_export_depends": [
             "builtin_interfaces",
+            "diagnostic_msgs",
             "geometry_msgs",
             "sensor_msgs",
             "std_msgs",
@@ -686,6 +688,7 @@
         ],
         "exec_depends": [
             "builtin_interfaces",
+            "diagnostic_msgs",
             "geometry_msgs",
             "rosidl_default_runtime",
             "sensor_msgs",
