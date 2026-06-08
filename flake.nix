@@ -6,7 +6,7 @@
 
   outputs = inputs:
     let
-      supportedSystems = [
+      supportedSystems = [ 
         "x86_64-linux"    # Standard PCs / Servers
         "aarch64-linux"   # Nvidia Jetsons / Raspberry Pi
         "aarch64-darwin"  # Apple Silicon Macs
@@ -26,7 +26,10 @@
           pkgs = import inputs.nixpkgs {
             inherit system;
             
-            # config.allowUnsupportedSystem = true; 
+            # THE OVERRIDE: Force Nix to evaluate Linux-only packages on Darwin
+            config = {
+              allowUnsupportedSystem = true;
+            };
 
             overlays = [
               inputs.nix-ros-overlay.overlays.default
@@ -63,13 +66,19 @@
         let
           pkgs = import inputs.nixpkgs {
             inherit system;
+            
+            # Ensure the dev shell also ignores the architecture mismatch
+            config = {
+              allowUnsupportedSystem = true;
+            };
+
             overlays = [
               inputs.nix-ros-overlay.overlays.default
               mrsOverlay
             ];
           };
         in {
-          # This links your cross-platform flake back to your devenv.nix!
+          # This links your cross-platform flake back to your devenv.nix
           default = import ./devenv.nix { inherit pkgs system inputs; };
         }
       );
