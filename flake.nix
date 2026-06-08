@@ -6,54 +6,54 @@
 
   outputs = inputs:
     let
-      system = "x86_64-linux";
+      supportedSystems = [ 
+        "x86_64-linux"    # Standard PCs / Servers
+        "aarch64-linux"   # Nvidia Jetsons / Raspberry Pi
+        "aarch64-darwin"  # Apple Silicon Macs
+      ];
 
-      # Load the dynamic overlay
+      # Load the dynamic overlay once (it is architecture-agnostic)
       mrsOverlay = import ./overlay.nix;
-
-      # Instantiate nixpkgs with BOTH the ROS overlay and the dynamic MRS overlay
-      pkgs = import inputs.nixpkgs {
-        inherit system;
-        overlays = [
-          inputs.nix-ros-overlay.overlays.default
-          mrsOverlay
-        ];
-      };
-
-      # 1. Lazily extract just the package names from your JSON
-      rawDepsMap = builtins.fromJSON (builtins.readFile ./deps.json);
-      
-      # 2. Strip the comment out so it doesn't get treated as a package name
-      cleanDepsMap = builtins.removeAttrs rawDepsMap [ "_comment" ];
-      
-      # 3. Get the keys (now guaranteed to only be actual packages)
-      depsKeys = builtins.attrNames cleanDepsMap;
-      
-      # 4. Safely pluck ONLY those specific packages from your protected namespace
-      mrsPackages = pkgs.lib.genAttrs depsKeys (name: pkgs.mrsCustomPkgs.${name});
 
     in {
       # Expose the overlay for others to consume
       overlays.default = mrsOverlay;
 
-      # Expose the built packages safely
-      packages.${system} = let
+      # 2. Iterate over every system to generate specific packages
+      packages = inputs.nixpkgs.lib.genAttrs supportedSystems (system:
+        let
+          # Instantiate nixpkgs for THIS specific system
+          pkgs = import inputs.nixpkgs {
+            inherit system;
+            overlays = [
+              inputs.nix-ros-overlay.overlays.default
+              mrsOverlay
+            ];
+          };
 
-        # Create the bundle derivation once
-        mrsBundle = pkgs.symlinkJoin {
-          name = "mrs-nix-overlay";
-          paths = builtins.attrValues mrsPackages;
-        };
+          # Parse JSON dynamically for this system
+          rawDepsMap = builtins.fromJSON (builtins.readFile ./deps.json);
+          cleanDepsMap = builtins.removeAttrs rawDepsMap [ "_comment" ];
+          depsKeys = builtins.attrNames cleanDepsMap;
+          
+          # Safely pluck ONLY specific packages from the protected namespace
+          mrsPackages = pkgs.lib.genAttrs depsKeys (name: pkgs.mrsCustomPkgs.${name});
 
-      in {
+          # Create the bundle derivation for this system
+          mrsBundle = pkgs.symlinkJoin {
+            name = "mrs-nix-overlay-${system}";
+            paths = builtins.attrValues mrsPackages;
+          };
 
-        # THE FIX: Tell Nix what to do when someone just types `nix build`
-        default = mrsBundle;
+        in {
+          # Tell Nix what to do when someone just types `nix build`
+          default = mrsBundle;
 
-        # Keep `all` as an explicit target for CI or scripts
-        all = mrsBundle;
+          # Keep `all` as an explicit target for CI or scripts
+          all = mrsBundle;
 
-      } // mrsPackages; # Inject all the individual mrs_* packages into the output dictionary
+        } // mrsPackages # Inject all individual mrs_* packages into the output
+      );
     };
 
     nixConfig = {
