@@ -1,10 +1,8 @@
 name: nix_build_overlay
 
 on:
-
   push:
     branches: [ master ]
-
   workflow_dispatch:
 
 concurrency:
@@ -17,12 +15,66 @@ env:
 
 jobs:
 
-  build:
+  # ==========================================
+  # 1. PREPARE: Run scripts and push deps.json
+  # ==========================================
+  prepare_workspace:
     runs-on: ubuntu-24.04
+    permissions:
+      contents: "write"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: 'recursive'
+          token: ${{ secrets.PUSH_TOKEN }}
+
+      - uses: DeterminateSystems/nix-installer-action@main
+        with:
+          determinate: false
+
+      - name: Generate deps.json
+        run: |
+          git clone https://github.com/ctu-mrs/buildfarm2 /tmp/buildfarm2
+          /tmp/buildfarm2/scripts/clone_nixed_packages.sh mrs unstable
+          /tmp/buildfarm2/scripts/clone_nixed_packages.sh thirdparty unstable
+          /tmp/buildfarm2/scripts/clone_nixed_packages.sh nonbloom unstable
+          /tmp/buildfarm2/scripts/extract_deps_json.py /tmp/workspace ./deps.json
+
+      - name: Update Flake Lock
+        run: nix flake update
+
+      - name: Commit and Push Updates
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "ctu-mrs@github.com"
+          git add deps.json flake.lock
+          git commit -m "automatic update [skip actions]" || echo "nothing to commit"
+          git push
+
+  # ==========================================
+  # 2. BUILD: Matrix compilation across architectures
+  # ==========================================
+  build_overlay:
+    needs: prepare_workspace # Waits for the push to complete
+    
+    strategy:
+      fail-fast: false # Prevents one failing architecture from killing the others
+      matrix:
+        include:
+          - os: ubuntu-24.04
+            system: x86_64-linux
+          - os: ubuntu-24.04-arm # GitHub's native ARM64 Linux runner
+            system: aarch64-linux
+          - os: macos-14 # GitHub's native Apple Silicon (M1) runner
+            system: aarch64-darwin
+
+    runs-on: ${{ matrix.os }}
     permissions:
       id-token: "write"
       contents: "read"
     steps:
+      # We pull the fresh commit that the 'prepare_workspace' job just pushed
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -43,22 +95,9 @@ jobs:
           authToken: '${{ secrets.CACHIX }}'
           extraPullNames: ros
 
-      - run: |
-          git clone https://github.com/ctu-mrs/buildfarm2 /tmp/buildfarm2
-          /tmp/buildfarm2/scripts/clone_nixed_packages.sh mrs unstable
-          /tmp/buildfarm2/scripts/clone_nixed_packages.sh thirdparty unstable
-          /tmp/buildfarm2/scripts/clone_nixed_packages.sh nonbloom unstable
-          /tmp/buildfarm2/scripts/extract_deps_json.py /tmp/workspace ./deps.json
+      # Build explicitly targeting the runner's system
+      - name: Nix Build
+        run: nix build .#packages.${{ matrix.system }}.all --refresh --accept-flake-config --impure
 
-      - run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "ctu-mrs@github.com"
-          git add .
-          git commit -m "automatic update [skip actions]" || echo "nothing to commit"
-
-      - run: nix flake update
-      - run: nix build .#all --refresh --accept-flake-config --impure
-      - run: nix run nixpkgs#cachix -- push ctu-mrs ./result
-
-      - run: |
-          git push
+      - name: Push to Cachix
+        run: nix run nixpkgs#cachix -- push ctu-mrs ./result
