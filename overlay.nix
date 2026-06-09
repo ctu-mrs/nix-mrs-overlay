@@ -156,9 +156,11 @@ in {
     doCheck = false;
   }) else prev.openldap;
 
-  # laszip does not use structured attributes, so 'env' and 'cmakeFlags' get ignored
-  # or overridden by the Apple Clang wrapper. We must inject the CFLAGS at the top level.
+  # We use the preConfigure bash hook to physically export the CFLAGS into the 
+  # runner's environment right before CMake executes, guaranteeing it cannot be ignored.
   laszip = if prev.stdenv.isDarwin then prev.laszip.overrideAttrs (old: {
-    NIX_CFLAGS_COMPILE = toString (old.NIX_CFLAGS_COMPILE or "") + " -Wno-error=implicit-function-declaration -Wno-error=incompatible-pointer-types -Wno-error=int-conversion";
+    preConfigure = (old.preConfigure or "") + ''
+      export CFLAGS="-Wno-error=implicit-function-declaration -Wno-error=incompatible-pointer-types -Wno-error=int-conversion $CFLAGS"
+    '';
   }) else prev.laszip;
 }
