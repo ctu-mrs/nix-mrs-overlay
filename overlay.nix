@@ -144,4 +144,9 @@ in {
   libcap = if prev.stdenv.isDarwin then darwinDummy "libcap" else prev.libcap;
   acl = if prev.stdenv.isDarwin then darwinDummy "acl" else prev.acl;
   attr = if prev.stdenv.isDarwin then darwinDummy "attr" else prev.attr;
+
+  # Force glib 2.86+ to compile without libelf on macOS to prevent Meson crashes
+  glib = if prev.stdenv.isDarwin then prev.glib.overrideAttrs (old: {
+    mesonFlags = (old.mesonFlags or []) ++ [ "-Dlibelf=disabled" ];
+  }) else prev.glib;
 }
