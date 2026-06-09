@@ -156,11 +156,9 @@ in {
     doCheck = false;
   }) else prev.openldap;
 
-# CMake ignores standard NIX_CFLAGS environments on Darwin, so we brute-force 
-  # the compiler flags directly into the CMAKE_C_FLAGS generation.
+  # laszip does not use structured attributes, so 'env' and 'cmakeFlags' get ignored
+  # or overridden by the Apple Clang wrapper. We must inject the CFLAGS at the top level.
   laszip = if prev.stdenv.isDarwin then prev.laszip.overrideAttrs (old: {
-    cmakeFlags = (old.cmakeFlags or []) ++ [
-      "-DCMAKE_C_FLAGS=-Wno-error=implicit-function-declaration -Wno-error=incompatible-pointer-types -Wno-error=int-conversion"
-    ];
+    NIX_CFLAGS_COMPILE = toString (old.NIX_CFLAGS_COMPILE or "") + " -Wno-error=implicit-function-declaration -Wno-error=incompatible-pointer-types -Wno-error=int-conversion";
   }) else prev.laszip;
 }
