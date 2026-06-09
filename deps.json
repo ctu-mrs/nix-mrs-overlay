@@ -22,7 +22,7 @@
         "version": "2.0.0",
         "git_remote": "https://github.com/ctu-mrs/mrs_multirotor_simulator",
         "git_branch": "ros2",
-        "git_rev": "c740222134bddc5fb3e858689b3d15809b521f9e",
+        "git_rev": "c62e207cb4c838ad87d75f9f7a0031491838eed1",
         "build_type": "ament_cmake",
         "buildtool_depends": [
             "ament_cmake",
@@ -590,7 +590,7 @@
         "version": "2.0.0",
         "git_remote": "https://github.com/ctu-mrs/mrs_uav_trajectory_generation",
         "git_branch": "ros2",
-        "git_rev": "831dadfc97c0f59b8cf68a71a69a0a9f27e4b5a9",
+        "git_rev": "21600a5533e85eed7fae5aa77dc2685c28156a51",
         "build_type": "ament_cmake",
         "buildtool_depends": [
             "ament_cmake",
@@ -726,7 +726,7 @@
         "version": "2.0.0",
         "git_remote": "https://github.com/ctu-mrs/mrs_uav_hw_api",
         "git_branch": "ros2",
-        "git_rev": "30950d933b0810f7a91afbdefee1fc4afe866a7e",
+        "git_rev": "358e60877c7e58ee7c15f0671a68363df59873eb",
         "build_type": "ament_cmake",
         "buildtool_depends": [
             "ament_cmake",
@@ -793,7 +793,7 @@
         "version": "2.0.0",
         "git_remote": "https://github.com/ctu-mrs/mrs_uav_core",
         "git_branch": "ros2",
-        "git_rev": "1e63b9fc7678db70714112d7afa9f5797fcf6804",
+        "git_rev": "51bcdd7a6ef25e40caa7b38dc3913f681f9fabbc",
         "build_type": "ament_cmake",
         "buildtool_depends": [
             "ament_cmake"
@@ -880,7 +880,7 @@
         "version": "2.0.0",
         "git_remote": "https://github.com/ctu-mrs/mrs_uav_managers",
         "git_branch": "ros2",
-        "git_rev": "8c7c00c565fce2f5f65ebb46a8d8ff350cb4230e",
+        "git_rev": "57ef6045d391f8134b5fc26086294be473ce02f5",
         "build_type": "ament_cmake",
         "buildtool_depends": [
             "ament_cmake",
