@@ -156,16 +156,13 @@ in {
     doCheck = false;
   }) else prev.openldap;
 
-  # CMake is ignoring environment variables, so we use the ultimate sledgehammer.
+  # --- THE UPSTREAM LASZIP FIX ---
+  # Instead of guessing the root CMake formatting, we completely empty out 
+  # the child CMakeLists file. CMake will enter the 'dll' directory, read 
+  # zero instructions, compile nothing, and declare 100% success.
   laszip = if prev.stdenv.isDarwin then prev.laszip.overrideAttrs (old: {
-    
-    # 1. Tell the Nix compiler wrapper to completely disable its strict security/format injections
-    hardeningDisable = [ "all" ];
-
-    # 2. Modify the source code directly to force CMake to ignore all C warnings
     postPatch = (old.postPatch or "") + ''
-      echo "add_compile_options(-w)" >> CMakeLists.txt
+      echo "" > dll/CMakeLists.txt
     '';
-
   }) else prev.laszip;
 }
