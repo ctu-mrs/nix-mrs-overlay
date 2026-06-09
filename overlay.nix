@@ -149,4 +149,10 @@ in {
   glib = if prev.stdenv.isDarwin then prev.glib.overrideAttrs (old: {
     mesonFlags = (old.mesonFlags or []) ++ [ "-Dlibelf=disabled" ];
   }) else prev.glib;
+
+  # OpenLDAP's network replication tests fail inside macOS CI sandboxes.
+  # We just need the compiled library, so we disable the test phase.
+  openldap = if prev.stdenv.isDarwin then prev.openldap.overrideAttrs (old: {
+    doCheck = false;
+  }) else prev.openldap;
 }
