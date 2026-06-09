@@ -155,4 +155,12 @@ in {
   openldap = if prev.stdenv.isDarwin then prev.openldap.overrideAttrs (old: {
     doCheck = false;
   }) else prev.openldap;
+
+  # The C++ library builds fine, but the legacy C wrapper violates strict Apple Clang standards.
+  # We force the compiler to downgrade these specific C errors to warnings.
+  laszip = if prev.stdenv.isDarwin then prev.laszip.overrideAttrs (old: {
+    env = (old.env or {}) // {
+      NIX_CFLAGS_COMPILE = toString (old.env.NIX_CFLAGS_COMPILE or "") + " -Wno-error=implicit-function-declaration -Wno-error=incompatible-pointer-types -Wno-error=int-conversion";
+    };
+  }) else prev.laszip;
 }
