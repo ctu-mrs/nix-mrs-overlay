@@ -241,12 +241,13 @@
         "version": "2.0.0",
         "git_remote": "https://github.com/ctu-mrs/mrs_lib",
         "git_branch": "ros2",
-        "git_rev": "c8cf9ffc77531e311cf670b9da76a2d990a95fd8",
+        "git_rev": "b323b7b8b232abb736c26dd431e3efadf7aa7312",
         "build_type": "ament_cmake",
         "buildtool_depends": [
             "ament_cmake_python"
         ],
         "build_depends": [
+            "ament_cmake_core",
             "eigen",
             "geometry_msgs",
             "launch_ros",
@@ -255,12 +256,15 @@
             "nav_msgs",
             "pcl_ros",
             "rclcpp",
+            "rosidl_default_generators",
+            "rosidl_default_runtime",
             "std_msgs",
             "tf2_geometry_msgs",
             "visualization_msgs",
             "yaml-cpp"
         ],
         "build_export_depends": [
+            "ament_cmake_core",
             "eigen",
             "geometry_msgs",
             "launch_ros",
@@ -270,12 +274,15 @@
             "nav_msgs",
             "pcl_ros",
             "rclcpp",
+            "rosidl_default_generators",
+            "rosidl_default_runtime",
             "std_msgs",
             "tf2_geometry_msgs",
             "visualization_msgs",
             "yaml-cpp"
         ],
         "exec_depends": [
+            "ament_cmake_core",
             "eigen",
             "geometry_msgs",
             "launch_ros",
@@ -284,6 +291,8 @@
             "nav_msgs",
             "pcl_ros",
             "rclcpp",
+            "rosidl_default_generators",
+            "rosidl_default_runtime",
             "std_msgs",
             "tf2_geometry_msgs",
             "visualization_msgs",
