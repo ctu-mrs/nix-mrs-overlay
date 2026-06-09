@@ -156,11 +156,16 @@ in {
     doCheck = false;
   }) else prev.openldap;
 
-  # We use the preConfigure bash hook to physically export the CFLAGS into the 
-  # runner's environment right before CMake executes, guaranteeing it cannot be ignored.
+  # CMake is ignoring environment variables, so we use the ultimate sledgehammer.
   laszip = if prev.stdenv.isDarwin then prev.laszip.overrideAttrs (old: {
-    preConfigure = (old.preConfigure or "") + ''
-      export CFLAGS="-Wno-error=implicit-function-declaration -Wno-error=incompatible-pointer-types -Wno-error=int-conversion $CFLAGS"
+    
+    # 1. Tell the Nix compiler wrapper to completely disable its strict security/format injections
+    hardeningDisable = [ "all" ];
+
+    # 2. Modify the source code directly to force CMake to ignore all C warnings
+    postPatch = (old.postPatch or "") + ''
+      echo "add_compile_options(-w)" >> CMakeLists.txt
     '';
+
   }) else prev.laszip;
 }
