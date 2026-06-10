@@ -166,17 +166,18 @@ in {
     '';
   }) else prev.laszip;
 
-  rosPkgs = prev.rosPackages.jazzy.overrideScope (rosFinal: rosPrev: {
-    
-    # FastDDS memory vendor treats a deprecated C++ whitespace warning as a fatal error.
-    # We force the compiler to downgrade this specific error back to a standard warning.
-    foonathan-memory-vendor = rosPrev.foonathan-memory-vendor.overrideAttrs (old: {
-      env = (old.env or {}) // {
-        NIX_CFLAGS_COMPILE = toString (old.env.NIX_CFLAGS_COMPILE or "") + " -Wno-error=deprecated-literal-operator";
-      };
-      # Fallback for legacy derivation wrappers
-      NIX_CFLAGS_COMPILE = toString (old.NIX_CFLAGS_COMPILE or "") + " -Wno-error=deprecated-literal-operator";
-    });
-
-  });
+  # --- THE GLOBAL ROS 2 UPSTREAM OVERRIDES ---
+  # We deeply inject the patch into the actual rosPackages tree so that upstream core packages
+  # like FastDDS evaluate against the fixed derivation.
+  rosPackages = prev.rosPackages // {
+    jazzy = prev.rosPackages.jazzy // {
+      foonathan-memory-vendor = if prev.stdenv.isDarwin then prev.rosPackages.jazzy.foonathan-memory-vendor.overrideAttrs (old: {
+        # Force the environment flag down into ExternalProject_Add sub-builds
+        preConfigure = (old.preConfigure or "") + ''
+          export NIX_CFLAGS_COMPILE="-Wno-error=deprecated-literal-operator $NIX_CFLAGS_COMPILE"
+          export CXXFLAGS="-Wno-error=deprecated-literal-operator $CXXFLAGS"
+        '';
+      }) else prev.rosPackages.jazzy.foonathan-memory-vendor;
+    };
+  };
 }
