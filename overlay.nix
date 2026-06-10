@@ -170,14 +170,14 @@ in {
   # We deeply inject the patch into the actual rosPackages tree so that upstream core packages
   # like FastDDS evaluate against the fixed derivation.
   rosPackages = prev.rosPackages // {
-    jazzy = prev.rosPackages.jazzy.overrideScope (rosFinal: rosPrev: {
-      foonathan-memory-vendor = if prev.stdenv.isDarwin then rosPrev.foonathan-memory-vendor.overrideAttrs (old: {
-        # Force the environment flags down into the ExternalProject_Add nested compilation steps
-        preConfigure = (old.preConfigure or "") + ''
-          export NIX_CFLAGS_COMPILE="-Wno-error=deprecated-literal-operator $NIX_CFLAGS_COMPILE"
-          export CXXFLAGS="-Wno-error=deprecated-literal-operator $CXXFLAGS"
+    jazzy = prev.rosPackages.jazzy.extend (rosSelf: rosSuper: {
+      foonathan-memory-vendor = if prev.stdenv.isDarwin then rosSuper.foonathan-memory-vendor.overrideAttrs (old: {
+        # Sledgehammer: physically write a instruction into the wrapper's CMakeLists
+        # to inject the CXX warning suppression directly into the ExternalProject sub-build args.
+        postPatch = (old.postPatch or "") + ''
+          echo 'list(APPEND extra_cmake_args "-DCMAKE_CXX_FLAGS=-Wno-error=deprecated-literal-operator")' >> CMakeLists.txt
         '';
-      }) else rosPrev.foonathan-memory-vendor;
+      }) else rosSuper.foonathan-memory-vendor;
     });
   };
 }
