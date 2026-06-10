@@ -165,4 +165,18 @@ in {
       echo "" > dll/CMakeLists.txt
     '';
   }) else prev.laszip;
+
+  rosPkgs = prev.rosPackages.jazzy.overrideScope (rosFinal: rosPrev: {
+    
+    # FastDDS memory vendor treats a deprecated C++ whitespace warning as a fatal error.
+    # We force the compiler to downgrade this specific error back to a standard warning.
+    foonathan-memory-vendor = rosPrev.foonathan-memory-vendor.overrideAttrs (old: {
+      env = (old.env or {}) // {
+        NIX_CFLAGS_COMPILE = toString (old.env.NIX_CFLAGS_COMPILE or "") + " -Wno-error=deprecated-literal-operator";
+      };
+      # Fallback for legacy derivation wrappers
+      NIX_CFLAGS_COMPILE = toString (old.NIX_CFLAGS_COMPILE or "") + " -Wno-error=deprecated-literal-operator";
+    });
+
+  });
 }
