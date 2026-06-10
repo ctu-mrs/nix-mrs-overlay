@@ -28,7 +28,8 @@
             
             # THE OVERRIDE: Force Nix to evaluate Linux-only packages on Darwin
             config = {
-              allowUnsupportedSystem = false;
+              allowUnsupportedSystem = true;
+              allowBroken = true;
             };
 
             overlays = [
@@ -69,7 +70,8 @@
             
             # Ensure the dev shell also ignores the architecture mismatch
             config = {
-              allowUnsupportedSystem = false;
+              allowUnsupportedSystem = true;
+              allowBroken = true;
             };
 
             overlays = [
