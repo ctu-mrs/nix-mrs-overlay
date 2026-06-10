@@ -170,14 +170,14 @@ in {
   # We deeply inject the patch into the actual rosPackages tree so that upstream core packages
   # like FastDDS evaluate against the fixed derivation.
   rosPackages = prev.rosPackages // {
-    jazzy = prev.rosPackages.jazzy // {
-      foonathan-memory-vendor = if prev.stdenv.isDarwin then prev.rosPackages.jazzy.foonathan-memory-vendor.overrideAttrs (old: {
-        # Force the environment flag down into ExternalProject_Add sub-builds
+    jazzy = prev.rosPackages.jazzy.overrideScope (rosFinal: rosPrev: {
+      foonathan-memory-vendor = if prev.stdenv.isDarwin then rosPrev.foonathan-memory-vendor.overrideAttrs (old: {
+        # Force the environment flags down into the ExternalProject_Add nested compilation steps
         preConfigure = (old.preConfigure or "") + ''
           export NIX_CFLAGS_COMPILE="-Wno-error=deprecated-literal-operator $NIX_CFLAGS_COMPILE"
           export CXXFLAGS="-Wno-error=deprecated-literal-operator $CXXFLAGS"
         '';
-      }) else prev.rosPackages.jazzy.foonathan-memory-vendor;
-    };
+      }) else rosPrev.foonathan-memory-vendor;
+    });
   };
 }
