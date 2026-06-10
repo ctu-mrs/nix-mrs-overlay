@@ -41,9 +41,6 @@ jobs:
           /tmp/buildfarm2/scripts/clone_nixed_packages.sh nonbloom unstable
           /tmp/buildfarm2/scripts/extract_deps_json.py /tmp/workspace ./deps.json
 
-      - name: Update Flake Lock
-        run: nix flake update
-
       - name: Commit and Push Updates
         run: |
           git config user.name "github-actions[bot]"
