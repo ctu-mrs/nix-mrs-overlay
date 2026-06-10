@@ -1,6 +1,25 @@
 final: prev:
 
 let
+
+#Fixing the compilation error due to wierd deprecated stuff
+
+  patchedStdenv = prev.stdenv // {
+    mkDerivation = args: prev.stdenv.mkDerivation (args // {
+      NIX_CFLAGS_COMPILE = toString [
+        (args.NIX_CFLAGS_COMPILE or "")
+        "-Wno-deprecated-literal-operator"
+        "-Wno-error=deprecated-literal-operator"
+        "-Wno-error=nonnull"
+        "-Wno-nonnull"
+        "-Wno-error=unused-but-set-variable"
+        "-Wno-error=maybe-uninitialized"
+      ];
+    });
+  };
+
+
+
   # --- THE TROJAN HORSE ---
   # An empty package that tricks Nix into passing the strict architecture evaluation,
   # while tricking CMake into gracefully falling back to macOS dummy macros.
