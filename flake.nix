@@ -25,12 +25,6 @@
           # Instantiate nixpkgs for THIS specific system
           pkgs = import inputs.nixpkgs {
             inherit system;
-            
-            # THE OVERRIDE: Force Nix to evaluate Linux-only packages on Darwin
-            config = {
-              allowUnsupportedSystem = true;
-              allowBroken = true;
-            };
 
             overlays = [
               inputs.nix-ros-overlay.overlays.default

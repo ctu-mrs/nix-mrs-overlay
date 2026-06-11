@@ -1,48 +1,25 @@
 final: prev:
 
 let
-
-#Fixing the compilation error due to wierd deprecated stuff
-
-  patchedStdenv = prev.stdenv // {
-    mkDerivation = args: prev.stdenv.mkDerivation (args // {
-      NIX_CFLAGS_COMPILE = toString [
-        (args.NIX_CFLAGS_COMPILE or "")
-        "-Wno-deprecated-literal-operator"
-        "-Wno-error=deprecated-literal-operator"
-        "-Wno-error=nonnull"
-        "-Wno-nonnull"
-        "-Wno-error=unused-but-set-variable"
-        "-Wno-error=maybe-uninitialized"
-      ];
-    });
-  };
-
-
-
   # --- THE TROJAN HORSE ---
-  # An empty package that tricks Nix into passing the strict architecture evaluation,
-  # while tricking CMake into gracefully falling back to macOS dummy macros.
   darwinDummy = name: prev.stdenv.mkDerivation {
     pname = "${name}-mac-dummy";
     version = "1.0.0";
     unpackPhase = "true";
     installPhase = "mkdir -p $out";
     
-    # --- THE FIX: Give it fake metadata so libarchive stops crashing ---
     meta = {
       platforms = prev.lib.platforms.all;
       badPlatforms = [];
     };
   };
 
-  rosPkgs = prev.rosPackages.jazzy;
+  # CRITICAL FIX: This MUST track 'final' so it sees the .extend patches below!
+  rosPkgs = final.rosPackages.jazzy;
 
-  # 1. Load the raw JSON and safely strip the comment using native builtins
   rawDepsMap = builtins.fromJSON (builtins.readFile ./deps.json);
   depsMap = builtins.removeAttrs rawDepsMap [ "_comment" ];
 
-  # Mapped system dependencies to match package.xml
   systemDeps = {
     "eigen" = prev.eigen;
     "libboost-dev" = prev.boost;
@@ -58,7 +35,6 @@ let
     "git" = prev.git;
   };
 
-  # Keep our internal filter for your custom packages
   linuxOnlyDeps = [ 
     "lttng-tools" 
     "lttng-ust" 
@@ -78,10 +54,8 @@ let
     let
       nixName = builtins.replaceStrings ["_"] ["-"] name;
     in
-    # Intercept and drop Linux-only packages if we are on a Mac
     if prev.stdenv.isDarwin && (builtins.elem name linuxOnlyDeps || builtins.elem nixName linuxOnlyDeps) then 
       builtins.trace "⚠️ MAC WORKAROUND: Dropping Linux-only dependency '${name}'" null
-
     else if builtins.hasAttr name systemDeps then systemDeps.${name}
     else if builtins.hasAttr name depsMap then final.mrsCustomPkgs.${name}
     else if builtins.hasAttr nixName rosPkgs then rosPkgs.${nixName}
@@ -95,12 +69,9 @@ let
         url = pkgData.git_remote;
         rev = pkgData.git_rev;
       };
-
       srcPath = if (pkgData.path or "") == "" then fetchedRepo else fetchedRepo + "/${pkgData.path}";
       resolvedExecDepends = builtins.filter (x: x != null) (builtins.map resolveDep (pkgData.exec_depends or []));
     in
-
-    # --- 1. NON-ROS PACKAGE (Raw Copy) ---
     if (pkgData.build_type or "") == "raw_copy" then
       prev.stdenv.mkDerivation {
         pname = pkgName;
@@ -118,7 +89,6 @@ let
         in "mkdir -p $out\n${builtins.concatStringsSep "\n" copyCommands}";
         propagatedBuildInputs = resolvedExecDepends;
       }
-
     else if pkgData.build_type == "cmake" then
         prev.stdenv.mkDerivation {
           pname = pkgName;
@@ -128,8 +98,6 @@ let
           buildInputs = map resolveDep pkgData.build_depends;
           cmakeFlags = [ "-DCMAKE_POLICY_VERSION_MINIMUM=3.5" ];
         }
-
-    # --- 2. STANDARD ROS PACKAGE ---
     else
       rosPkgs.buildRosPackage {
         pname = pkgName;
@@ -153,9 +121,6 @@ let
 in {
   mrsCustomPkgs = mrsPackages;
 
-  # --- INJECT THE TROJAN HORSE INTO UPSTREAM ---
-  # If we are on Darwin, overwrite the actual system tracing packages with our empty dummies.
-  # nix-ros-overlay will blindly pull these instead of the real ones!
   lttng-tools = if prev.stdenv.isDarwin then darwinDummy "lttng-tools" else prev.lttng-tools;
   lttng-ust = if prev.stdenv.isDarwin then darwinDummy "lttng-ust" else prev.lttng-ust;
   lttng-modules = if prev.stdenv.isDarwin then darwinDummy "lttng-modules" else prev.lttng-modules;
@@ -164,21 +129,14 @@ in {
   acl = if prev.stdenv.isDarwin then darwinDummy "acl" else prev.acl;
   attr = if prev.stdenv.isDarwin then darwinDummy "attr" else prev.attr;
 
-  # Force glib 2.86+ to compile without libelf on macOS to prevent Meson crashes
   glib = if prev.stdenv.isDarwin then prev.glib.overrideAttrs (old: {
     mesonFlags = (old.mesonFlags or []) ++ [ "-Dlibelf=disabled" ];
   }) else prev.glib;
 
-  # OpenLDAP's network replication tests fail inside macOS CI sandboxes.
-  # We just need the compiled library, so we disable the test phase.
   openldap = if prev.stdenv.isDarwin then prev.openldap.overrideAttrs (old: {
     doCheck = false;
   }) else prev.openldap;
 
-  # --- THE UPSTREAM LASZIP FIX ---
-  # Instead of guessing the root CMake formatting, we completely empty out 
-  # the child CMakeLists file. CMake will enter the 'dll' directory, read 
-  # zero instructions, compile nothing, and declare 100% success.
   laszip = if prev.stdenv.isDarwin then prev.laszip.overrideAttrs (old: {
     postPatch = (old.postPatch or "") + ''
       echo "" > dll/CMakeLists.txt
@@ -186,13 +144,9 @@ in {
   }) else prev.laszip;
 
   # --- THE GLOBAL ROS 2 UPSTREAM OVERRIDES ---
-  # We deeply inject the patch into the actual rosPackages tree so that upstream core packages
-  # like FastDDS evaluate against the fixed derivation.
   rosPackages = prev.rosPackages // {
     jazzy = prev.rosPackages.jazzy.extend (rosSelf: rosSuper: {
       foonathan-memory-vendor = if prev.stdenv.isDarwin then rosSuper.foonathan-memory-vendor.overrideAttrs (old: {
-        # Sledgehammer: physically write a instruction into the wrapper's CMakeLists
-        # to inject the CXX warning suppression directly into the ExternalProject sub-build args.
         postPatch = (old.postPatch or "") + ''
           echo 'list(APPEND extra_cmake_args "-DCMAKE_CXX_FLAGS=-Wno-error=deprecated-literal-operator")' >> CMakeLists.txt
         '';
