@@ -143,14 +143,20 @@ in {
     '';
   }) else prev.laszip;
 
-  # --- THE GLOBAL ROS 2 UPSTREAM OVERRIDES ---
+  # We deeply inject the patch into the actual rosPackages tree so that upstream core packages
+  # like FastDDS evaluate against the fixed derivation.
   rosPackages = prev.rosPackages // {
-    jazzy = prev.rosPackages.jazzy.extend (rosSelf: rosSuper: {
-      foonathan-memory-vendor = if prev.stdenv.isDarwin then rosSuper.foonathan-memory-vendor.overrideAttrs (old: {
+    jazzy = prev.rosPackages.jazzy.overrideScope (rosFinal: rosPrev: {
+      
+      # The deprecated literal operator error happens on ALL modern compilers (Linux GCC & Apple Clang).
+      # We apply the CXX flag patch unconditionally for all systems.
+      foonathan-memory-vendor = rosPrev.foonathan-memory-vendor.overrideAttrs (old: {
         postPatch = (old.postPatch or "") + ''
           echo 'list(APPEND extra_cmake_args "-DCMAKE_CXX_FLAGS=-Wno-error=deprecated-literal-operator")' >> CMakeLists.txt
         '';
-      }) else rosSuper.foonathan-memory-vendor;
+      });
+
     });
   };
+}
 }
