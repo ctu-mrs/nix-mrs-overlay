@@ -406,7 +406,7 @@
         "version": "2.4.2",
         "git_remote": "https://github.com/ctu-mrs/nlopt_ros",
         "git_branch": "ros2",
-        "git_rev": "74aa252ae3824869402be14bec1ad4b967d1ad62",
+        "git_rev": "f0bff4c88f54686399c9fe6fff91827b37feeb19",
         "build_type": "ament_cmake",
         "buildtool_depends": [
             "ament_cmake"
