@@ -143,17 +143,20 @@ in {
     '';
   }) else prev.laszip;
 
-  # --- THE GLOBAL ROS 2 UPSTREAM OVERRIDES ---
-  # We deeply inject the patch into the actual rosPackages tree so that upstream core packages
-  # like FastDDS evaluate against the fixed derivation.
   rosPackages = prev.rosPackages // {
     jazzy = prev.rosPackages.jazzy.overrideScope (rosFinal: rosPrev: {
       
-      # The deprecated literal operator error happens on ALL modern compilers (Linux GCC & Apple Clang).
-      # We apply the CXX flag patch unconditionally for all systems.
       foonathan-memory-vendor = rosPrev.foonathan-memory-vendor.overrideAttrs (old: {
+        # 1. The Native Nix Sledgehammer: 
+        # Inject the flag directly into the Nix compiler wrapper so every single 
+        # C++ compilation step inherits it, regardless of CMake isolation.
+        NIX_CFLAGS_COMPILE = toString (old.NIX_CFLAGS_COMPILE or "") + " -Wno-error=deprecated-literal-operator";
+
+        # 2. The CMake Top-of-File Injection:
+        # Use `sed -i '1i ...'` to physically insert the warning suppression at 
+        # Line 1 of the file, guaranteeing it executes before ExternalProject_Add.
         postPatch = (old.postPatch or "") + ''
-          echo 'list(APPEND extra_cmake_args "-DCMAKE_CXX_FLAGS=-Wno-error=deprecated-literal-operator")' >> CMakeLists.txt
+          sed -i '1i set(CMAKE_CXX_FLAGS "''${CMAKE_CXX_FLAGS} -Wno-error=deprecated-literal-operator")' CMakeLists.txt
         '';
       });
 
