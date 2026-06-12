@@ -162,13 +162,4 @@ in {
 
     });
   };
-
-  # --- THE UPSTREAM NLOPT FIX ---
-  # nlopt 2.4.2 relies on std::unary_function, which was deleted in C++17.
-  # We force the compiler to step back to C++14 to restore compatibility.
-  nlopt = prev.nlopt.overrideAttrs (old: {
-    preConfigure = (old.preConfigure or "") + ''
-      export CXXFLAGS="-std=c++14 $CXXFLAGS"
-    '';
-  });
 }
