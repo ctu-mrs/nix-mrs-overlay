@@ -16,12 +16,10 @@ env:
 jobs:
 
   # ==========================================
-  # 1. PREPARE: Run scripts and push deps.json
+  # 1. PREPARE: Generate files and artifact them
   # ==========================================
-  prepare_workspace:
+  generate_files:
     runs-on: ubuntu-24.04
-    permissions:
-      contents: "write"
     steps:
       - uses: actions/checkout@v4
         with:
@@ -41,29 +39,31 @@ jobs:
           /tmp/buildfarm2/scripts/clone_nixed_packages.sh nonbloom unstable
           /tmp/buildfarm2/scripts/extract_deps_json.py /tmp/workspace ./deps.json
 
-      - name: Commit and Push Updates
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "ctu-mrs@github.com"
-          git add deps.json flake.lock
-          git commit -m "automatic update [skip actions]" || echo "nothing to commit"
-          git push
+      # Upload the raw files so the downstream VMs can grab them
+      - name: Upload Workspace Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: workspace-files
+          path: |
+            deps.json
+            flake.lock
+          retention-days: 1
+          overwrite: true
 
   # ==========================================
   # 2. BUILD: Matrix compilation across architectures
   # ==========================================
   build_overlay:
-    needs: prepare_workspace # Waits for the push to complete
-    
+    needs: generate_files
     strategy:
-      fail-fast: false # Prevents one failing architecture from killing the others
+      fail-fast: false
       matrix:
         include:
           - os: ubuntu-24.04
             system: x86_64-linux
-          - os: ubuntu-24.04-arm # GitHub's native ARM64 Linux runner
+          - os: ubuntu-24.04-arm
             system: aarch64-linux
-          - os: macos-latest # GitHub's native Apple Silicon (M1) runner
+          - os: macos-latest
             system: aarch64-darwin
 
     runs-on: ${{ matrix.os }}
@@ -71,12 +71,27 @@ jobs:
       id-token: "write"
       contents: "read"
     steps:
-      # We pull the fresh commit that the 'prepare_workspace' job just pushed
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
           submodules: 'recursive'
           token: ${{ secrets.PUSH_TOKEN }}
+
+      # Drop the newly generated files into the clean checkout
+      - name: Download Workspace Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: workspace-files
+          path: .
+
+      # Nix Flakes require files to be tracked/committed in git. 
+      # Since this is an isolated VM, we apply the commit locally BEFORE building!
+      - name: Locally Commit Files for Nix Flakes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "ctu-mrs@github.com"
+          git add deps.json flake.lock
+          git commit -m "automatic update [skip actions]" || echo "nothing to commit"
 
       - uses: DeterminateSystems/nix-installer-action@main
         with:
@@ -92,9 +107,38 @@ jobs:
           authToken: '${{ secrets.CACHIX }}'
           extraPullNames: ros
 
-      # Build explicitly targeting the runner's system
       - name: Nix Build
         run: nix build .#packages.${{ matrix.system }}.all --refresh --accept-flake-config --impure
 
       - name: Push to Cachix
         run: nix run nixpkgs#cachix -- push ctu-mrs ./result
+
+
+  # ==========================================
+  # 3. PUBLISH: Commit and push ONLY if matrix passes
+  # ==========================================
+  push_updates:
+    needs: build_overlay
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: "write"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.PUSH_TOKEN }}
+
+      - name: Download Workspace Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: workspace-files
+          path: .
+
+      # Re-apply the exact same local commit from the artifacts, but this time PUSH it!
+      - name: Commit and Push Updates
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "ctu-mrs@github.com"
+          git add deps.json flake.lock
+          git commit -m "automatic update [skip actions]" || echo "nothing to commit"
+          git push
