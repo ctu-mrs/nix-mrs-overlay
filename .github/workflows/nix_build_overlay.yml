@@ -111,6 +111,7 @@ jobs:
         run: nix build .#packages.${{ matrix.system }}.all --refresh --accept-flake-config --impure
 
       - name: Push to Cachix
+        if: always()
         run: nix run nixpkgs#cachix -- push ctu-mrs ./result
 
 
