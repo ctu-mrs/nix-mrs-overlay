@@ -105,7 +105,7 @@
         "version": "2.0.0",
         "git_remote": "https://github.com/ctu-mrs/mrs_lib",
         "git_branch": "ros2",
-        "git_rev": "b6b11ebc3b25d814e7c00156ab2ab3bdc4bc7298",
+        "git_rev": "ee7ae01de7470bdca926543adeea7754d1a763ad",
         "build_type": "ament_cmake",
         "buildtool_depends": [
             "ament_cmake_python"
@@ -178,7 +178,7 @@
         "version": "2.0.0",
         "git_remote": "https://github.com/ctu-mrs/mrs_uav_trajectory_generation",
         "git_branch": "ros2",
-        "git_rev": "21600a5533e85eed7fae5aa77dc2685c28156a51",
+        "git_rev": "11fe62ae02b320e26cfe4f60fdb038ffa0227ab8",
         "build_type": "ament_cmake",
         "buildtool_depends": [
             "ament_cmake",
@@ -406,7 +406,7 @@
         "version": "2.4.2",
         "git_remote": "https://github.com/ctu-mrs/nlopt_ros",
         "git_branch": "ros2",
-        "git_rev": "f0bff4c88f54686399c9fe6fff91827b37feeb19",
+        "git_rev": "c145d182abf28498c4aa06dff8251653d923a7c7",
         "build_type": "ament_cmake",
         "buildtool_depends": [
             "ament_cmake"
@@ -579,7 +579,7 @@
         "version": "1.0.0",
         "git_remote": "https://github.com/ctu-mrs/mrs_mpc_solvers",
         "git_branch": "ros2",
-        "git_rev": "965234630b59b15d3714c82b1bf5e2217ee34b05",
+        "git_rev": "f173ea285cce7bbbfc1dbc382e31c761f44b0963",
         "build_type": "ament_cmake",
         "buildtool_depends": [
             "ament_cmake"
