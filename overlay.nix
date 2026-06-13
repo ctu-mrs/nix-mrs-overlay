@@ -33,6 +33,13 @@ let
     "libpcl-all-dev" = prev.pcl;
     "apr" = prev.apr;
     "git" = prev.git;
+    "curl" = prev.curl;
+    "libjsoncpp-dev" = prev.jsoncpp;
+    "libjsoncpp" = prev.jsoncpp;
+    "libtins-dev" = prev.libtins;
+    "net-tools" = prev.net-tools;
+    "nmap" = prev.nmap;
+    "spdlog" = prev.spdlog;
   };
 
   linuxOnlyDeps = [
@@ -68,6 +75,7 @@ let
       fetchedRepo = builtins.fetchGit {
         url = pkgData.git_remote;
         rev = pkgData.git_rev;
+        # submodules = true;
       };
       srcPath = if (pkgData.path or "") == "" then fetchedRepo else fetchedRepo + "/${pkgData.path}";
       resolvedExecDepends = builtins.filter (x: x != null) (builtins.map resolveDep (pkgData.exec_depends or []));
