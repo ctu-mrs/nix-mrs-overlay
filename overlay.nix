@@ -7,7 +7,7 @@ let
     version = "1.0.0";
     unpackPhase = "true";
     installPhase = "mkdir -p $out";
-    
+
     meta = {
       platforms = prev.lib.platforms.all;
       badPlatforms = [];
@@ -35,11 +35,11 @@ let
     "git" = prev.git;
   };
 
-  linuxOnlyDeps = [ 
-    "lttng-tools" 
-    "lttng-ust" 
-    "lttng-modules" 
-    "tracetools" 
+  linuxOnlyDeps = [
+    "lttng-tools"
+    "lttng-ust"
+    "lttng-modules"
+    "tracetools"
     "ros2trace"
     "tracetools-launch"
     "tracetools-read"
@@ -54,7 +54,7 @@ let
     let
       nixName = builtins.replaceStrings ["_"] ["-"] name;
     in
-    if prev.stdenv.isDarwin && (builtins.elem name linuxOnlyDeps || builtins.elem nixName linuxOnlyDeps) then 
+    if prev.stdenv.isDarwin && (builtins.elem name linuxOnlyDeps || builtins.elem nixName linuxOnlyDeps) then
       builtins.trace "⚠️ MAC WORKAROUND: Dropping Linux-only dependency '${name}'" null
     else if builtins.hasAttr name systemDeps then systemDeps.${name}
     else if builtins.hasAttr name depsMap then final.mrsCustomPkgs.${name}
@@ -82,8 +82,8 @@ let
         dontStrip = true;
         installPhase = let
           mapping = pkgData.install_mapping or { "*" = "."; };
-          copyCommands = prev.lib.mapAttrsToList (src: dest: 
-            if src == "*" && dest == "." then "cp -a * $out/" 
+          copyCommands = prev.lib.mapAttrsToList (src: dest:
+            if src == "*" && dest == "." then "cp -a * $out/"
             else "mkdir -p \"$out/$(dirname \"${dest}\")\"\ncp -a \"${src}\" \"$out/${dest}\""
           ) mapping;
         in "mkdir -p $out\n${builtins.concatStringsSep "\n" copyCommands}";
@@ -145,15 +145,15 @@ in {
 
   rosPackages = prev.rosPackages // {
     jazzy = prev.rosPackages.jazzy.overrideScope (rosFinal: rosPrev: {
-      
+
       foonathan-memory-vendor = rosPrev.foonathan-memory-vendor.overrideAttrs (old: {
-        # 1. The Native Nix Sledgehammer: 
-        # Inject the flag directly into the Nix compiler wrapper so every single 
+        # 1. The Native Nix Sledgehammer:
+        # Inject the flag directly into the Nix compiler wrapper so every single
         # C++ compilation step inherits it, regardless of CMake isolation.
         NIX_CFLAGS_COMPILE = toString (old.NIX_CFLAGS_COMPILE or "") + " -Wno-error=deprecated-literal-operator";
 
         # 2. The CMake Top-of-File Injection:
-        # Use `sed -i '1i ...'` to physically insert the warning suppression at 
+        # Use `sed -i '1i ...'` to physically insert the warning suppression at
         # Line 1 of the file, guaranteeing it executes before ExternalProject_Add.
         postPatch = (old.postPatch or "") + ''
           sed -i '1i set(CMAKE_CXX_FLAGS "''${CMAKE_CXX_FLAGS} -Wno-error=deprecated-literal-operator")' CMakeLists.txt

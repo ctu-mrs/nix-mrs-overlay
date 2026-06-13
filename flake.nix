@@ -1,12 +1,12 @@
 {
   inputs = {
-    nix-ros-overlay.url = "github:lopsided98/nix-ros-overlay/develop";
+    nix-ros-overlay.url = "github:lopsided98/nix-ros-overlay/master";
     nixpkgs.follows = "nix-ros-overlay/nixpkgs";
   };
 
   outputs = inputs:
     let
-      supportedSystems = [ 
+      supportedSystems = [
         "x86_64-linux"    # Standard PCs / Servers
         "aarch64-linux"   # Nvidia Jetsons / Raspberry Pi
         "aarch64-darwin"  # Apple Silicon Macs
@@ -36,7 +36,7 @@
           rawDepsMap = builtins.fromJSON (builtins.readFile ./deps.json);
           cleanDepsMap = builtins.removeAttrs rawDepsMap [ "_comment" ];
           depsKeys = builtins.attrNames cleanDepsMap;
-          
+
           # Safely pluck ONLY specific packages from the protected namespace
           mrsPackages = pkgs.lib.genAttrs depsKeys (name: pkgs.mrsCustomPkgs.${name});
 
