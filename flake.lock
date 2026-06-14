@@ -25,16 +25,16 @@
         "rosdistro": "rosdistro"
       },
       "locked": {
-        "lastModified": 1781294130,
-        "narHash": "sha256-5YNXRhVC6tYWc18tN4ZkWKgQaPnsiFOWQPOasyKjMZM=",
-        "owner": "lopsided98",
+        "lastModified": 1781467497,
+        "narHash": "sha256-jixarmKNqRb6ityNA5coB8q7bs2S1wnq8ihQH+tYVuU=",
+        "owner": "klaxalk",
         "repo": "nix-ros-overlay",
-        "rev": "13634b579b61299abfc5389d7d47dd7d1701a3a2",
+        "rev": "207d754c3a931c5fae8b9e779f7dc24f0ac8b2ca",
         "type": "github"
       },
       "original": {
-        "owner": "lopsided98",
-        "ref": "master",
+        "owner": "klaxalk",
+        "ref": "fix_libmavconn",
         "repo": "nix-ros-overlay",
         "type": "github"
       }
@@ -67,11 +67,11 @@
     "rosdistro": {
       "flake": false,
       "locked": {
-        "lastModified": 1780665549,
-        "narHash": "sha256-QzobMKNpcpS4uWETzPxXkt0F66Sji15N+xsK1JcEWDU=",
+        "lastModified": 1781238695,
+        "narHash": "sha256-Sk8KQa9ryFrkdGGZ64sNdqoVqiGmC+IAAi3qzE7zn8s=",
         "owner": "ros",
         "repo": "rosdistro",
-        "rev": "bcec45c05427f0ad6860cb323695995d8cb1e4bd",
+        "rev": "a0e7ccc6f866a081acc0656d9cd03cda7acc6853",
         "type": "github"
       },
       "original": {
