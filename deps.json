@@ -1054,6 +1054,40 @@
             "ament_cmake_xmllint"
         ]
     },
+    "mrs_open_vins_estimator_plugin": {
+        "path": "",
+        "version": "2.0.0",
+        "git_remote": "https://github.com/ctu-mrs/mrs_open_vins_estimator_plugin",
+        "git_branch": "ros2",
+        "git_rev": "1dcec850400f55fd0f4fb1c596abeaf3e717b478",
+        "build_type": "ament_cmake",
+        "buildtool_depends": [
+            "ament_cmake",
+            "ament_cmake_ros"
+        ],
+        "build_depends": [
+            "mrs_lib",
+            "mrs_uav_managers",
+            "mrs_uav_state_estimators",
+            "rclcpp",
+            "rclcpp_components"
+        ],
+        "build_export_depends": [
+            "mrs_lib",
+            "mrs_uav_managers",
+            "mrs_uav_state_estimators",
+            "rclcpp",
+            "rclcpp_components"
+        ],
+        "exec_depends": [
+            "mrs_lib",
+            "mrs_uav_managers",
+            "mrs_uav_state_estimators",
+            "rclcpp",
+            "rclcpp_components"
+        ],
+        "test_depends": []
+    },
     "mrs_uav_core": {
         "path": "ros_packages/mrs_uav_core",
         "version": "2.0.0",
