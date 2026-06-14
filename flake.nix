@@ -1,6 +1,7 @@
 {
   inputs = {
-    nix-ros-overlay.url = "github:lopsided98/nix-ros-overlay/master";
+    # nix-ros-overlay.url = "github:lopsided98/nix-ros-overlay/master";
+    nix-ros-overlay.url = "github:klaxalk/nix-ros-overlay/fix_mavlink";
     nixpkgs.follows = "nix-ros-overlay/nixpkgs";
   };
 
