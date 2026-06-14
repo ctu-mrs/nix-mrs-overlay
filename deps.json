@@ -44,7 +44,7 @@
         "version": "2.0.0",
         "git_remote": "https://github.com/ctu-mrs/mrs_vins_imu_filter",
         "git_branch": "ros2",
-        "git_rev": "2458b57a7b54f8ec0d909b65b79e9d7758b460f8",
+        "git_rev": "8dee59e534b23b65bac7b93542ef2751eab26e34",
         "build_type": "ament_cmake",
         "buildtool_depends": [
             "ament_cmake",
@@ -87,7 +87,7 @@
         "version": "2.0.0",
         "git_remote": "https://github.com/ctu-mrs/mrs_utils",
         "git_branch": "ros2",
-        "git_rev": "5252bec077f9f0daf037b31e359b68acf43d3d86",
+        "git_rev": "b913ade99044b9b7cd9272dc13e9cffe5808c39d",
         "build_type": "ament_cmake",
         "buildtool_depends": [
             "ament_cmake"
@@ -120,7 +120,7 @@
         "version": "1.0.0",
         "git_remote": "https://github.com/ctu-mrs/mrs_utils",
         "git_branch": "ros2",
-        "git_rev": "5252bec077f9f0daf037b31e359b68acf43d3d86",
+        "git_rev": "b913ade99044b9b7cd9272dc13e9cffe5808c39d",
         "build_type": "ament_cmake",
         "buildtool_depends": [
             "ament_cmake",
@@ -163,7 +163,7 @@
         "version": "1.0.0",
         "git_remote": "https://github.com/ctu-mrs/mrs_utils",
         "git_branch": "ros2",
-        "git_rev": "5252bec077f9f0daf037b31e359b68acf43d3d86",
+        "git_rev": "b913ade99044b9b7cd9272dc13e9cffe5808c39d",
         "build_type": "ament_cmake",
         "buildtool_depends": [
             "ament_cmake",
@@ -209,7 +209,7 @@
         "version": "2.0.0",
         "git_remote": "https://github.com/ctu-mrs/mrs_utils",
         "git_branch": "ros2",
-        "git_rev": "5252bec077f9f0daf037b31e359b68acf43d3d86",
+        "git_rev": "b913ade99044b9b7cd9272dc13e9cffe5808c39d",
         "build_type": "ament_cmake",
         "buildtool_depends": [
             "ament_cmake"
@@ -257,7 +257,7 @@
         "version": "1.0.0",
         "git_remote": "https://github.com/ctu-mrs/mrs_utils",
         "git_branch": "ros2",
-        "git_rev": "5252bec077f9f0daf037b31e359b68acf43d3d86",
+        "git_rev": "b913ade99044b9b7cd9272dc13e9cffe5808c39d",
         "build_type": "ament_cmake",
         "buildtool_depends": [
             "ament_cmake",
