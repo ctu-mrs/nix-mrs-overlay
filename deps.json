@@ -39,6 +39,268 @@
         ],
         "test_depends": []
     },
+    "mrs_vins_imu_filter": {
+        "path": "",
+        "version": "2.0.0",
+        "git_remote": "https://github.com/ctu-mrs/mrs_vins_imu_filter",
+        "git_branch": "ros2",
+        "git_rev": "2458b57a7b54f8ec0d909b65b79e9d7758b460f8",
+        "build_type": "ament_cmake",
+        "buildtool_depends": [
+            "ament_cmake",
+            "ament_cmake_ros"
+        ],
+        "build_depends": [
+            "geometry_msgs",
+            "mrs_lib",
+            "nav_msgs",
+            "rclcpp",
+            "rclcpp_components",
+            "std_msgs",
+            "tf2",
+            "tf2_ros"
+        ],
+        "build_export_depends": [
+            "geometry_msgs",
+            "mrs_lib",
+            "nav_msgs",
+            "rclcpp",
+            "rclcpp_components",
+            "std_msgs",
+            "tf2",
+            "tf2_ros"
+        ],
+        "exec_depends": [
+            "geometry_msgs",
+            "mrs_lib",
+            "nav_msgs",
+            "rclcpp",
+            "rclcpp_components",
+            "std_msgs",
+            "tf2",
+            "tf2_ros"
+        ],
+        "test_depends": []
+    },
+    "mrs_utils": {
+        "path": "mrs_utils",
+        "version": "2.0.0",
+        "git_remote": "https://github.com/ctu-mrs/mrs_utils",
+        "git_branch": "ros2",
+        "git_rev": "5252bec077f9f0daf037b31e359b68acf43d3d86",
+        "build_type": "ament_cmake",
+        "buildtool_depends": [
+            "ament_cmake"
+        ],
+        "build_depends": [
+            "builtin_interfaces",
+            "mrs_odometry_republisher",
+            "mrs_tf_connector",
+            "mrs_tf_mirror",
+            "mrs_tf_reconfigure"
+        ],
+        "build_export_depends": [
+            "builtin_interfaces",
+            "mrs_odometry_republisher",
+            "mrs_tf_connector",
+            "mrs_tf_mirror",
+            "mrs_tf_reconfigure"
+        ],
+        "exec_depends": [
+            "builtin_interfaces",
+            "mrs_odometry_republisher",
+            "mrs_tf_connector",
+            "mrs_tf_mirror",
+            "mrs_tf_reconfigure"
+        ],
+        "test_depends": []
+    },
+    "mrs_tf_connector": {
+        "path": "mrs_tf_connector",
+        "version": "1.0.0",
+        "git_remote": "https://github.com/ctu-mrs/mrs_utils",
+        "git_branch": "ros2",
+        "git_rev": "5252bec077f9f0daf037b31e359b68acf43d3d86",
+        "build_type": "ament_cmake",
+        "buildtool_depends": [
+            "ament_cmake",
+            "ament_cmake_ros"
+        ],
+        "build_depends": [
+            "mrs_lib",
+            "mrs_modules_msgs",
+            "mrs_msgs",
+            "rclcpp",
+            "rclcpp_components",
+            "tf2",
+            "tf2_ros",
+            "tf2_sensor_msgs"
+        ],
+        "build_export_depends": [
+            "mrs_lib",
+            "mrs_modules_msgs",
+            "mrs_msgs",
+            "rclcpp",
+            "rclcpp_components",
+            "tf2",
+            "tf2_ros",
+            "tf2_sensor_msgs"
+        ],
+        "exec_depends": [
+            "mrs_lib",
+            "mrs_modules_msgs",
+            "mrs_msgs",
+            "rclcpp",
+            "rclcpp_components",
+            "tf2",
+            "tf2_ros",
+            "tf2_sensor_msgs"
+        ],
+        "test_depends": []
+    },
+    "mrs_tf_mirror": {
+        "path": "mrs_tf_mirror",
+        "version": "1.0.0",
+        "git_remote": "https://github.com/ctu-mrs/mrs_utils",
+        "git_branch": "ros2",
+        "git_rev": "5252bec077f9f0daf037b31e359b68acf43d3d86",
+        "build_type": "ament_cmake",
+        "buildtool_depends": [
+            "ament_cmake",
+            "ament_cmake_ros"
+        ],
+        "build_depends": [
+            "mrs_lib",
+            "mrs_modules_msgs",
+            "mrs_msgs",
+            "nav_msgs",
+            "rclcpp",
+            "rclcpp_components",
+            "tf2",
+            "tf2_ros",
+            "tf2_sensor_msgs"
+        ],
+        "build_export_depends": [
+            "mrs_lib",
+            "mrs_modules_msgs",
+            "mrs_msgs",
+            "nav_msgs",
+            "rclcpp",
+            "rclcpp_components",
+            "tf2",
+            "tf2_ros",
+            "tf2_sensor_msgs"
+        ],
+        "exec_depends": [
+            "mrs_lib",
+            "mrs_modules_msgs",
+            "mrs_msgs",
+            "nav_msgs",
+            "rclcpp",
+            "rclcpp_components",
+            "tf2",
+            "tf2_ros",
+            "tf2_sensor_msgs"
+        ],
+        "test_depends": []
+    },
+    "mrs_odometry_republisher": {
+        "path": "mrs_odometry_republisher",
+        "version": "2.0.0",
+        "git_remote": "https://github.com/ctu-mrs/mrs_utils",
+        "git_branch": "ros2",
+        "git_rev": "5252bec077f9f0daf037b31e359b68acf43d3d86",
+        "build_type": "ament_cmake",
+        "buildtool_depends": [
+            "ament_cmake"
+        ],
+        "build_depends": [
+            "geometry_msgs",
+            "launch",
+            "launch_ros",
+            "mrs_lib",
+            "nav_msgs",
+            "pluginlib",
+            "rclcpp",
+            "rclcpp_components",
+            "tf2",
+            "tf2_ros"
+        ],
+        "build_export_depends": [
+            "geometry_msgs",
+            "launch",
+            "launch_ros",
+            "mrs_lib",
+            "nav_msgs",
+            "pluginlib",
+            "rclcpp",
+            "rclcpp_components",
+            "tf2",
+            "tf2_ros"
+        ],
+        "exec_depends": [
+            "geometry_msgs",
+            "launch",
+            "launch_ros",
+            "mrs_lib",
+            "nav_msgs",
+            "pluginlib",
+            "rclcpp",
+            "rclcpp_components",
+            "tf2",
+            "tf2_ros"
+        ],
+        "test_depends": []
+    },
+    "mrs_tf_reconfigure": {
+        "path": "mrs_tf_reconfigure",
+        "version": "1.0.0",
+        "git_remote": "https://github.com/ctu-mrs/mrs_utils",
+        "git_branch": "ros2",
+        "git_rev": "5252bec077f9f0daf037b31e359b68acf43d3d86",
+        "build_type": "ament_cmake",
+        "buildtool_depends": [
+            "ament_cmake",
+            "ament_cmake_ros"
+        ],
+        "build_depends": [
+            "mrs_lib",
+            "mrs_modules_msgs",
+            "mrs_msgs",
+            "nav_msgs",
+            "rclcpp",
+            "rclcpp_components",
+            "sensor_msgs",
+            "tf2",
+            "tf2_ros",
+            "tf2_sensor_msgs"
+        ],
+        "build_export_depends": [
+            "mrs_lib",
+            "mrs_modules_msgs",
+            "mrs_msgs",
+            "nav_msgs",
+            "rclcpp",
+            "rclcpp_components",
+            "sensor_msgs",
+            "tf2",
+            "tf2_ros",
+            "tf2_sensor_msgs"
+        ],
+        "exec_depends": [
+            "mrs_lib",
+            "mrs_modules_msgs",
+            "mrs_msgs",
+            "nav_msgs",
+            "rclcpp",
+            "rclcpp_components",
+            "sensor_msgs",
+            "tf2",
+            "tf2_ros",
+            "tf2_sensor_msgs"
+        ],
+        "test_depends": []
+    },
     "mrs_uav_testing": {
         "path": "",
         "version": "2.0.0",
@@ -173,12 +435,54 @@
             "rclpy"
         ]
     },
+    "mrs_modules_msgs": {
+        "path": "",
+        "version": "2.0.0",
+        "git_remote": "https://github.com/ctu-mrs/mrs_modules_msgs",
+        "git_branch": "ros2",
+        "git_rev": "f8e74c471213014629e48e003d2f869cc0670f49",
+        "build_type": "ament_cmake",
+        "buildtool_depends": [
+            "ament_cmake"
+        ],
+        "build_depends": [
+            "builtin_interfaces",
+            "geometry_msgs",
+            "rclcpp",
+            "rosidl_default_generators",
+            "rosidl_default_runtime",
+            "sensor_msgs",
+            "std_msgs",
+            "std_srvs"
+        ],
+        "build_export_depends": [
+            "builtin_interfaces",
+            "geometry_msgs",
+            "rclcpp",
+            "rosidl_default_generators",
+            "rosidl_default_runtime",
+            "sensor_msgs",
+            "std_msgs",
+            "std_srvs"
+        ],
+        "exec_depends": [
+            "builtin_interfaces",
+            "geometry_msgs",
+            "rclcpp",
+            "rosidl_default_generators",
+            "rosidl_default_runtime",
+            "sensor_msgs",
+            "std_msgs",
+            "std_srvs"
+        ],
+        "test_depends": []
+    },
     "mrs_uav_trajectory_generation": {
         "path": "",
         "version": "2.0.0",
         "git_remote": "https://github.com/ctu-mrs/mrs_uav_trajectory_generation",
         "git_branch": "ros2",
-        "git_rev": "11fe62ae02b320e26cfe4f60fdb038ffa0227ab8",
+        "git_rev": "7935d99794e181570c3912b426f84c43ab7e7a65",
         "build_type": "ament_cmake",
         "buildtool_depends": [
             "ament_cmake",
@@ -401,6 +705,33 @@
             "rclpy"
         ]
     },
+    "mrs_uav_deployment": {
+        "path": "",
+        "version": "2.0.0",
+        "git_remote": "https://github.com/ctu-mrs/mrs_uav_deployment",
+        "git_branch": "ros2",
+        "git_rev": "9b8ac6116eae469a18afed8bb8c2a20fadd148d6",
+        "build_type": "ament_cmake",
+        "buildtool_depends": [
+            "ament_cmake"
+        ],
+        "build_depends": [
+            "launch",
+            "launch_ros",
+            "rclcpp"
+        ],
+        "build_export_depends": [
+            "launch",
+            "launch_ros",
+            "rclcpp"
+        ],
+        "exec_depends": [
+            "launch",
+            "launch_ros",
+            "rclcpp"
+        ],
+        "test_depends": []
+    },
     "nlopt": {
         "path": "",
         "version": "2.4.2",
@@ -419,6 +750,70 @@
         ],
         "exec_depends": [
             "rclcpp"
+        ],
+        "test_depends": []
+    },
+    "mrs_bumper": {
+        "path": "",
+        "version": "1.0.4",
+        "git_remote": "https://github.com/ctu-mrs/mrs_bumper",
+        "git_branch": "ros2",
+        "git_rev": "24bb8fef3879ae7206cbd81fd819c3f7d15b6ace",
+        "build_type": "ament_cmake",
+        "buildtool_depends": [
+            "ament_cmake",
+            "ament_cmake_ros"
+        ],
+        "build_depends": [
+            "cv_bridge",
+            "geometry_msgs",
+            "image_geometry",
+            "image_transport",
+            "mrs_lib",
+            "mrs_msgs",
+            "pcl_conversions",
+            "pcl_msgs",
+            "pcl_ros",
+            "rclcpp",
+            "rclcpp_components",
+            "sensor_msgs",
+            "tf2_geometry_msgs",
+            "tf2_ros",
+            "tf2_sensor_msgs"
+        ],
+        "build_export_depends": [
+            "cv_bridge",
+            "geometry_msgs",
+            "image_geometry",
+            "image_transport",
+            "mrs_lib",
+            "mrs_msgs",
+            "pcl_conversions",
+            "pcl_msgs",
+            "pcl_ros",
+            "rclcpp",
+            "rclcpp_components",
+            "sensor_msgs",
+            "tf2_geometry_msgs",
+            "tf2_ros",
+            "tf2_sensor_msgs"
+        ],
+        "exec_depends": [
+            "cv_bridge",
+            "geometry_msgs",
+            "image_geometry",
+            "image_transport",
+            "mrs_lib",
+            "mrs_msgs",
+            "pcl_conversions",
+            "pcl_msgs",
+            "pcl_ros",
+            "rclcpp",
+            "rclcpp_components",
+            "sensor_msgs",
+            "tf2_geometry_msgs",
+            "tf2_ros",
+            "tf2_sensor_msgs"
         ],
         "test_depends": []
     },
