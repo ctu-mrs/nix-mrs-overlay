@@ -234,6 +234,16 @@ in {
 
           # Inject the polyfill directly into CMakeLists.txt after the project() declaration
           sed -i '/project(/a add_compile_options("-include" "''${CMAKE_CURRENT_SOURCE_DIR}/mac_endian.h")' CMakeLists.txt
+
+          echo "Injecting macOS dynamic lookup linker flag for mavros_extras_plugins..."
+      
+          # Append the Apple-specific linker flag to the end of CMakeLists.txt
+          cat << 'EOF' >> CMakeLists.txt
+
+          if(APPLE)
+            set_target_properties(mavros_extras_plugins PROPERTIES LINK_FLAGS "-undefined dynamic_lookup")
+          endif()
+          EOF
         '';
       });
 
