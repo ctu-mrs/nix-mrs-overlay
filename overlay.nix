@@ -168,6 +168,32 @@ in {
         '';
       });
 
+      libmavconn = rosPrev.libmavconn.overrideAttrs (old: {
+        postPatch = (old.postPatch or "") + ''
+          # 7. Clean up Clang literal operator warnings
+          find . -type f -name "*.hpp" -exec sed -i 's/operator"" _KiB/operator""_KiB/g' {} +
+
+          echo "Injecting macOS endianness polyfill..."
+          cat << 'EOF' > mac_endian.h
+          #ifdef __APPLE__
+          #include <libkern/OSByteOrder.h>
+          #ifndef htole16
+          #define htole16(x) OSSwapHostToLittleInt16(x)
+          #define le16toh(x) OSSwapLittleToHostInt16(x)
+          #define htole32(x) OSSwapHostToLittleInt32(x)
+          #define le32toh(x) OSSwapLittleToHostInt32(x)
+          #define htole64(x) OSSwapHostToLittleInt64(x)
+          #define le64toh(x) OSSwapLittleToHostInt64(x)
+          #endif
+          #endif
+          EOF
+
+          # Inject the polyfill directly into CMakeLists.txt after the project() declaration
+          sed -i '/project(/a add_compile_options("-include" "''${CMAKE_CURRENT_SOURCE_DIR}/mac_endian.h")' CMakeLists.txt
+        '';
+      });
+
     });
+
   };
 }
