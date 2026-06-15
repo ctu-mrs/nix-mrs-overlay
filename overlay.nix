@@ -193,6 +193,28 @@ in {
         '';
       });
 
+      mavros = rosPrev.mavros.overrideAttrs (old: {
+        postPatch = (old.postPatch or "") + ''
+          echo "Injecting macOS endianness polyfill for mavros..."
+          cat << 'EOF' > mac_endian.h
+          #ifdef __APPLE__
+          #include <libkern/OSByteOrder.h>
+          #ifndef htole16
+          #define htole16(x) OSSwapHostToLittleInt16(x)
+          #define le16toh(x) OSSwapLittleToHostInt16(x)
+          #define htole32(x) OSSwapHostToLittleInt32(x)
+          #define le32toh(x) OSSwapLittleToHostInt32(x)
+          #define htole64(x) OSSwapHostToLittleInt64(x)
+          #define le64toh(x) OSSwapLittleToHostInt64(x)
+          #endif
+          #endif
+          EOF
+
+          # Inject the polyfill directly into CMakeLists.txt after the project() declaration
+          sed -i '/project(/a add_compile_options("-include" "''${CMAKE_CURRENT_SOURCE_DIR}/mac_endian.h")' CMakeLists.txt
+        '';
+      });
+
     });
 
   };
