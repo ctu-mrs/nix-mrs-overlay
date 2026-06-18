@@ -1,1 +1,1 @@
-nix build .#all --refresh --accept-flake-config --impure
+./safe_build.sh .#all --refresh --accept-flake-config --impure

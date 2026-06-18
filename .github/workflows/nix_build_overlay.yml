@@ -108,7 +108,7 @@ jobs:
           extraPullNames: ros
 
       - name: Nix Build
-        run: nix build .#packages.${{ matrix.system }}.all --refresh --accept-flake-config --impure
+        run: ./safe_build.sh .#packages.${{ matrix.system }}.all --refresh --accept-flake-config --impure
 
       - name: Push to Cachix
         if: always()
