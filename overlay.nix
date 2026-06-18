@@ -40,6 +40,7 @@ let
     "net-tools" = prev.net-tools;
     "nmap" = prev.nmap;
     "spdlog" = prev.spdlog;
+    "qtbase5-dev" = prev.qt5.qtbase;
   };
 
   linuxOnlyDeps = [
