@@ -31,4 +31,4 @@ echo "🚀 Allocating 3GB per core -> Running Nix with --cores ${ALLOWED_CORES}"
 echo "------------------------------------------------------"
 
 # 4. Execute the Nix build with the dynamic core count
-nix build "$@" --cores "$ALLOWED_CORES"
+nix build "$@" --max-jobs 1 --cores "$ALLOWED_CORES"
