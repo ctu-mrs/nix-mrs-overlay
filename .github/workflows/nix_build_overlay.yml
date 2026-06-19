@@ -5,6 +5,9 @@ on:
     branches: [ master ]
   workflow_dispatch:
 
+  schedule:
+    - cron:  '0 0 * * *'
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -84,7 +87,7 @@ jobs:
           name: workspace-files
           path: .
 
-      # Nix Flakes require files to be tracked/committed in git. 
+      # Nix Flakes require files to be tracked/committed in git.
       # Since this is an isolated VM, we apply the commit locally BEFORE building!
       - name: Locally Commit Files for Nix Flakes
         run: |
