@@ -1524,5 +1524,21 @@
         "build_export_depends": [],
         "exec_depends": [],
         "test_depends": []
+    },
+    "mrs-colcon-mixin": {
+        "path": "",
+        "version": "2.0.0",
+        "git_remote": "https://github.com/ctu-mrs/colcon_mixin",
+        "git_branch": "master",
+        "git_rev": "69219f1f5bdf8291df56940f1087c72b654981c3",
+        "build_type": "raw_copy",
+        "install_mapping": {
+            ".": "mixins"
+        },
+        "buildtool_depends": [],
+        "build_depends": [],
+        "build_export_depends": [],
+        "exec_depends": [],
+        "test_depends": []
     }
 }
