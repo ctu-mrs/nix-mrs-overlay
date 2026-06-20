@@ -25,11 +25,11 @@
         "rosdistro": "rosdistro"
       },
       "locked": {
-        "lastModified": 1781932445,
-        "narHash": "sha256-0ZP3R2c2mZ+s3Y4b5nSjWaFhNcxpvjV7AKw8ajX3NQU=",
+        "lastModified": 1781933159,
+        "narHash": "sha256-qMnPnRYmW+OK5B38GZJi3sTyikce00I9o+SDHkK/4No=",
         "owner": "klaxalk",
         "repo": "nix-ros-overlay",
-        "rev": "3080ccf18364fa44547dac4deab1322eac4d669b",
+        "rev": "2507d49a832c196545b01f665a52380c51585a1a",
         "type": "github"
       },
       "original": {
