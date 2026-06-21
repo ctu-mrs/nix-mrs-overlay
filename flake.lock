@@ -25,16 +25,16 @@
         "rosdistro": "rosdistro"
       },
       "locked": {
-        "lastModified": 1782064820,
-        "narHash": "sha256-DnzbDCUml5Xk+bocmxt+deBn1cMPmMH/gO4rug3tDck=",
-        "owner": "klaxalk",
+        "lastModified": 1781900693,
+        "narHash": "sha256-4KFk+S9ZbMonItYsdPtZjwESsgrCEpXGDa6rosDxLGs=",
+        "owner": "lopsided98",
         "repo": "nix-ros-overlay",
-        "rev": "ee294324dc063d1f33f61c52465b815c92a07a65",
+        "rev": "fb296510db68c2e760980ab8c6daf6ded9060213",
         "type": "github"
       },
       "original": {
-        "owner": "klaxalk",
-        "ref": "fix_mavros",
+        "owner": "lopsided98",
+        "ref": "develop",
         "repo": "nix-ros-overlay",
         "type": "github"
       }
