@@ -1,7 +1,7 @@
 {
   inputs = {
     # nix-ros-overlay.url = "github:lopsided98/nix-ros-overlay/master";
-    nix-ros-overlay.url = "github:klaxalk/nix-ros-overlay/fix_libmavconn";
+    nix-ros-overlay.url = "github:klaxalk/nix-ros-overlay/fix_mavros";
     nixpkgs.follows = "nix-ros-overlay/nixpkgs";
   };
 
