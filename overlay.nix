@@ -246,12 +246,12 @@ in {
           # Inject the polyfill directly into CMakeLists.txt after the project() declaration
           sed -i '/project(/a add_compile_options("-include" "''${CMAKE_CURRENT_SOURCE_DIR}/mac_endian.h")' CMakeLists.txt
 
-          echo "Globally migrating tf2::fromMsg to tf2::transformToEigen across all plugins..."
-          find src/plugins -type f -name "*.cpp" -exec sed -i -E 's/tf2::fromMsg\(([^,]*transform[^,]*),\s*([^)]+)\);/\2 = tf2::transformToEigen(\1);/gi' {} +
-          
-          echo "Reverting regex overshoot for quaternion and translation sub-fields..."
-          # This undoes the damage if the regex accidentally caught .rotation or .translation fields
-          find src/plugins -type f -name "*.cpp" -exec sed -i -E 's/([a-zA-Z0-9_]+)\s*=\s*tf2::transformToEigen\(([^)]*\.(rotation|translation))\);/tf2::fromMsg(\2, \1);/gi' {} +
+          # echo "Globally migrating tf2::fromMsg to tf2::transformToEigen across all plugins..."
+          # find src/plugins -type f -name "*.cpp" -exec sed -i -E 's/tf2::fromMsg\(([^,]*transform[^,]*),\s*([^)]+)\);/\2 = tf2::transformToEigen(\1);/gi' {} +
+          # 
+          # echo "Reverting regex overshoot for quaternion and translation sub-fields..."
+          # # This undoes the damage if the regex accidentally caught .rotation or .translation fields
+          # find src/plugins -type f -name "*.cpp" -exec sed -i -E 's/([a-zA-Z0-9_]+)\s*=\s*tf2::transformToEigen\(([^)]*\.(rotation|translation))\);/tf2::fromMsg(\2, \1);/gi' {} +
 
           substituteInPlace src/plugins/hil.cpp \
             --replace-fail 'auto lin_vel = ftf::transform' 'Eigen::Vector3d lin_vel = ftf::transform' \
