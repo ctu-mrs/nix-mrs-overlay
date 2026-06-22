@@ -414,22 +414,6 @@
         ],
         "test_depends": []
     },
-    "mrs-geographiclib-datasets": {
-        "path": "",
-        "version": "2.0.0",
-        "git_remote": "https://github.com/ctu-mrs/mrs-geographiclib-datasets",
-        "git_branch": "master",
-        "git_rev": "2e5776c7542deb4c8b3762891bc2d0ee245b8320",
-        "build_type": "raw_copy",
-        "install_mapping": {
-            "package/usr": "usr"
-        },
-        "buildtool_depends": [],
-        "build_depends": [],
-        "build_export_depends": [],
-        "exec_depends": [],
-        "test_depends": []
-    },
     "mrs_lib": {
         "path": "",
         "version": "2.0.0",
