@@ -750,7 +750,7 @@
         "version": "2.0.0",
         "git_remote": "https://github.com/ctu-mrs/mrs_uav_managers",
         "git_branch": "ros2",
-        "git_rev": "2c4a55bb2e96315fdbd7be3a1509aeae0243e34c",
+        "git_rev": "b7bb0b9117f0abef45066011597b03fb3ff2f21a",
         "build_type": "ament_cmake",
         "buildtool_depends": [
             "ament_cmake",
@@ -1221,7 +1221,7 @@
         "version": "2.0.0",
         "git_remote": "https://github.com/ctu-mrs/mrs_uav_core",
         "git_branch": "ros2",
-        "git_rev": "67a56d397f18111e411899a963eceb6edcd1fbd6",
+        "git_rev": "1a76319754cce68cf571c18b64bcc943671bd552",
         "build_type": "ament_cmake",
         "buildtool_depends": [
             "ament_cmake"
@@ -1497,7 +1497,7 @@
         "version": "2.0.0",
         "git_remote": "https://github.com/ctu-mrs/mrs_uav_shell_additions",
         "git_branch": "ros2",
-        "git_rev": "ea8bffd709c2b25dbefb588f5741c7a2d8102c44",
+        "git_rev": "abc00a85352ff7f05af20fa6c1be8504605de38c",
         "build_type": "raw_copy",
         "install_mapping": {
             "package/usr/bin": "bin",
