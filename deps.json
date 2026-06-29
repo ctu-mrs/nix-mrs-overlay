@@ -838,7 +838,7 @@
         "version": "2.0.0",
         "git_remote": "https://github.com/ctu-mrs/mrs_uav_deployment",
         "git_branch": "ros2",
-        "git_rev": "ce87574ccd3bca491060bc55016e3185ff19d8fc",
+        "git_rev": "f47e73f92a9ae1e41aaaee2262cadc3cf8968db8",
         "build_type": "ament_cmake",
         "buildtool_depends": [
             "ament_cmake"
