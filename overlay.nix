@@ -40,6 +40,7 @@ let
     "net-tools" = prev.net-tools;
     "nmap" = prev.nmap;
     "spdlog" = prev.spdlog;
+    "vtk" = prev.vtk;
     "qtbase5-dev" = prev.qt5.qtbase;
   };
 
@@ -168,6 +169,15 @@ in {
           sed -i '1i set(CMAKE_CXX_FLAGS "''${CMAKE_CXX_FLAGS} -Wno-error=deprecated-literal-operator")' CMakeLists.txt
         '';
       });
+
+      # Fix bundled spdlog/fmt deprecation errors in modern Clang/LLVM
+      livox-sdk2 = if builtins.hasAttr "livox-sdk2" mrsPackages then 
+        mrsPackages."livox-sdk2".overrideAttrs (old: {
+          # Inject flags to demote modern C++ deprecation warnings from fatal errors back to warnings
+          NIX_CFLAGS_COMPILE = toString (old.NIX_CFLAGS_COMPILE or "") 
+            + " -Wno-error=deprecated-literal-operator -Wno-error=deprecated-declarations";
+        }) 
+      else {};
 
       libmavconn = rosPrev.libmavconn.overrideAttrs (old: {
         postPatch = (old.postPatch or "") + ''
