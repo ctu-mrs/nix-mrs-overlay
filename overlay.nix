@@ -136,8 +136,9 @@ in {
         # Cleanly merge into the existing env attribute set to prevent Nix overlap errors
         env = (old.env or {}) // {
           NIX_CFLAGS_COMPILE = (old.env.NIX_CFLAGS_COMPILE or "") 
-            + " -Wno-error=deprecated-literal-operator -Wno-error=deprecated-declarations";
+            + " -Wno-unknown-warning-option -Wno-deprecated-declarations -Wno-unused-private-field -Wno-delete-non-abstract-non-virtual-dtor -Wno-non-c-typedef-for-linkage -Wno-unused-const-variable -Wno-unused-parameter -Wno-ignored-qualifiers";
         };
+
       }) 
     else {};
 
