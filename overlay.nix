@@ -7,7 +7,6 @@ let
     version = "1.0.0";
     unpackPhase = "true";
     installPhase = "mkdir -p $out";
-
     meta = {
       platforms = prev.lib.platforms.all;
       badPlatforms = [];
@@ -129,7 +128,47 @@ let
   ) depsMap;
 
 in {
-  mrsCustomPkgs = mrsPackages;
+
+  mrsCustomPkgs = mrsPackages // {
+    # 1. Fix bundled spdlog/fmt deprecation errors in modern Clang/LLVM
+    livox-sdk2 = if builtins.hasAttr "livox-sdk2" mrsPackages then 
+      mrsPackages."livox-sdk2".overrideAttrs (old: {
+        # Cleanly merge into the existing env attribute set to prevent Nix overlap errors
+        env = (old.env or {}) // {
+          NIX_CFLAGS_COMPILE = (old.env.NIX_CFLAGS_COMPILE or "") 
+            + " -Wno-error=deprecated-literal-operator -Wno-error=deprecated-declarations";
+        };
+      }) 
+    else {};
+
+    # 2. Comprehensive fix for livox_ros_driver2 (macOS + Nix Sandbox + VTK Leak)
+    livox_ros_driver2 = if builtins.hasAttr "livox_ros_driver2" mrsPackages then 
+      mrsPackages."livox_ros_driver2".overrideAttrs (old: {
+        buildInputs = (old.buildInputs or []) ++ [ 
+          final.mrsCustomPkgs."livox-sdk2"
+          prev.vtk 
+          prev.qt5.qtbase 
+        ];
+
+        # Cleanly merge the C++ flags here as well
+        env = (old.env or {}) // {
+          NIX_CFLAGS_COMPILE = (old.env.NIX_CFLAGS_COMPILE or "") 
+            + " -Wno-error=deprecated-literal-operator -Wno-error=deprecated-declarations";
+        };
+
+        postPatch = (old.postPatch or "") + ''
+          echo "Bypassing pcl_ros VTK::GUISupportQt leak with a dummy target..."
+          # Satisfies CMake's target requirement without actually linking Qt GUI libraries
+          sed -i '1i add_library(VTK::GUISupportQt INTERFACE IMPORTED)' CMakeLists.txt
+
+          echo "Stripping hardcoded /usr/local/lib path for Nix hermeticity..."
+          substituteInPlace CMakeLists.txt \
+            --replace-fail 'find_library(LIVOX_LIDAR_SDK_LIBRARY liblivox_lidar_sdk_shared.so /usr/local/lib REQUIRED)' \
+                           'find_library(LIVOX_LIDAR_SDK_LIBRARY liblivox_lidar_sdk_shared.so REQUIRED)' || true
+        '';
+      }) 
+    else {};
+  };
 
   lttng-tools = if prev.stdenv.isDarwin then darwinDummy "lttng-tools" else prev.lttng-tools;
   lttng-ust = if prev.stdenv.isDarwin then darwinDummy "lttng-ust" else prev.lttng-ust;
@@ -169,15 +208,6 @@ in {
           sed -i '1i set(CMAKE_CXX_FLAGS "''${CMAKE_CXX_FLAGS} -Wno-error=deprecated-literal-operator")' CMakeLists.txt
         '';
       });
-
-      # Fix bundled spdlog/fmt deprecation errors in modern Clang/LLVM
-      livox-sdk2 = if builtins.hasAttr "livox-sdk2" mrsPackages then 
-        mrsPackages."livox-sdk2".overrideAttrs (old: {
-          # Inject flags to demote modern C++ deprecation warnings from fatal errors back to warnings
-          NIX_CFLAGS_COMPILE = toString (old.NIX_CFLAGS_COMPILE or "") 
-            + " -Wno-error=deprecated-literal-operator -Wno-error=deprecated-declarations";
-        }) 
-      else {};
 
       libmavconn = rosPrev.libmavconn.overrideAttrs (old: {
         postPatch = (old.postPatch or "") + ''
@@ -278,8 +308,6 @@ in {
           ####
         '';
       });
-
     });
-
   };
 }
