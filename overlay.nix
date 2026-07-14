@@ -139,6 +139,15 @@ in {
             + " -Wno-unknown-warning-option -Wno-deprecated-declarations -Wno-unused-private-field -Wno-delete-non-abstract-non-virtual-dtor -Wno-non-c-typedef-for-linkage -Wno-unused-const-variable -Wno-unused-parameter -Wno-ignored-qualifiers";
         };
 
+        postPatch = (old.postPatch or "") + ''
+          echo "Stripping aggressive -Werror flags from Livox CMake files..."
+          # Livox hardcodes -Werror, which overrides Nix environment variables
+          find . -type f -name "CMakeLists.txt" -exec sed -i 's/-Werror//g' {} +
+          find . -type f -name "*.cmake" -exec sed -i 's/-Werror//g' {} +
+          
+          echo "Injecting warning suppressions directly into CMake..."
+          sed -i '1i set(CMAKE_CXX_FLAGS "''${CMAKE_CXX_FLAGS} -Wno-error=deprecated-literal-operator -Wno-error=deprecated-declarations")' CMakeLists.txt
+        '';
       }) 
     else {};
 
@@ -154,18 +163,25 @@ in {
         # Cleanly merge the C++ flags here as well
         env = (old.env or {}) // {
           NIX_CFLAGS_COMPILE = (old.env.NIX_CFLAGS_COMPILE or "") 
-            + " -Wno-error=deprecated-literal-operator -Wno-error=deprecated-declarations";
+            + " -Wno-unknown-warning-option -Wno-deprecated-declarations -Wno-unused-private-field -Wno-delete-non-abstract-non-virtual-dtor -Wno-non-c-typedef-for-linkage -Wno-unused-const-variable -Wno-unused-parameter -Wno-ignored-qualifiers";
         };
 
         postPatch = (old.postPatch or "") + ''
+	  echo "Fixing macOS 'long' vs 'long long' strictness for ROS 2 parameters..."
+          find . -type f \( -name "*.cpp" -o -name "*.h" -o -name "*.hpp" \) -exec sed -i -E 's/std::vector<\s*long\s*>/std::vector<int64_t>/g' {} +
+          find . -type f \( -name "*.cpp" -o -name "*.h" -o -name "*.hpp" \) -exec sed -i -E 's/std::vector<\s*long\s+int\s*>/std::vector<int64_t>/g' {} +
+          find . -type f \( -name "*.cpp" -o -name "*.h" -o -name "*.hpp" \) -exec sed -i -E 's/\bvector<\s*long\s*>/vector<int64_t>/g' {} +
+
           echo "Bypassing pcl_ros VTK::GUISupportQt leak with a dummy target..."
           # Satisfies CMake's target requirement without actually linking Qt GUI libraries
           sed -i '1i add_library(VTK::GUISupportQt INTERFACE IMPORTED)' CMakeLists.txt
 
+          echo "Fixing hardcoded Linux .so extensions for macOS compatibility..."
+          # By removing 'lib' and '.so', CMake will dynamically search for .dylib on macOS and .so on Linux
+          sed -i 's/liblivox_lidar_sdk_shared\.so/livox_lidar_sdk_shared/g' CMakeLists.txt
+
           echo "Stripping hardcoded /usr/local/lib path for Nix hermeticity..."
-          substituteInPlace CMakeLists.txt \
-            --replace-fail 'find_library(LIVOX_LIDAR_SDK_LIBRARY liblivox_lidar_sdk_shared.so /usr/local/lib REQUIRED)' \
-                           'find_library(LIVOX_LIDAR_SDK_LIBRARY liblivox_lidar_sdk_shared.so REQUIRED)' || true
+          sed -i 's|/usr/local/lib||g' CMakeLists.txt
         '';
       }) 
     else {};
