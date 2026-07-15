@@ -130,9 +130,10 @@ let
 in {
 
   mrsCustomPkgs = mrsPackages // {
+
     livox-sdk2 = if builtins.hasAttr "livox-sdk2" mrsPackages then 
       mrsPackages."livox-sdk2".overrideAttrs (old: {
-        # Cleanly merge into the existing env attribute set to prevent Nix overlap errors
+        
         env = (old.env or {}) // {
           NIX_CFLAGS_COMPILE = (old.env.NIX_CFLAGS_COMPILE or "") 
             + " -Wno-unknown-warning-option -Wno-deprecated-declarations -Wno-unused-private-field -Wno-delete-non-abstract-non-virtual-dtor -Wno-non-c-typedef-for-linkage -Wno-unused-const-variable -Wno-unused-parameter -Wno-ignored-qualifiers";
@@ -140,13 +141,15 @@ in {
 
         postPatch = (old.postPatch or "") + ''
           echo "Stripping aggressive -Werror flags from Livox CMake files..."
-          # Livox hardcodes -Werror, which overrides Nix environment variables
           find . -type f -name "CMakeLists.txt" -exec sed -i 's/-Werror//g' {} +
           find . -type f -name "*.cmake" -exec sed -i 's/-Werror//g' {} +
           
           echo "Injecting warning suppressions directly into CMake..."
           sed -i '1i set(CMAKE_CXX_FLAGS "''${CMAKE_CXX_FLAGS} -Wno-error=deprecated-literal-operator -Wno-error=deprecated-declarations")' CMakeLists.txt
-        '';
+        '' + (if prev.stdenv.isDarwin then ''
+          echo "Bypassing macOS ranlib I/O error by forcing the static target to build as shared..."
+          find . -type f -name "CMakeLists.txt" -exec sed -i 's/livox_lidar_sdk_static STATIC/livox_lidar_sdk_static SHARED/g' {} +
+        '' else "");
       }) 
     else {};
 
