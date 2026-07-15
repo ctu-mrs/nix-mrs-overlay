@@ -130,7 +130,6 @@ let
 in {
 
   mrsCustomPkgs = mrsPackages // {
-    # 1. Fix bundled spdlog/fmt deprecation errors in modern Clang/LLVM
     livox-sdk2 = if builtins.hasAttr "livox-sdk2" mrsPackages then 
       mrsPackages."livox-sdk2".overrideAttrs (old: {
         # Cleanly merge into the existing env attribute set to prevent Nix overlap errors
@@ -150,6 +149,15 @@ in {
         '';
       }) 
     else {};
+
+      rosbag2-transport = rosPrev.rosbag2-transport.overrideAttrs (old: {
+        postPatch = (old.postPatch or "") + ''
+          echo "Fixing Clang TSA attribute placement vs brace initialization on macOS..."
+          substituteInPlace src/rosbag2_transport/locked_priority_queue.hpp \
+            --replace-fail 'size_t insert_sequence_number_{0} RCPPUTILS_TSA_GUARDED_BY(queue_mutex_);' \
+                           'size_t insert_sequence_number_ RCPPUTILS_TSA_GUARDED_BY(queue_mutex_){0};'
+        '';
+      });
 
     # 2. Comprehensive fix for livox_ros_driver2 (macOS + Nix Sandbox + VTK Leak)
     livox_ros_driver2 = if builtins.hasAttr "livox_ros_driver2" mrsPackages then 
