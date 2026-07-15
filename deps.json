@@ -381,7 +381,7 @@
         "version": "2.0.0",
         "git_remote": "https://github.com/ctu-mrs/livox_sdk2",
         "git_branch": "ros2",
-        "git_rev": "34dd466d1934b631fffea5f2475821a188f08ae6",
+        "git_rev": "389c2824d4ffc44cf58b49be5262e02c4f423b27",
         "build_type": "cmake",
         "install_mapping": {},
         "buildtool_depends": [],
