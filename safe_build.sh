@@ -15,7 +15,7 @@ else
 fi
 
 # 2. Calculate allowed cores (Total RAM / 3GB per core)
-ALLOWED_CORES=$((RAM_GB / 3))
+ALLOWED_CORES=$((RAM_GB / 4))
 
 # 3. Apply bounds (Minimum 1 core, Maximum = actual hardware threads)
 if [ "$ALLOWED_CORES" -lt 1 ]; then 
