@@ -116,6 +116,7 @@ let
         __structuredAttrs = true;
         cmakeFlags = [ "-DCMAKE_NINJA_FORCE_RESPONSE_FILE=1" ];
         env.NIX_CFLAGS_COMPILE = "-Wno-error=nonnull -Wno-nonnull -Wno-register -DPyEval_CallObject=PyObject_CallObject";
+        env.ROS_DISTRO = "jazzy";
         separateDebugInfo = false;
         dontStrip = true;
         nativeBuildInputs = builtins.filter (x: x != null) (builtins.map resolveDep pkgData.buildtool_depends);
