@@ -15,7 +15,7 @@ else
 fi
 
 # 2. Calculate allowed cores (Total RAM / 3GB per core)
-ALLOWED_CORES=$((RAM_GB / 4))
+ALLOWED_CORES=$((RAM_GB / 5))
 
 # 3. Apply bounds (Minimum 1 core, Maximum = actual hardware threads)
 if [ "$ALLOWED_CORES" -lt 1 ]; then 
@@ -27,7 +27,7 @@ if [ "$ALLOWED_CORES" -gt "$CPU_THREADS" ]; then
 fi
 
 echo "🧠 System RAM: ${RAM_GB}GB | Hardware Threads: ${CPU_THREADS}"
-echo "🚀 Allocating 3GB per core -> Running Nix with --cores ${ALLOWED_CORES}"
+echo "🚀 Allocating 5GB per core -> Running Nix with --cores ${ALLOWED_CORES}"
 echo "------------------------------------------------------"
 
 # 4. Execute the Nix build with the dynamic core count
