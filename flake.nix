@@ -1,6 +1,6 @@
 {
   inputs = {
-    nix-ros-overlay.url = "github:lopsided98/nix-ros-overlay/master";
+    nix-ros-overlay.url = "github:lopsided98/nix-ros-overlay/fb296510db68c2e760980ab8c6daf6ded9060213";
     nixpkgs.follows = "nix-ros-overlay/nixpkgs";
   };
 
