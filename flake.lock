@@ -34,8 +34,8 @@
       },
       "original": {
         "owner": "lopsided98",
-        "ref": "develop",
         "repo": "nix-ros-overlay",
+        "rev": "fb296510db68c2e760980ab8c6daf6ded9060213",
         "type": "github"
       }
     },
