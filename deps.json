@@ -5,7 +5,7 @@
         "version": "2.0.0",
         "git_remote": "https://github.com/ctu-mrs/mrs_uav_trajectory_generation",
         "git_branch": "ros2",
-        "git_rev": "f0f3dd2bc529015e1b4d3febee30d33cdfa02e41",
+        "git_rev": "0a93ee4c175feb0f0e62de5b57b89c57bb0d4695",
         "build_type": "ament_cmake",
         "buildtool_depends": [
             "ament_cmake",
@@ -133,7 +133,7 @@
         "version": "2.0.0",
         "git_remote": "https://github.com/ctu-mrs/mrs_uav_managers",
         "git_branch": "ros2",
-        "git_rev": "eff968a0fb20e56cc1d30fb687659c86e247ec86",
+        "git_rev": "aaa08c04bbad322b1f46f6327441fe1c2226f2b6",
         "build_type": "ament_cmake",
         "buildtool_depends": [
             "ament_cmake",
@@ -289,7 +289,7 @@
         "version": "2.0.0",
         "git_remote": "https://github.com/ctu-mrs/mrs_uav_autostart",
         "git_branch": "ros2",
-        "git_rev": "9430e08f1bbff8eb33f143aa14af1d18d03c77a1",
+        "git_rev": "ddfd2f03d29a2ccd713ff8c8c980a7e55d632844",
         "build_type": "ament_cmake",
         "buildtool_depends": [
             "ament_cmake",
@@ -347,7 +347,7 @@
         "version": "2.0.0",
         "git_remote": "https://github.com/ctu-mrs/mrs_uav_hw_api",
         "git_branch": "ros2",
-        "git_rev": "31c76a11f609cafb5c71c4c73424a9619799486b",
+        "git_rev": "f6829fa64359fe2df81c0da8aa3c39fbedcdbb5b",
         "build_type": "ament_cmake",
         "buildtool_depends": [
             "ament_cmake",
@@ -434,7 +434,7 @@
         "version": "2.0.0",
         "git_remote": "https://github.com/ctu-mrs/mrs_uav_controllers",
         "git_branch": "ros2",
-        "git_rev": "16e7261b2480dc1ae4ebc2e227b2f377bcf74592",
+        "git_rev": "b0ab1fbe7b7ecc36f48098679b4476978e9de515",
         "build_type": "ament_cmake",
         "buildtool_depends": [
             "ament_cmake",
@@ -568,7 +568,7 @@
         "version": "2.0.0",
         "git_remote": "https://github.com/ctu-mrs/mrs_uav_state_estimators",
         "git_branch": "ros2",
-        "git_rev": "b9cdebff362a769186423a6668827a7964499186",
+        "git_rev": "08473c2eba666c75ae27270a0c51dd9054354545",
         "build_type": "ament_cmake",
         "buildtool_depends": [
             "ament_cmake",
@@ -1129,7 +1129,7 @@
         "version": "2.0.0",
         "git_remote": "https://github.com/ctu-mrs/mrs_uav_testing",
         "git_branch": "ros2",
-        "git_rev": "3ce9c1eb0a5fba0b1ce3f441760153e721cb03c3",
+        "git_rev": "cdd459c16bc3eab7520c71bae9e8e16c5c0c7d5e",
         "build_type": "ament_cmake",
         "buildtool_depends": [
             "ament_cmake"
@@ -1412,7 +1412,7 @@
         "version": "2.0.0",
         "git_remote": "https://github.com/ctu-mrs/mrs_uav_trackers",
         "git_branch": "ros2",
-        "git_rev": "7e4bb7fddab2e3722ded9b1e18534893d3d213df",
+        "git_rev": "57df4768af772209fe17cfbc6680aa215c7ac7c1",
         "build_type": "ament_cmake",
         "buildtool_depends": [
             "ament_cmake",
