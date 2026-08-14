@@ -1262,7 +1262,7 @@
         "version": "2.0.0",
         "git_remote": "https://github.com/ctu-mrs/mrs_vins_imu_filter",
         "git_branch": "ros2",
-        "git_rev": "8dee59e534b23b65bac7b93542ef2751eab26e34",
+        "git_rev": "1ab6c33bb1ccd9ca08811387d46f579aa808ca0c",
         "build_type": "ament_cmake",
         "buildtool_depends": [
             "ament_cmake",
