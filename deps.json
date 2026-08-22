@@ -88,7 +88,7 @@
         "version": "2.0.0",
         "git_remote": "https://github.com/ctu-mrs/mrs_uav_testing",
         "git_branch": "ros2",
-        "git_rev": "cdd459c16bc3eab7520c71bae9e8e16c5c0c7d5e",
+        "git_rev": "ad975b738cd941629cac011bc9dc2d8b6daf394d",
         "build_type": "ament_cmake",
         "buildtool_depends": [
             "ament_cmake"
@@ -473,7 +473,7 @@
         "version": "2.0.0",
         "git_remote": "https://github.com/ctu-mrs/mrs_lib",
         "git_branch": "ros2",
-        "git_rev": "2ca28fd81bf1fa24680507d2ac0ef846bcc20191",
+        "git_rev": "61b86f24d132a7d137b5db6d48addf808d94ba45",
         "build_type": "ament_cmake",
         "buildtool_depends": [
             "ament_cmake_python"
@@ -644,7 +644,7 @@
         "version": "2.0.0",
         "git_remote": "https://github.com/ctu-mrs/mrs_uav_trackers",
         "git_branch": "ros2",
-        "git_rev": "57df4768af772209fe17cfbc6680aa215c7ac7c1",
+        "git_rev": "1cb113e959810e370c92ed935ed32077d0f951af",
         "build_type": "ament_cmake",
         "buildtool_depends": [
             "ament_cmake",
@@ -808,7 +808,7 @@
         "version": "2.0.0",
         "git_remote": "https://github.com/ctu-mrs/mrs_uav_controllers",
         "git_branch": "ros2",
-        "git_rev": "b0ab1fbe7b7ecc36f48098679b4476978e9de515",
+        "git_rev": "a10a7897e7ed3e2a1bb11a3ede1d4e86c05a4a1f",
         "build_type": "ament_cmake",
         "buildtool_depends": [
             "ament_cmake",
@@ -872,7 +872,7 @@
         "version": "2.0.0",
         "git_remote": "https://github.com/ctu-mrs/mrs_uav_hw_api",
         "git_branch": "ros2",
-        "git_rev": "f6829fa64359fe2df81c0da8aa3c39fbedcdbb5b",
+        "git_rev": "874fd0a086ca6231724d058389b78841bf86781d",
         "build_type": "ament_cmake",
         "buildtool_depends": [
             "ament_cmake",
@@ -942,7 +942,7 @@
         "version": "2.0.0",
         "git_remote": "https://github.com/ctu-mrs/mrs_uav_managers",
         "git_branch": "ros2",
-        "git_rev": "b70b935a3fe0e562cc0542e920a5091fa704e4e1",
+        "git_rev": "55bfbc46f06ec6a377737ec01ab2c26df107d501",
         "build_type": "ament_cmake",
         "buildtool_depends": [
             "ament_cmake",
@@ -1047,7 +1047,7 @@
         "version": "2.0.0",
         "git_remote": "https://github.com/ctu-mrs/mrs_uav_trajectory_generation",
         "git_branch": "ros2",
-        "git_rev": "0a93ee4c175feb0f0e62de5b57b89c57bb0d4695",
+        "git_rev": "a578607c4cd67255c4e70d20d79e2ce4200ce915",
         "build_type": "ament_cmake",
         "buildtool_depends": [
             "ament_cmake",
@@ -1305,7 +1305,7 @@
         "version": "2.0.0",
         "git_remote": "https://github.com/ctu-mrs/mrs_uav_state_estimators",
         "git_branch": "ros2",
-        "git_rev": "bbf78cb29cb488a368ea0423b169b16049c0ed33",
+        "git_rev": "d60354c241435a3231059432c6fd4cfe0e492ffb",
         "build_type": "ament_cmake",
         "buildtool_depends": [
             "ament_cmake",
@@ -1447,7 +1447,7 @@
         "version": "2.0.0",
         "git_remote": "https://github.com/ctu-mrs/mrs_uav_autostart",
         "git_branch": "ros2",
-        "git_rev": "ddfd2f03d29a2ccd713ff8c8c980a7e55d632844",
+        "git_rev": "36748a6349d011259a9bcb99d4936d8dbf75f713",
         "build_type": "ament_cmake",
         "buildtool_depends": [
             "ament_cmake",
@@ -1566,7 +1566,7 @@
         "version": "2.0.0",
         "git_remote": "https://github.com/ctu-mrs/mrs_multirotor_simulator",
         "git_branch": "ros2",
-        "git_rev": "630038f0049a6609562aef146a83edb25d39108f",
+        "git_rev": "06c45f4d9897ec0150a0d4221a662e4fdf8d3c47",
         "build_type": "ament_cmake",
         "buildtool_depends": [
             "ament_cmake",
@@ -1590,12 +1590,52 @@
             "mrs_cmake"
         ]
     },
+    "mrs_multirotor_simulator_plugins": {
+        "path": "mrs_multirotor_simulator_plugins",
+        "version": "2.0.0",
+        "git_remote": "https://github.com/ctu-mrs/mrs_multirotor_simulator",
+        "git_branch": "ros2",
+        "git_rev": "06c45f4d9897ec0150a0d4221a662e4fdf8d3c47",
+        "build_type": "ament_cmake",
+        "buildtool_depends": [
+            "ament_cmake",
+            "ament_cmake_ros"
+        ],
+        "build_depends": [
+            "eigen",
+            "mrs_lib",
+            "mrs_multirotor_simulator",
+            "mrs_multirotor_simulator_core",
+            "pluginlib",
+            "rclcpp",
+            "rclcpp_components"
+        ],
+        "build_export_depends": [
+            "eigen",
+            "mrs_lib",
+            "mrs_multirotor_simulator",
+            "mrs_multirotor_simulator_core",
+            "pluginlib",
+            "rclcpp",
+            "rclcpp_components"
+        ],
+        "exec_depends": [
+            "eigen",
+            "mrs_lib",
+            "mrs_multirotor_simulator",
+            "mrs_multirotor_simulator_core",
+            "pluginlib",
+            "rclcpp",
+            "rclcpp_components"
+        ],
+        "test_depends": []
+    },
     "mrs_multirotor_simulator": {
         "path": "mrs_multirotor_simulator",
         "version": "2.0.0",
         "git_remote": "https://github.com/ctu-mrs/mrs_multirotor_simulator",
         "git_branch": "ros2",
-        "git_rev": "630038f0049a6609562aef146a83edb25d39108f",
+        "git_rev": "06c45f4d9897ec0150a0d4221a662e4fdf8d3c47",
         "build_type": "ament_cmake",
         "buildtool_depends": [
             "ament_cmake",
@@ -1613,6 +1653,7 @@
             "mrs_multirotor_simulator_core",
             "mrs_uav_hw_api",
             "nav_msgs",
+            "pluginlib",
             "rclcpp",
             "rclcpp_components",
             "rclcpp_lifecycle",
@@ -1632,6 +1673,7 @@
             "mrs_multirotor_simulator_core",
             "mrs_uav_hw_api",
             "nav_msgs",
+            "pluginlib",
             "rclcpp",
             "rclcpp_components",
             "rclcpp_lifecycle",
@@ -1651,6 +1693,7 @@
             "mrs_multirotor_simulator_core",
             "mrs_uav_hw_api",
             "nav_msgs",
+            "pluginlib",
             "rclcpp",
             "rclcpp_components",
             "rclcpp_lifecycle",
