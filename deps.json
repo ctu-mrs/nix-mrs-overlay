@@ -610,7 +610,7 @@
         "version": "2.0.0",
         "git_remote": "https://github.com/ctu-mrs/mrs_open_vins_estimator_plugin",
         "git_branch": "ros2",
-        "git_rev": "1dcec850400f55fd0f4fb1c596abeaf3e717b478",
+        "git_rev": "720206cf3eded91ffc47ee7708e287461a4d96ea",
         "build_type": "ament_cmake",
         "buildtool_depends": [
             "ament_cmake",
