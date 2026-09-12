@@ -168,7 +168,7 @@
         "version": "2.0.0",
         "git_remote": "https://github.com/ctu-mrs/mrs_multirotor_simulator",
         "git_branch": "ros2",
-        "git_rev": "917bd08d3bc1fd27ce2238b840f66ce2e5ed1541",
+        "git_rev": "f23b63526f3728ee71c7a09e24760ab66a0ccd7d",
         "build_type": "ament_cmake",
         "buildtool_depends": [
             "ament_cmake",
@@ -244,7 +244,7 @@
         "version": "2.0.0",
         "git_remote": "https://github.com/ctu-mrs/mrs_multirotor_simulator",
         "git_branch": "ros2",
-        "git_rev": "917bd08d3bc1fd27ce2238b840f66ce2e5ed1541",
+        "git_rev": "f23b63526f3728ee71c7a09e24760ab66a0ccd7d",
         "build_type": "ament_cmake",
         "buildtool_depends": [
             "ament_cmake",
@@ -273,7 +273,7 @@
         "version": "2.0.0",
         "git_remote": "https://github.com/ctu-mrs/mrs_multirotor_simulator",
         "git_branch": "ros2",
-        "git_rev": "917bd08d3bc1fd27ce2238b840f66ce2e5ed1541",
+        "git_rev": "f23b63526f3728ee71c7a09e24760ab66a0ccd7d",
         "build_type": "ament_cmake",
         "buildtool_depends": [
             "ament_cmake",
