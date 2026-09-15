@@ -1582,7 +1582,7 @@
         "version": "2.0.0",
         "git_remote": "https://github.com/ctu-mrs/mrs_lib",
         "git_branch": "ros2",
-        "git_rev": "60ae8c5ed09f9b8c6a2b03515ba489f22a5afffa",
+        "git_rev": "a75d007059a976953c25dcf928abd0cc632150c2",
         "build_type": "ament_cmake",
         "buildtool_depends": [
             "ament_cmake_python"
