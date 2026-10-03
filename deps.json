@@ -1315,7 +1315,7 @@
         "version": "2.0.0",
         "git_remote": "https://github.com/ctu-mrs/mrs_uav_trackers",
         "git_branch": "ros2",
-        "git_rev": "710a7eb54018e632a510f992ce334255764bcc49",
+        "git_rev": "7eab034972d9c2016c23c09f0432ccdc7dbeca27",
         "build_type": "ament_cmake",
         "buildtool_depends": [
             "ament_cmake",
